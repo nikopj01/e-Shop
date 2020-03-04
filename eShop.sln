@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.UI.Tests", "eShop.UI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Core", "eShop.Core\eShop.Core.csproj", "{4E8ED5ED-16E3-44CB-BB7D-771AEA8FFB2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.DataAccess.InMemory", "eShop.DataAccess.InMemory\eShop.DataAccess.InMemory.csproj", "{F87EDFDF-2047-48D5-B5CB-E40FC75F0E84}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.DataAccess.SQL", "eShop.DataAccess.SQL\eShop.DataAccess.SQL.csproj", "{65EBD0B0-9769-4A54-B9D3-B4CD83DBFCE9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Services", "eShop.Services\eShop.Services.csproj", "{B56A8DB3-1628-42C2-BA34-967C3D7A49C1}"
@@ -33,10 +31,6 @@ Global
 		{4E8ED5ED-16E3-44CB-BB7D-771AEA8FFB2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E8ED5ED-16E3-44CB-BB7D-771AEA8FFB2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E8ED5ED-16E3-44CB-BB7D-771AEA8FFB2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F87EDFDF-2047-48D5-B5CB-E40FC75F0E84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F87EDFDF-2047-48D5-B5CB-E40FC75F0E84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F87EDFDF-2047-48D5-B5CB-E40FC75F0E84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F87EDFDF-2047-48D5-B5CB-E40FC75F0E84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65EBD0B0-9769-4A54-B9D3-B4CD83DBFCE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65EBD0B0-9769-4A54-B9D3-B4CD83DBFCE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65EBD0B0-9769-4A54-B9D3-B4CD83DBFCE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
