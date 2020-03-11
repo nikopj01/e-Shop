@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.DataAccess.SQL", "eSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.Services", "eShop.Services\eShop.Services.csproj", "{B56A8DB3-1628-42C2-BA34-967C3D7A49C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.DataAccess.InMemory", "eShop.DataAccess.InMemory\eShop.DataAccess.InMemory.csproj", "{0A53A93E-8457-42AB-9399-DCFB42052E95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B56A8DB3-1628-42C2-BA34-967C3D7A49C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B56A8DB3-1628-42C2-BA34-967C3D7A49C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B56A8DB3-1628-42C2-BA34-967C3D7A49C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A53A93E-8457-42AB-9399-DCFB42052E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A53A93E-8457-42AB-9399-DCFB42052E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A53A93E-8457-42AB-9399-DCFB42052E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A53A93E-8457-42AB-9399-DCFB42052E95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
