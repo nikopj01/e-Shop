@@ -12,14 +12,17 @@ namespace eShop.UI.Controllers
     {
         private IRepository<Product> _contextProduct;
 
-        public TestController(IRepository<Product> product)
-        {
-            _contextProduct = product;
-        }
 
+        //Table with pagination and filter
         public ActionResult Index()
         {
-            return View(_contextProduct.Collection().ToList());
+            return View();
+        }
+
+        //Card with filtering
+        public ActionResult test2()
+        {
+            return View();
         }
     }
 }

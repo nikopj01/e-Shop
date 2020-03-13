@@ -1,0 +1,44 @@
+﻿@model IEnumerable<eShop.Core.Models.ProductCategory>
+
+@{
+    ViewBag.Title = "ListOfProductCategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <div class="container">
+        <h2>ListOfProductCategory</h2>
+
+        <p>
+            @Html.ActionLink("Create New Product Category", "CreateProductCategory")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductCategoryDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductCategoryDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditProductCategory", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "DeleteProductCategory", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>

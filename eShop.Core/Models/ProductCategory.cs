@@ -11,7 +11,9 @@ namespace eShop.Core.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class ProductCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +23,10 @@ namespace eShop.Core.Models
         }
     
         public string Id { get; set; }
+        [DisplayName("Product Category")]
+        [Required]
         public string ProductCategoryDescription { get; set; }
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public System.DateTimeOffset CreatedAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

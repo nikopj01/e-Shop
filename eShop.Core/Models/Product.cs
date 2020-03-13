@@ -11,16 +11,23 @@ namespace eShop.Core.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Product
     {
         public string Id { get; set; }
+        [Required]
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
+        [Required]
         public decimal ProductPrice { get; set; }
         public string ProductImage { get; set; }
         public decimal ProductDiscount { get; set; }
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public System.DateTimeOffset CreatedAt { get; set; }
+        [DisplayName("Product Category")]
+        [Required]
         public string productCategory_Id { get; set; }
         public string productSupplier_Id { get; set; }
         public string productType_Id { get; set; }
