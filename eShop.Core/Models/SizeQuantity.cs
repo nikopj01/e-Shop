@@ -13,14 +13,17 @@ namespace eShop.Core.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    [MetadataType(typeof(ProductSupplierMetadata))]
-
-    public partial class ProductSupplier
+    [MetadataType(typeof(SizeQuantityMetadata))]
+    public partial class SizeQuantity
     {
-        public System.Guid ProductSupplierID { get; set; }
-        public string ProductSupplierName { get; set; }
+        public System.Guid SizeQuantityID { get; set; }
+        public string SizeName { get; set; }
+        public Nullable<System.Guid> ProductID { get; set; }
+        public Nullable<int> Quantity { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> ModifiedAt { get; set; }
         public Nullable<bool> IsActive { get; set; }
+    
+        public virtual Product Product { get; set; }
     }
 }

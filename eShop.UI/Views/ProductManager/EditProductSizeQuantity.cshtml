@@ -1,0 +1,47 @@
+﻿@model List<eShop.Core.Models.SizeQuantity>
+
+@{
+    ViewBag.Title = "EditProductSizeQuantity";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit Size & Quantity</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Edit Size and Quantity of the selected product</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            @Html.HiddenFor(m => m[i].SizeQuantityID)
+            <div class="form-group">
+                @Html.LabelFor(m => m[i].SizeName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m[i].SizeName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m[i].SizeName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m[i].Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m[i].Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m[i].Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Edit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

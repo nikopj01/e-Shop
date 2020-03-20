@@ -1,80 +1,139 @@
-﻿@model eShop.Core.ViewModels.ProductForm
+﻿@model eShop.Core.ViewModels.ProductFormViewModel
 
 @{
     ViewBag.Title = "Product";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    @*$(document).ready(function () {
+        $("#AddSizeQuantity").click(function () {
+            $("#AddForm").append('<div class="form-group"><div class="row pl-3"><div class="col-md-3">@Html.LabelFor(model => model.sizeQuantity.SizeName, htmlAttributes: new { @class = "control-label " })@Html.EditorFor(model => model.sizeQuantity.SizeName, new { htmlAttributes = new { @class = "form-control" , id = "test2", required = "required"} })@Html.ValidationMessageFor(model => model.sizeQuantity.SizeName, "", new { @class = "text-danger" })</div><div class="col-md-3">@Html.LabelFor(model => model.sizeQuantity.Quantity, htmlAttributes: new { @class = "control-label " })@Html.EditorFor(model => model.sizeQuantity.Quantity, new { htmlAttributes = new { @class = "form-control" } })@Html.ValidationMessageFor(model => model.sizeQuantity.Quantity, "", new { @class = "text-danger" })</div><input type="button" value="Delete Size & Quantity" class="btn btn-danger m-3" id="DeleteForm" height="2"/></div></div>');
+        });
+    });
+
+    //Remove added size and quantity form
+    $(document).on("click", "#DeleteForm", function () {
+        $(this).parent().parent().remove();
+    });*@
+
+    $(document).ready(function () {
+        $("#SelectedProductCategory").change(function () {
+            $.get("/ProductManager/GetProductType", { productCategoryID: $("#SelectedProductCategory").val() }, function (data) {
+                $("#ProductTypeDropDownList").empty();
+                $.each(data, function (index, row) {
+                      $("#ProductTypeDropDownList").append("<option value='" + row.Value + "'>" + row.Text + "</option>")
+                });
+            });
+        });
+    });
+
+</script>
 
 <div class="container">
     <h2>Create</h2>
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { encType = "multipart/form-data", id = "productform" }))
     {
         @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Product</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.product.Id)
+        <div class="form-horizontal">
+            <h4>Product</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.product.ProductID)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.product.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.product.ProductName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.product.ProductName, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.product.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.product.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.product.ProductName, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.product.ProductDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.product.ProductDescription, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.product.ProductDescription, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.product.ProductDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.product.ProductDescription, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.product.ProductDescription, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.product.ProductPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.product.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.product.ProductPrice, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.product.ProductPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.product.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.product.ProductPrice, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.product.ProductImage, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.product.ProductImage, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.product.ProductImage, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.product.ProductImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.product.ProductImage, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.product.ProductImage, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.product.ProductDiscount, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.product.ProductDiscount, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.product.ProductDiscount, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.product.ProductImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="file" id="file" name="file" class="form-control" />
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.product.productCategory_Id, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.product.productCategory_Id, new SelectList(Model.productCategories, "Id", "ProductCategoryDescription"), "Select One Category")
-            @Html.ValidationMessageFor(model => model.product.productCategory_Id, "", new { @class = "text-danger" })
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.product.ProductDiscount, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.product.ProductDiscount, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.product.ProductDiscount, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.product.ProductCategoryID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.product.ProductCategoryID, new SelectList(Model.productCategories, "ProductCategoryID", "ProductCategoryName"), "Select One Product Category", new { @class = "form-control", id = "SelectedProductCategory" })
+                    @Html.ValidationMessageFor(model => model.product.ProductCategoryID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.product.ProductTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" id="DropDownList">
+                    @Html.DropDownListFor(model => model.product.ProductTypeID, new SelectList(""), "Select One Product Type", new { @class = "form-control", id = "ProductTypeDropDownList" })
+                    @Html.ValidationMessageFor(model => model.product.ProductTypeID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*Dynamically add form for Size and Quantity*@
+            @*<div class="form-group col-md-2">
+                    <input type="button" value="Add Size and Quantity" class="btn btn-default border border-dark" id="AddSizeQuantity" />
+                </div>
+                <div id="AddForm">
+                </div>*@
+
+            <div class="form-group ">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+
         </div>
-    </div>
-</div>
     }
 
     <div>
+        <div class=" col-md-12">
+            @*<input type="button" value="Add Size and Quantity" class="btn btn-default border border-dark" id="AddSizeQuantity" />*@
+            @*<input type="submit" value="Create" class="btn btn-default border border-dark" id="SubmitForm" />*@
+        </div>
+        <br />
         @Html.ActionLink("Back to List", "Index")
     </div>
 </div>
+
+
+

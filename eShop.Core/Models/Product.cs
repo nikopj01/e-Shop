@@ -11,33 +11,33 @@ namespace eShop.Core.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
+    [MetadataType(typeof(ProductMetadata))]
     public partial class Product
     {
-        public string Id { get; set; }
-        [Required]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Product()
+        {
+            this.SizeQuantities = new HashSet<SizeQuantity>();
+        }
+    
+        public System.Guid ProductID { get; set; }
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
-        [Required]
-        public decimal ProductPrice { get; set; }
+        public Nullable<decimal> ProductPrice { get; set; }
         public string ProductImage { get; set; }
-        public decimal ProductDiscount { get; set; }
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
-        public System.DateTimeOffset CreatedAt { get; set; }
-        [DisplayName("Product Category")]
-        [Required]
-        public string productCategory_Id { get; set; }
-        public string productSupplier_Id { get; set; }
-        public string productType_Id { get; set; }
-        public string size_Id { get; set; }
-        public string stock_Id { get; set; }
+        public Nullable<decimal> ProductDiscount { get; set; }
+        public Nullable<System.Guid> ProductCategoryID { get; set; }
+        public Nullable<System.Guid> ProductTypeID { get; set; }
+        public Nullable<System.Guid> ProductSupplierID { get; set; }
+        public Nullable<System.DateTime> CreatedAt { get; set; }
+        public Nullable<System.DateTime> ModifiedAt { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         public virtual ProductCategory ProductCategory { get; set; }
-        public virtual ProductSupplier ProductSupplier { get; set; }
         public virtual ProductType ProductType { get; set; }
-        public virtual Size Size { get; set; }
-        public virtual Stock Stock { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SizeQuantity> SizeQuantities { get; set; }
     }
 }

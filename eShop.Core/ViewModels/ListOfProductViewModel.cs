@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace eShop.Core.ViewModels
 {
-    public class ProductForm
+    public class ListOfProductViewModel
     {
-        public Product product { get; set; }
+        public IEnumerable<Product> products { get; set; }
         public IEnumerable<ProductCategory> productCategories { get; set; }
+        public IEnumerable<ProductType> productTypes { get; set; }
     }
 }

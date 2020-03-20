@@ -1,0 +1,46 @@
+﻿@model eShop.Core.ViewModels.ListOfProductTypeViewModel
+
+@{
+    ViewBag.Title = "ListOfProductType";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="container">
+    <h2>ListOfProductType</h2>
+    <p>
+        @Html.ActionLink("Create New Product Type", "CreateProductType")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Product Type Name")
+            </th>
+            <th>
+                @Html.DisplayName("Product Category Name")
+            </th>
+            <th>
+                Action
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.productTypes)
+        {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductTypeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => Model.productCategories.SingleOrDefault(pc => pc.ProductCategoryID == item.ProductCategoryID).ProductCategoryName )
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditProductType", new { id = item.ProductTypeID }) |
+            @Html.ActionLink("Delete", "DeleteProductType", new { id = item.ProductTypeID })
+        </td>
+    </tr>
+        }
+
+    </table>
+</div>

@@ -195,6 +195,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -375,9 +376,18 @@
     <Content Include="Views\ProductManager\ListOfProductCategory.cshtml" />
     <Content Include="Views\ProductManager\EditProduct.cshtml" />
     <Content Include="Views\ProductManager\EditProductCategory.cshtml" />
+    <Content Include="Views\ProductManager\ListOfProductType.cshtml" />
+    <Content Include="Views\ProductManager\CreateProductType.cshtml" />
+    <Content Include="Views\ProductManager\EditProductType.cshtml" />
+    <Content Include="Views\ProductManager\CreateProductSizeQuantity.cshtml" />
+    <Content Include="Views\ProductManager\AddProductQuantity.cshtml" />
+    <Content Include="Views\UserAccount\Register.cshtml" />
+    <Content Include="Views\UserAccount\Login.cshtml" />
+    <Content Include="Views\ProductManager\EditProductSizeQuantity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\ProductImages\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

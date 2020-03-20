@@ -4,369 +4,312 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="eShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="EGiftCards">
+      <Schema Namespace="eShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Product">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductID" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="EGiftCardCode" Type="nvarchar(max)" />
-          <Property Name="EGiftCardDescription" Type="nvarchar(max)" />
-          <Property Name="EGiftCardCurrentValue" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="TargetEmail" Type="nvarchar(max)" />
-          <Property Name="CreatedAt" Type="datetimeoffset" Precision="7" Nullable="false" />
+          <Property Name="ProductID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="255" />
+          <Property Name="ProductDescription" Type="varchar" MaxLength="255" />
+          <Property Name="ProductPrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ProductImage" Type="varchar" MaxLength="255" />
+          <Property Name="ProductDiscount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ProductCategoryID" Type="uniqueidentifier" />
+          <Property Name="ProductTypeID" Type="uniqueidentifier" />
+          <Property Name="ProductSupplierID" Type="uniqueidentifier" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="ProductCategories">
+        <EntityType Name="ProductCategory">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductCategoryID" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProductCategoryDescription" Type="nvarchar(max)" />
-          <Property Name="CreatedAt" Type="datetimeoffset" Precision="7" Nullable="false" />
+          <Property Name="ProductCategoryID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductCategoryName" Type="varchar" MaxLength="255" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="Products">
+        <EntityType Name="ProductSupplier">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductSupplierID" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProductName" Type="nvarchar(max)" />
-          <Property Name="ProductDescription" Type="nvarchar(max)" />
-          <Property Name="ProductPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="ProductImage" Type="nvarchar(max)" />
-          <Property Name="ProductDiscount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="CreatedAt" Type="datetimeoffset" Precision="7" Nullable="false" />
-          <Property Name="productCategory_Id" Type="nvarchar" MaxLength="128" />
-          <Property Name="productSupplier_Id" Type="nvarchar" MaxLength="128" />
-          <Property Name="productType_Id" Type="nvarchar" MaxLength="128" />
-          <Property Name="size_Id" Type="nvarchar" MaxLength="128" />
-          <Property Name="stock_Id" Type="nvarchar" MaxLength="128" />
+          <Property Name="ProductSupplierID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductSupplierName" Type="varchar" MaxLength="255" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="ProductSuppliers">
+        <EntityType Name="ProductType">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductTypeID" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProductSupplierDescription" Type="nvarchar(max)" />
-          <Property Name="CreatedAt" Type="datetimeoffset" Precision="7" Nullable="false" />
+          <Property Name="ProductTypeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductTypeName" Type="varchar" MaxLength="255" />
+          <Property Name="ProductCategoryID" Type="uniqueidentifier" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="ProductTypes">
+        <EntityType Name="SizeQuantity">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="SizeQuantityID" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProductTypeDescription" Type="nvarchar(max)" />
-          <Property Name="CreatedAt" Type="datetimeoffset" Precision="7" Nullable="false" />
+          <Property Name="SizeQuantityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SizeName" Type="varchar" MaxLength="255" />
+          <Property Name="ProductID" Type="uniqueidentifier" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="Sizes">
+        <EntityType Name="UserAccount">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserAccountID" />
           </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="SizeDescription" Type="nvarchar(max)" />
-          <Property Name="CreatedAt" Type="datetimeoffset" Precision="7" Nullable="false" />
+          <Property Name="UserAccountID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="255" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="255" />
+          <Property Name="FirstName" Type="varchar" MaxLength="255" />
+          <Property Name="LastName" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="Role" Type="int" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <EntityType Name="Stocks">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="StockQuantity" Type="int" Nullable="false" />
-          <Property Name="CreatedAt" Type="datetimeoffset" Precision="7" Nullable="false" />
-          <Property Name="size_Id" Type="nvarchar" MaxLength="128" />
-        </EntityType>
-        <Association Name="FK_dbo_Products_dbo_ProductCategories_productCategory_Id">
-          <End Role="ProductCategories" Type="Self.ProductCategories" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+        <Association Name="FK__Product__Product__498EEC8D">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductCategories">
-              <PropertyRef Name="Id" />
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="productCategory_Id" />
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id">
-          <End Role="ProductSuppliers" Type="Self.ProductSuppliers" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+        <Association Name="FK__Product__Product__4A8310C6">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductSuppliers">
-              <PropertyRef Name="Id" />
+            <Principal Role="ProductType">
+              <PropertyRef Name="ProductTypeID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="productSupplier_Id" />
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Products_dbo_ProductTypes_productType_Id">
-          <End Role="ProductTypes" Type="Self.ProductTypes" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+        <Association Name="FK__ProductTy__Produ__43D61337">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductTypes">
-              <PropertyRef Name="Id" />
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="productType_Id" />
+            <Dependent Role="ProductType">
+              <PropertyRef Name="ProductCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Products_dbo_Sizes_size_Id">
-          <End Role="Sizes" Type="Self.Sizes" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+        <Association Name="FK__SizeQuant__Produ__4B7734FF">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Sizes">
-              <PropertyRef Name="Id" />
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="size_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_Products_dbo_Stocks_stock_Id">
-          <End Role="Stocks" Type="Self.Stocks" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Products" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stocks">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="stock_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_Stocks_dbo_Sizes_size_Id">
-          <End Role="Sizes" Type="Self.Sizes" Multiplicity="0..1" />
-          <End Role="Stocks" Type="Self.Stocks" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sizes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Stocks">
-              <PropertyRef Name="size_Id" />
+            <Dependent Role="SizeQuantity">
+              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="eShopModelStoreContainer">
-          <EntitySet Name="EGiftCards" EntityType="Self.EGiftCards" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductCategories" EntityType="Self.ProductCategories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductSuppliers" EntityType="Self.ProductSuppliers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProductTypes" EntityType="Self.ProductTypes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Stocks" EntityType="Self.Stocks" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_dbo_Products_dbo_ProductCategories_productCategory_Id" Association="Self.FK_dbo_Products_dbo_ProductCategories_productCategory_Id">
-            <End Role="ProductCategories" EntitySet="ProductCategories" />
-            <End Role="Products" EntitySet="Products" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductSupplier" EntityType="Self.ProductSupplier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SizeQuantity" EntityType="Self.SizeQuantity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Product__Product__498EEC8D" Association="Self.FK__Product__Product__498EEC8D">
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+            <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id" Association="Self.FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id">
-            <End Role="ProductSuppliers" EntitySet="ProductSuppliers" />
-            <End Role="Products" EntitySet="Products" />
+          <AssociationSet Name="FK__Product__Product__4A8310C6" Association="Self.FK__Product__Product__4A8310C6">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_ProductTypes_productType_Id" Association="Self.FK_dbo_Products_dbo_ProductTypes_productType_Id">
-            <End Role="ProductTypes" EntitySet="ProductTypes" />
-            <End Role="Products" EntitySet="Products" />
+          <AssociationSet Name="FK__ProductTy__Produ__43D61337" Association="Self.FK__ProductTy__Produ__43D61337">
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+            <End Role="ProductType" EntitySet="ProductType" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_Sizes_size_Id" Association="Self.FK_dbo_Products_dbo_Sizes_size_Id">
-            <End Role="Sizes" EntitySet="Sizes" />
-            <End Role="Products" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_Stocks_stock_Id" Association="Self.FK_dbo_Products_dbo_Stocks_stock_Id">
-            <End Role="Stocks" EntitySet="Stocks" />
-            <End Role="Products" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Stocks_dbo_Sizes_size_Id" Association="Self.FK_dbo_Stocks_dbo_Sizes_size_Id">
-            <End Role="Sizes" EntitySet="Sizes" />
-            <End Role="Stocks" EntitySet="Stocks" />
+          <AssociationSet Name="FK__SizeQuant__Produ__4B7734FF" Association="Self.FK__SizeQuant__Produ__4B7734FF">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="SizeQuantity" EntitySet="SizeQuantity" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="eShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="EGiftCard">
+        <EntityType Name="Product">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductID" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EGiftCardCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EGiftCardDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EGiftCardCurrentValue" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="TargetEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTimeOffset" Nullable="false" Precision="7" />
+          <Property Name="ProductID" Type="Guid" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProductDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProductPrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ProductImage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProductDiscount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ProductCategoryID" Type="Guid" />
+          <Property Name="ProductTypeID" Type="Guid" />
+          <Property Name="ProductSupplierID" Type="Guid" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="ProductCategory" Relationship="Self.FK__Product__Product__498EEC8D" FromRole="Product" ToRole="ProductCategory" />
+          <NavigationProperty Name="ProductType" Relationship="Self.FK__Product__Product__4A8310C6" FromRole="Product" ToRole="ProductType" />
+          <NavigationProperty Name="SizeQuantities" Relationship="Self.FK__SizeQuant__Produ__4B7734FF" FromRole="Product" ToRole="SizeQuantity" />
         </EntityType>
         <EntityType Name="ProductCategory">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductCategoryID" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProductCategoryDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTimeOffset" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_dbo_Products_dbo_ProductCategories_productCategory_Id" FromRole="ProductCategories" ToRole="Products" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ProductPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="ProductImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDiscount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="CreatedAt" Type="DateTimeOffset" Nullable="false" Precision="7" />
-          <Property Name="productCategory_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="productSupplier_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="productType_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="size_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="stock_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ProductCategory" Relationship="Self.FK_dbo_Products_dbo_ProductCategories_productCategory_Id" FromRole="Products" ToRole="ProductCategories" />
-          <NavigationProperty Name="ProductSupplier" Relationship="Self.FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id" FromRole="Products" ToRole="ProductSuppliers" />
-          <NavigationProperty Name="ProductType" Relationship="Self.FK_dbo_Products_dbo_ProductTypes_productType_Id" FromRole="Products" ToRole="ProductTypes" />
-          <NavigationProperty Name="Size" Relationship="Self.FK_dbo_Products_dbo_Sizes_size_Id" FromRole="Products" ToRole="Sizes" />
-          <NavigationProperty Name="Stock" Relationship="Self.FK_dbo_Products_dbo_Stocks_stock_Id" FromRole="Products" ToRole="Stocks" />
+          <Property Name="ProductCategoryID" Type="Guid" Nullable="false" />
+          <Property Name="ProductCategoryName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__498EEC8D" FromRole="ProductCategory" ToRole="Product" />
+          <NavigationProperty Name="ProductTypes" Relationship="Self.FK__ProductTy__Produ__43D61337" FromRole="ProductCategory" ToRole="ProductType" />
         </EntityType>
         <EntityType Name="ProductSupplier">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductSupplierID" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProductSupplierDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTimeOffset" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id" FromRole="ProductSuppliers" ToRole="Products" />
+          <Property Name="ProductSupplierID" Type="Guid" Nullable="false" />
+          <Property Name="ProductSupplierName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="ProductType">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductTypeID" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProductTypeDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTimeOffset" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_dbo_Products_dbo_ProductTypes_productType_Id" FromRole="ProductTypes" ToRole="Products" />
+          <Property Name="ProductTypeID" Type="Guid" Nullable="false" />
+          <Property Name="ProductTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProductCategoryID" Type="Guid" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__4A8310C6" FromRole="ProductType" ToRole="Product" />
+          <NavigationProperty Name="ProductCategory" Relationship="Self.FK__ProductTy__Produ__43D61337" FromRole="ProductType" ToRole="ProductCategory" />
         </EntityType>
-        <EntityType Name="Size">
+        <EntityType Name="SizeQuantity">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="SizeQuantityID" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SizeDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTimeOffset" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_dbo_Products_dbo_Sizes_size_Id" FromRole="Sizes" ToRole="Products" />
-          <NavigationProperty Name="Stocks" Relationship="Self.FK_dbo_Stocks_dbo_Sizes_size_Id" FromRole="Sizes" ToRole="Stocks" />
+          <Property Name="SizeQuantityID" Type="Guid" Nullable="false" />
+          <Property Name="SizeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProductID" Type="Guid" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__SizeQuant__Produ__4B7734FF" FromRole="SizeQuantity" ToRole="Product" />
         </EntityType>
-        <EntityType Name="Stock">
+        <EntityType Name="UserAccount">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserAccountID" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StockQuantity" Type="Int32" Nullable="false" />
-          <Property Name="CreatedAt" Type="DateTimeOffset" Nullable="false" Precision="7" />
-          <Property Name="size_Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_dbo_Products_dbo_Stocks_stock_Id" FromRole="Stocks" ToRole="Products" />
-          <NavigationProperty Name="Size" Relationship="Self.FK_dbo_Stocks_dbo_Sizes_size_Id" FromRole="Stocks" ToRole="Sizes" />
+          <Property Name="UserAccountID" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
-        <Association Name="FK_dbo_Products_dbo_ProductCategories_productCategory_Id">
-          <End Role="ProductCategories" Type="Self.ProductCategory" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+        <Association Name="FK__Product__Product__498EEC8D">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductCategories">
-              <PropertyRef Name="Id" />
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="productCategory_Id" />
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id">
-          <End Role="ProductSuppliers" Type="Self.ProductSupplier" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+        <Association Name="FK__Product__Product__4A8310C6">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductSuppliers">
-              <PropertyRef Name="Id" />
+            <Principal Role="ProductType">
+              <PropertyRef Name="ProductTypeID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="productSupplier_Id" />
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Products_dbo_ProductTypes_productType_Id">
-          <End Role="ProductTypes" Type="Self.ProductType" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+        <Association Name="FK__SizeQuant__Produ__4B7734FF">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProductTypes">
-              <PropertyRef Name="Id" />
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="productType_Id" />
+            <Dependent Role="SizeQuantity">
+              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Products_dbo_Sizes_size_Id">
-          <End Role="Sizes" Type="Self.Size" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+        <Association Name="FK__ProductTy__Produ__43D61337">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Sizes">
-              <PropertyRef Name="Id" />
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
             </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="size_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_Products_dbo_Stocks_stock_Id">
-          <End Role="Stocks" Type="Self.Stock" Multiplicity="0..1" />
-          <End Role="Products" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Stocks">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Products">
-              <PropertyRef Name="stock_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_Stocks_dbo_Sizes_size_Id">
-          <End Role="Sizes" Type="Self.Size" Multiplicity="0..1" />
-          <End Role="Stocks" Type="Self.Stock" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Sizes">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Stocks">
-              <PropertyRef Name="size_Id" />
+            <Dependent Role="ProductType">
+              <PropertyRef Name="ProductCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DbModel" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="EGiftCards" EntityType="Self.EGiftCard" />
-          <EntitySet Name="ProductCategories" EntityType="Self.ProductCategory" />
           <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ProductCategories" EntityType="Self.ProductCategory" />
           <EntitySet Name="ProductSuppliers" EntityType="Self.ProductSupplier" />
           <EntitySet Name="ProductTypes" EntityType="Self.ProductType" />
-          <EntitySet Name="Sizes" EntityType="Self.Size" />
-          <EntitySet Name="Stocks" EntityType="Self.Stock" />
-          <AssociationSet Name="FK_dbo_Products_dbo_ProductCategories_productCategory_Id" Association="Self.FK_dbo_Products_dbo_ProductCategories_productCategory_Id">
-            <End Role="ProductCategories" EntitySet="ProductCategories" />
-            <End Role="Products" EntitySet="Products" />
+          <EntitySet Name="SizeQuantities" EntityType="Self.SizeQuantity" />
+          <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+          <AssociationSet Name="FK__Product__Product__498EEC8D" Association="Self.FK__Product__Product__498EEC8D">
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+            <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id" Association="Self.FK_dbo_Products_dbo_ProductSuppliers_productSupplier_Id">
-            <End Role="ProductSuppliers" EntitySet="ProductSuppliers" />
-            <End Role="Products" EntitySet="Products" />
+          <AssociationSet Name="FK__Product__Product__4A8310C6" Association="Self.FK__Product__Product__4A8310C6">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_ProductTypes_productType_Id" Association="Self.FK_dbo_Products_dbo_ProductTypes_productType_Id">
-            <End Role="ProductTypes" EntitySet="ProductTypes" />
-            <End Role="Products" EntitySet="Products" />
+          <AssociationSet Name="FK__SizeQuant__Produ__4B7734FF" Association="Self.FK__SizeQuant__Produ__4B7734FF">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="SizeQuantity" EntitySet="SizeQuantities" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_Sizes_size_Id" Association="Self.FK_dbo_Products_dbo_Sizes_size_Id">
-            <End Role="Sizes" EntitySet="Sizes" />
-            <End Role="Products" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Products_dbo_Stocks_stock_Id" Association="Self.FK_dbo_Products_dbo_Stocks_stock_Id">
-            <End Role="Stocks" EntitySet="Stocks" />
-            <End Role="Products" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Stocks_dbo_Sizes_size_Id" Association="Self.FK_dbo_Stocks_dbo_Sizes_size_Id">
-            <End Role="Sizes" EntitySet="Sizes" />
-            <End Role="Stocks" EntitySet="Stocks" />
+          <AssociationSet Name="FK__ProductTy__Produ__43D61337" Association="Self.FK__ProductTy__Produ__43D61337">
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+            <End Role="ProductType" EntitySet="ProductTypes" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -375,79 +318,84 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="eShopModelStoreContainer" CdmEntityContainer="DbModel">
-          <EntitySetMapping Name="EGiftCards">
-            <EntityTypeMapping TypeName="eShopModel.EGiftCard">
-              <MappingFragment StoreEntitySet="EGiftCards">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EGiftCardCode" ColumnName="EGiftCardCode" />
-                <ScalarProperty Name="EGiftCardDescription" ColumnName="EGiftCardDescription" />
-                <ScalarProperty Name="EGiftCardCurrentValue" ColumnName="EGiftCardCurrentValue" />
-                <ScalarProperty Name="TargetEmail" ColumnName="TargetEmail" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductCategories">
-            <EntityTypeMapping TypeName="eShopModel.ProductCategory">
-              <MappingFragment StoreEntitySet="ProductCategories">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ProductCategoryDescription" ColumnName="ProductCategoryDescription" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="eShopModel.Product">
-              <MappingFragment StoreEntitySet="Products">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
                 <ScalarProperty Name="ProductPrice" ColumnName="ProductPrice" />
                 <ScalarProperty Name="ProductImage" ColumnName="ProductImage" />
                 <ScalarProperty Name="ProductDiscount" ColumnName="ProductDiscount" />
+                <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
+                <ScalarProperty Name="ProductTypeID" ColumnName="ProductTypeID" />
+                <ScalarProperty Name="ProductSupplierID" ColumnName="ProductSupplierID" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="productCategory_Id" ColumnName="productCategory_Id" />
-                <ScalarProperty Name="productSupplier_Id" ColumnName="productSupplier_Id" />
-                <ScalarProperty Name="productType_Id" ColumnName="productType_Id" />
-                <ScalarProperty Name="size_Id" ColumnName="size_Id" />
-                <ScalarProperty Name="stock_Id" ColumnName="stock_Id" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCategories">
+            <EntityTypeMapping TypeName="eShopModel.ProductCategory">
+              <MappingFragment StoreEntitySet="ProductCategory">
+                <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
+                <ScalarProperty Name="ProductCategoryName" ColumnName="ProductCategoryName" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductSuppliers">
             <EntityTypeMapping TypeName="eShopModel.ProductSupplier">
-              <MappingFragment StoreEntitySet="ProductSuppliers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ProductSupplierDescription" ColumnName="ProductSupplierDescription" />
+              <MappingFragment StoreEntitySet="ProductSupplier">
+                <ScalarProperty Name="ProductSupplierID" ColumnName="ProductSupplierID" />
+                <ScalarProperty Name="ProductSupplierName" ColumnName="ProductSupplierName" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductTypes">
             <EntityTypeMapping TypeName="eShopModel.ProductType">
-              <MappingFragment StoreEntitySet="ProductTypes">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ProductTypeDescription" ColumnName="ProductTypeDescription" />
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="ProductTypeID" ColumnName="ProductTypeID" />
+                <ScalarProperty Name="ProductTypeName" ColumnName="ProductTypeName" />
+                <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Sizes">
-            <EntityTypeMapping TypeName="eShopModel.Size">
-              <MappingFragment StoreEntitySet="Sizes">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="SizeDescription" ColumnName="SizeDescription" />
+          <EntitySetMapping Name="SizeQuantities">
+            <EntityTypeMapping TypeName="eShopModel.SizeQuantity">
+              <MappingFragment StoreEntitySet="SizeQuantity">
+                <ScalarProperty Name="SizeQuantityID" ColumnName="SizeQuantityID" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Stocks">
-            <EntityTypeMapping TypeName="eShopModel.Stock">
-              <MappingFragment StoreEntitySet="Stocks">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
+          <EntitySetMapping Name="UserAccounts">
+            <EntityTypeMapping TypeName="eShopModel.UserAccount">
+              <MappingFragment StoreEntitySet="UserAccount">
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="size_Id" ColumnName="size_Id" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

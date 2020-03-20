@@ -13,12 +13,16 @@ namespace eShop.Core.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    [MetadataType(typeof(ProductSupplierMetadata))]
-
-    public partial class ProductSupplier
+    [MetadataType(typeof(UserAccountMetadata))]
+    public partial class UserAccount
     {
-        public System.Guid ProductSupplierID { get; set; }
-        public string ProductSupplierName { get; set; }
+        public System.Guid UserAccountID { get; set; }
+        public string UserName { get; set; }
+        public string UserPassword { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public Nullable<int> Role { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> ModifiedAt { get; set; }
         public Nullable<bool> IsActive { get; set; }

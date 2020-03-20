@@ -29,7 +29,7 @@ namespace eShop.DataAccess.InMemory
             throw new NotImplementedException();
         }
 
-        public T Find(string Id)
+        public T Find(Guid Id)
         {
             throw new NotImplementedException();
         }

@@ -18,6 +18,7 @@ namespace eShop.DataAccess.SQL
         public SQLRepository(DbModel dbmodel)
         {
             this.db = dbmodel;
+            db.Configuration.ProxyCreationEnabled = false;
             this.dbSet = db.Set<T>();
         }
 
@@ -39,9 +40,9 @@ namespace eShop.DataAccess.SQL
                 dbSet.Remove(t);
             }
 
-        }
+        }   
 
-        public T Find(string Id)
+        public T Find(Guid Id)
         {
             return dbSet.Find(Id);
         }

@@ -1,10 +1,11 @@
-﻿@model eShop.Core.ViewModels.ProductForm
+﻿@model eShop.Core.ViewModels.ProductFormViewModel
 
 @{
     ViewBag.Title = "EditProduct";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
 <div class="container">
     <h2>EditProduct</h2>
 
@@ -16,7 +17,7 @@
             <h4>Product</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.product.Id)
+            @Html.HiddenFor(model => model.product.ProductID)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.product.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -59,10 +60,10 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.product.productCategory_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.product.ProductCategoryID, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.product.productCategory_Id, new SelectList(Model.productCategories, "Id", "ProductCategoryDescription"), "Select One Category")
-                    @Html.ValidationMessageFor(model => model.product.productCategory_Id, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.product.ProductCategoryID, new SelectList(Model.productCategories, "ProductCategoryID", "ProductCategoryName"), "Select One Category")
+                    @Html.ValidationMessageFor(model => model.product.ProductCategoryID, "", new { @class = "text-danger" })
                 </div>
             </div>
 

@@ -16,15 +16,26 @@
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item">
+                        @Html.ActionLink("List of Product", "Index", "ProductManager", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("List of Product Category", "ListOfProductCategory", "ProductManager", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("List of Product Type", "ListOfProductType", "ProductManager", null, new { @class = "nav-link" })
+                    </li>
+                    @*Drop down Navigation menu*@
+                    @*<li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                             PRODUCT
                         </a>
-                        <div class="dropdown-menu" >
-                            @Html.ActionLink("List of Product","Index","ProductManager", null,new {@class = "dropdown-item"})
-                            @Html.ActionLink("List of Product Category", "ListOfProductCategory","ProductManager", null,new {@class = "dropdown-item"})
+                        <div class="dropdown-menu">
                         </div>
-                    </li>
+                        @Html.ActionLink("List of Product", "Index", "ProductManager", null, new { @class = "dropdown-item" })
+                        @Html.ActionLink("List of Product Category", "ListOfProductCategory", "ProductManager", null, new { @class = "dropdown-item" })
+                        @Html.ActionLink("List of Product Type", "ListOfProductType", "ProductManager", null, new { @class = "dropdown-item" })
+                    </li>*@
                 </ul>
             </div>
         </nav>

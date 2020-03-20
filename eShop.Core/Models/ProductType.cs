@@ -11,7 +11,9 @@ namespace eShop.Core.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(ProductTypeMetadata))]
     public partial class ProductType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,11 +22,15 @@ namespace eShop.Core.Models
             this.Products = new HashSet<Product>();
         }
     
-        public string Id { get; set; }
-        public string ProductTypeDescription { get; set; }
-        public System.DateTimeOffset CreatedAt { get; set; }
+        public System.Guid ProductTypeID { get; set; }
+        public string ProductTypeName { get; set; }
+        public Nullable<System.Guid> ProductCategoryID { get; set; }
+        public Nullable<System.DateTime> CreatedAt { get; set; }
+        public Nullable<System.DateTime> ModifiedAt { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
     }
 }

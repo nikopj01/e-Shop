@@ -25,12 +25,11 @@ namespace eShop.Core.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<EGiftCard> EGiftCards { get; set; }
-        public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductSupplier> ProductSuppliers { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
-        public virtual DbSet<Size> Sizes { get; set; }
-        public virtual DbSet<Stock> Stocks { get; set; }
+        public virtual DbSet<SizeQuantity> SizeQuantities { get; set; }
+        public virtual DbSet<UserAccount> UserAccounts { get; set; }
     }
 }
