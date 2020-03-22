@@ -12,12 +12,14 @@ namespace eShop.Core.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductSupplier
+    public partial class BasketItem
     {
-        public System.Guid ProductSupplierID { get; set; }
-        public string ProductSupplierName { get; set; }
-        public Nullable<System.DateTime> CreatedAt { get; set; }
-        public Nullable<System.DateTime> ModifiedAt { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public System.Guid BasketItemID { get; set; }
+        public Nullable<System.Guid> ProductID { get; set; }
+        public Nullable<int> Quantity { get; set; }
+    
+        public virtual BasketItem BasketItem1 { get; set; }
+        public virtual BasketItem BasketItem2 { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

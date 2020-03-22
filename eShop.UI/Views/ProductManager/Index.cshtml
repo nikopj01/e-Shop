@@ -43,7 +43,6 @@
                         @Html.DisplayFor(modelItem => Model.productCategories.SingleOrDefault(pc => pc.ProductCategoryID == item.ProductCategoryID).ProductCategoryName)
                     </td>
                     <td>
-                        @*@Html.DisplayFor(modelItem => Model.productTypes.SingleOrDefault(pc => pc.ProductTypeID == item.ProductTypeID).ProductTypeName)*@
                         @if (item.ProductTypeID != null)
                         {
                             @Html.DisplayFor(modelItem => Model.productTypes.SingleOrDefault(pc => pc.ProductTypeID == item.ProductTypeID).ProductTypeName)

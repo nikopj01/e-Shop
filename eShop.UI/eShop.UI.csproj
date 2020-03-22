@@ -191,6 +191,8 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BasketController.cs" />
+    <Compile Include="Controllers\CollectionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
@@ -212,6 +214,20 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\CompanyLogo\Black Logo.PNG" />
+    <Content Include="Content\CompanyLogo\White Logo.PNG" />
+    <Content Include="Content\ProductImages\006b02a1-9d92-497e-b483-af26a046f0c2.PNG" />
+    <Content Include="Content\ProductImages\31f2315e-8822-4fc4-86e4-fd4f81c52a31.PNG" />
+    <Content Include="Content\ProductImages\339df07f-9d17-4f08-9c2d-7de24c755300.PNG" />
+    <Content Include="Content\ProductImages\3541097b-04e0-4f44-b706-202bdc90a4e7.PNG" />
+    <Content Include="Content\ProductImages\693f3918-adb3-433e-8ae4-036ba9579851.PNG" />
+    <Content Include="Content\ProductImages\6d20ea5a-d6f2-40c1-a7c1-1a8db814794b.PNG" />
+    <Content Include="Content\ProductImages\7a489764-8e87-4e42-aada-d17a9b76cfa5.PNG" />
+    <Content Include="Content\ProductImages\90401fba-f6a7-4470-9dda-275aa24b452c.PNG" />
+    <Content Include="Content\ProductImages\91e99613-76e3-4edd-90d2-45da3f82bada.PNG" />
+    <Content Include="Content\ProductImages\aa5c4b3b-33c3-41c3-9f29-4470d4fc5eb5.PNG" />
+    <Content Include="Content\ProductImages\dc02ef5e-0d6f-4ade-a890-5e19cc5d32e6.PNG" />
+    <Content Include="Content\ProductImages\eed8bd14-a9d3-4135-8940-89de6ad7e750.PNG" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -381,13 +397,15 @@
     <Content Include="Views\ProductManager\EditProductType.cshtml" />
     <Content Include="Views\ProductManager\CreateProductSizeQuantity.cshtml" />
     <Content Include="Views\ProductManager\AddProductQuantity.cshtml" />
-    <Content Include="Views\UserAccount\Register.cshtml" />
     <Content Include="Views\UserAccount\Login.cshtml" />
     <Content Include="Views\ProductManager\EditProductSizeQuantity.cshtml" />
+    <Content Include="Views\Collections\MenTops.cshtml" />
+    <Content Include="Views\Collections\Product.cshtml" />
+    <Content Include="Views\UserAccount\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\ProductImages\" />
+    <Folder Include="Views\Basket\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

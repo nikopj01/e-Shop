@@ -16,9 +16,15 @@ namespace eShop.Core.Models
     [MetadataType(typeof(UserAccountMetadata))]
     public partial class UserAccount
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserAccount()
+        {
+            this.Baskets = new HashSet<Basket>();
+        }
+    
         public System.Guid UserAccountID { get; set; }
         public string UserName { get; set; }
-        public string UserPassword { get; set; }
+        public byte[] UserPassword { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -26,5 +32,8 @@ namespace eShop.Core.Models
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> ModifiedAt { get; set; }
         public Nullable<bool> IsActive { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Basket> Baskets { get; set; }
     }
 }

@@ -11,14 +11,13 @@ namespace eShop.Core.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    [MetadataType(typeof(ProductMetadata))]
+    
     public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
+            this.BasketItems = new HashSet<BasketItem>();
             this.SizeQuantities = new HashSet<SizeQuantity>();
         }
     
@@ -35,6 +34,8 @@ namespace eShop.Core.Models
         public Nullable<System.DateTime> ModifiedAt { get; set; }
         public Nullable<bool> IsActive { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BasketItem> BasketItems { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ProductType ProductType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

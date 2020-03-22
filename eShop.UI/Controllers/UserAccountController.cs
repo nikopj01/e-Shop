@@ -24,20 +24,21 @@ namespace eShop.UI.Controllers
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
-        private static string ComputeSha256Hash(string rawData)
+        private static Byte[] ComputeSha256Hash(string rawData)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
                 // ComputeHash - returns byte array  
                 byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
 
+                return bytes;
                 // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+                //StringBuilder builder = new StringBuilder();
+                //for (int i = 0; i < bytes.Length; i++)
+                //{
+                //    builder.Append(bytes[i].ToString("x2"));
+                //}
+                //return builder.ToString();
             }
         }
 
@@ -47,7 +48,8 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult Register()
         {
-            return View();
+            UserAccount model = new UserAccount();
+            return View(model);
         }
 
         [HttpPost]
@@ -60,15 +62,47 @@ namespace eShop.UI.Controllers
                 userAccount.UserAccountID = Guid.NewGuid();
                 userAccount.UserName = formCollection["UserName"];
                 userAccount.UserPassword = ComputeSha256Hash(formCollection["UserPassword"]);
+                userAccount.FirstName = formCollection["FirstName"];
+                userAccount.LastName = formCollection["LastName"];
+                userAccount.Email = formCollection["Email"];
                 _contextUserAccount.Insert(userAccount);
                 _contextUserAccount.Commit();
             }
-            return RedirectToAction("Index","ProductManager");
+            return RedirectToAction("Login");
         }
 
         public ActionResult Login()
         {
+            UserAccount model = new UserAccount();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(FormCollection formCollection)
+        {
+            byte[] inputtedPassword = ComputeSha256Hash(formCollection["UserPassword"]);
+            string inputtedUserName = formCollection["UserName"];
+            UserAccount user = _contextUserAccount.Collection().SingleOrDefault(ua => ua.UserName == inputtedUserName && ua.UserPassword == inputtedPassword);
+            if (user != null)
+            {
+                UserProfile userProfile = new UserProfile();
+                userProfile.UserAccountID = user.UserAccountID;
+                userProfile.UserName = user.UserName;
+                userProfile.FirstName = user.FirstName;
+                userProfile.LastName = user.LastName;
+                Session["UserProfile"] = userProfile;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.LoginMessage = "Wrong Username or Password";
             return View();
         }
+
+        public ActionResult Logout()
+        {
+            Session["UserProfile"] = null;
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

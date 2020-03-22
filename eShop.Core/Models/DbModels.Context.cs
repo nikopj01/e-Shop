@@ -25,6 +25,8 @@ namespace eShop.Core.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Basket> Baskets { get; set; }
+        public virtual DbSet<BasketItem> BasketItems { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductSupplier> ProductSuppliers { get; set; }

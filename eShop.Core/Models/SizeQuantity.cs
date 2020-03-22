@@ -11,9 +11,7 @@ namespace eShop.Core.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    [MetadataType(typeof(SizeQuantityMetadata))]
+    
     public partial class SizeQuantity
     {
         public System.Guid SizeQuantityID { get; set; }

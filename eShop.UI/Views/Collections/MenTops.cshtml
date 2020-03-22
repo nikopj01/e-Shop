@@ -1,0 +1,29 @@
+﻿@model IEnumerable<eShop.Core.Models.Product>
+
+@{
+    ViewBag.Title = "MenTops";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row ">
+    <div class="container">
+        <h1>MEN'S TOPS</h1>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 mb-2">
+                    <div class="card" style="border: none;">
+                        <img class="card-img-top" src="~/Content/ProductImages/@item.ProductImage">
+                        <div class="card-footer text-center" style="border: none;">
+                            @*<a href="#" class="text-dark font-weight-bold">@item.ProductName</a>*@
+                            @Html.ActionLink(@item.ProductName, "Product","Collections", new { id = item.ProductID }, new { @class = "text-dark font-weight-bold"})<br>
+                            <a href="#" class="text-dark">RM @item.ProductPrice</a>
+                            <br>
+                            @*<small class="text-muted"><del>RM 1000</del></small>*@
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

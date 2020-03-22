@@ -4,7 +4,23 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="eShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="eShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Basket">
+          <Key>
+            <PropertyRef Name="BasketID" />
+          </Key>
+          <Property Name="BasketID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserAccountID" Type="uniqueidentifier" />
+          <Property Name="BasketItemID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="BasketItem">
+          <Key>
+            <PropertyRef Name="BasketItemID" />
+          </Key>
+          <Property Name="BasketItemID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductID" Type="uniqueidentifier" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductID" />
@@ -71,7 +87,7 @@
           </Key>
           <Property Name="UserAccountID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="255" />
-          <Property Name="UserPassword" Type="varchar" MaxLength="255" />
+          <Property Name="UserPassword" Type="varbinary" MaxLength="32" />
           <Property Name="FirstName" Type="varchar" MaxLength="255" />
           <Property Name="LastName" Type="varchar" MaxLength="255" />
           <Property Name="Email" Type="varchar" MaxLength="255" />
@@ -80,6 +96,42 @@
           <Property Name="ModifiedAt" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
+        <Association Name="FK__Basket__UserAcco__58D1301D">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Basket">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__Baske__531856C7">
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="1" />
+          <End Role="BasketItem1" Type="Self.BasketItem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BasketItem">
+              <PropertyRef Name="BasketItemID" />
+            </Principal>
+            <Dependent Role="BasketItem1">
+              <PropertyRef Name="BasketItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__Produ__51300E55">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Product__Product__498EEC8D">
           <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -129,12 +181,26 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="eShopModelStoreContainer">
+          <EntitySet Name="Basket" EntityType="Self.Basket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BasketItem" EntityType="Self.BasketItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductSupplier" EntityType="Self.ProductSupplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SizeQuantity" EntityType="Self.SizeQuantity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Basket__UserAcco__58D1301D" Association="Self.FK__Basket__UserAcco__58D1301D">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="Basket" EntitySet="Basket" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__Baske__531856C7" Association="Self.FK__BasketIte__Baske__531856C7">
+            <End Role="BasketItem" EntitySet="BasketItem" />
+            <End Role="BasketItem1" EntitySet="BasketItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__Produ__51300E55" Association="Self.FK__BasketIte__Produ__51300E55">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="BasketItem" EntitySet="BasketItem" />
+          </AssociationSet>
           <AssociationSet Name="FK__Product__Product__498EEC8D" Association="Self.FK__Product__Product__498EEC8D">
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="Product" EntitySet="Product" />
@@ -152,11 +218,30 @@
             <End Role="SizeQuantity" EntitySet="SizeQuantity" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="eShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Basket">
+          <Key>
+            <PropertyRef Name="BasketID" />
+          </Key>
+          <Property Name="BasketID" Type="Guid" Nullable="false" />
+          <Property Name="UserAccountID" Type="Guid" />
+          <Property Name="BasketItemID" Type="Guid" />
+          <NavigationProperty Name="UserAccount" Relationship="eShopModel.FK__Basket__UserAcco__58D1301D" FromRole="Basket" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="BasketItem">
+          <Key>
+            <PropertyRef Name="BasketItemID" />
+          </Key>
+          <Property Name="BasketItemID" Type="Guid" Nullable="false" />
+          <Property Name="ProductID" Type="Guid" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="BasketItem1" Relationship="Self.FK__BasketIte__Baske__531856C7" FromRole="BasketItem" ToRole="BasketItem1" />
+          <NavigationProperty Name="BasketItem2" Relationship="Self.FK__BasketIte__Baske__531856C7" FromRole="BasketItem1" ToRole="BasketItem" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__BasketIte__Produ__51300E55" FromRole="BasketItem" ToRole="Product" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ProductID" />
@@ -173,6 +258,7 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__Produ__51300E55" FromRole="Product" ToRole="BasketItem" />
           <NavigationProperty Name="ProductCategory" Relationship="Self.FK__Product__Product__498EEC8D" FromRole="Product" ToRole="ProductCategory" />
           <NavigationProperty Name="ProductType" Relationship="Self.FK__Product__Product__4A8310C6" FromRole="Product" ToRole="ProductType" />
           <NavigationProperty Name="SizeQuantities" Relationship="Self.FK__SizeQuant__Produ__4B7734FF" FromRole="Product" ToRole="SizeQuantity" />
@@ -231,7 +317,7 @@
           </Key>
           <Property Name="UserAccountID" Type="Guid" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="UserPassword" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="Binary" MaxLength="32" FixedLength="false" />
           <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -239,7 +325,32 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Baskets" Relationship="eShopModel.FK__Basket__UserAcco__58D1301D" FromRole="UserAccount" ToRole="Basket" />
         </EntityType>
+        <Association Name="FK__BasketIte__Baske__531856C7">
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="1" />
+          <End Role="BasketItem1" Type="Self.BasketItem" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BasketItem">
+              <PropertyRef Name="BasketItemID" />
+            </Principal>
+            <Dependent Role="BasketItem1">
+              <PropertyRef Name="BasketItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__Produ__51300E55">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Product__Product__498EEC8D">
           <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
@@ -289,12 +400,22 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DbModel" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Baskets" EntityType="Self.Basket" />
+          <EntitySet Name="BasketItems" EntityType="Self.BasketItem" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="ProductCategories" EntityType="Self.ProductCategory" />
           <EntitySet Name="ProductSuppliers" EntityType="Self.ProductSupplier" />
           <EntitySet Name="ProductTypes" EntityType="Self.ProductType" />
           <EntitySet Name="SizeQuantities" EntityType="Self.SizeQuantity" />
           <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
+          <AssociationSet Name="FK__BasketIte__Baske__531856C7" Association="Self.FK__BasketIte__Baske__531856C7">
+            <End Role="BasketItem" EntitySet="BasketItems" />
+            <End Role="BasketItem1" EntitySet="BasketItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__Produ__51300E55" Association="Self.FK__BasketIte__Produ__51300E55">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="BasketItem" EntitySet="BasketItems" />
+          </AssociationSet>
           <AssociationSet Name="FK__Product__Product__498EEC8D" Association="Self.FK__Product__Product__498EEC8D">
             <End Role="ProductCategory" EntitySet="ProductCategories" />
             <End Role="Product" EntitySet="Products" />
@@ -311,13 +432,47 @@
             <End Role="ProductCategory" EntitySet="ProductCategories" />
             <End Role="ProductType" EntitySet="ProductTypes" />
           </AssociationSet>
+          <AssociationSet Name="FK__Basket__UserAcco__58D1301D" Association="eShopModel.FK__Basket__UserAcco__58D1301D">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="Basket" EntitySet="Baskets" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK__Basket__UserAcco__58D1301D">
+          <End Type="eShopModel.UserAccount" Role="UserAccount" Multiplicity="0..1" />
+          <End Type="eShopModel.Basket" Role="Basket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Basket">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="eShopModelStoreContainer" CdmEntityContainer="DbModel">
+          <EntitySetMapping Name="Baskets">
+            <EntityTypeMapping TypeName="eShopModel.Basket">
+              <MappingFragment StoreEntitySet="Basket">
+                <ScalarProperty Name="BasketID" ColumnName="BasketID" />
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="BasketItemID" ColumnName="BasketItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BasketItems">
+            <EntityTypeMapping TypeName="eShopModel.BasketItem">
+              <MappingFragment StoreEntitySet="BasketItem">
+                <ScalarProperty Name="BasketItemID" ColumnName="BasketItemID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="eShopModel.Product">
               <MappingFragment StoreEntitySet="Product">
