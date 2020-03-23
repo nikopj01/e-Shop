@@ -11,7 +11,5 @@ namespace eShop.Core.ViewModels
     {
         public Product product { get; set; }
         public IEnumerable<SizeQuantity> sizeQuantities { get; set; }
-        public int MyProperty { get; set; }
-        public UserProfile userProfile { get; set; }
     }
 }

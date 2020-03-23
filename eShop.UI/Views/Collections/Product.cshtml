@@ -26,28 +26,16 @@
             </dd>
 
         </dl>
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("AddToBasket", "Basket", FormMethod.Post))
         {
-            if (Session["UserProfile"] == null)
-            {
-                @Html.Hidden(Model.product.ProductID.ToString())
-                @Html.Hidden(Model.userProfile.UserAccountID.ToString())
+            @Html.HiddenFor(model => model.product.ProductID)
 
-                foreach (var item in Model.sizeQuantities)
-                {
-                    @Html.RadioButton("Size", item.SizeName) <text>&nbsp;</text> @item.SizeName
-                    <text>&nbsp;&nbsp; </text>
-                }
-                <br>
-                <input type="submit" value="Add to Cart" class="btn btn-default" />
-            }
-            else
+            foreach (var item in Model.sizeQuantities)
             {
-                foreach (var item in Model.sizeQuantities)
-                {
-                    @item.SizeName <i style="font-size:24px" class="fa">&#xf00c;</i>
-                }
+                @Html.RadioButton("Size", item.SizeQuantityID) @item.SizeName
+                <text>&nbsp;&nbsp; </text>
             }
-
+            <br>
+            <input type="submit" value="Add to Cart" class="btn btn-default" />
         }
     </div>

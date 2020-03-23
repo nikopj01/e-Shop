@@ -4,22 +4,23 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="aa7399609f1e4eef98cabaac2e442e31" Name="Diagram1">
-        <EntityTypeShape EntityType="eShopModel.Basket" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="eShopModel.BasketItem" Width="1.5" PointX="7.5" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="eShopModel.Product" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="eShopModel.ProductCategory" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="eShopModel.ProductSupplier" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="eShopModel.ProductType" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="eShopModel.SizeQuantity" Width="1.5" PointX="7.5" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="eShopModel.UserAccount" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="eShopModel.FK__BasketIte__Baske__531856C7" ManuallyRouted="false" />
-        <AssociationConnector Association="eShopModel.FK__BasketIte__Produ__51300E55" ManuallyRouted="false" />
+      <Diagram DiagramId="93c872691b3e4ff1be672aa2f4e788e8" Name="Diagram1">
+        <EntityTypeShape EntityType="eShopModel.Basket" Width="1.5" PointX="7.5" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="eShopModel.BasketItem" Width="1.5" PointX="9.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="eShopModel.Product" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="eShopModel.ProductCategory" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="eShopModel.ProductSupplier" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="eShopModel.ProductType" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="eShopModel.SizeQuantity" Width="1.5" PointX="7.5" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="eShopModel.UserAccount" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <AssociationConnector Association="eShopModel.FK__Basket__UserAcco__7755B73D" ManuallyRouted="false" />
+        <AssociationConnector Association="eShopModel.FK__BasketIte__Baske__7A3223E8" ManuallyRouted="false" />
+        <AssociationConnector Association="eShopModel.FK__BasketIte__Produ__793DFFAF" ManuallyRouted="false" />
+        <AssociationConnector Association="eShopModel.FK__BasketIte__SizeQ__7849DB76" ManuallyRouted="false" />
         <AssociationConnector Association="eShopModel.FK__Product__Product__498EEC8D" ManuallyRouted="false" />
         <AssociationConnector Association="eShopModel.FK__Product__Product__4A8310C6" ManuallyRouted="false" />
         <AssociationConnector Association="eShopModel.FK__SizeQuant__Produ__4B7734FF" ManuallyRouted="false" />
         <AssociationConnector Association="eShopModel.FK__ProductTy__Produ__43D61337" ManuallyRouted="false" />
-        <AssociationConnector Association="eShopModel.FK__Basket__UserAcco__58D1301D" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

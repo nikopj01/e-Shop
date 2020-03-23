@@ -14,6 +14,12 @@ namespace eShop.Core.Models
     
     public partial class SizeQuantity
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SizeQuantity()
+        {
+            this.BasketItems = new HashSet<BasketItem>();
+        }
+    
         public System.Guid SizeQuantityID { get; set; }
         public string SizeName { get; set; }
         public Nullable<System.Guid> ProductID { get; set; }
@@ -22,6 +28,8 @@ namespace eShop.Core.Models
         public Nullable<System.DateTime> ModifiedAt { get; set; }
         public Nullable<bool> IsActive { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BasketItem> BasketItems { get; set; }
         public virtual Product Product { get; set; }
     }
 }

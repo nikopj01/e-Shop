@@ -22,9 +22,9 @@ namespace eShop.UI.Controllers
 
         public ActionResult MenTops()
         {
-            IEnumerable<Product> model = _contextProduct.Collection().Where(p => 
-            p.ProductType.ProductTypeName == "Top" &&
-            p.IsActive == true).ToList();
+            IEnumerable<Product> model = _contextProduct.Collection().Where(p =>
+                                                                        p.ProductType.ProductTypeName == "Top" &&
+                                                                        p.IsActive == true).ToList();
             return View(model);
         }
 
@@ -33,8 +33,7 @@ namespace eShop.UI.Controllers
             ProductDisplayViewModel viewModel = new ProductDisplayViewModel()
             {
                 product = _contextProduct.Collection().SingleOrDefault(p => p.ProductID == Id),
-                sizeQuantities = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id && sq.Quantity > 0).OrderBy(sq => sq.SizeName).ToList(),
-                userProfile = (UserProfile) Session["UserProfile"]
+                sizeQuantities = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id && sq.Quantity > 0).OrderBy(sq => sq.SizeName).ToList()
             };
             return View(viewModel);
         }

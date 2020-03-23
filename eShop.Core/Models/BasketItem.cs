@@ -15,11 +15,13 @@ namespace eShop.Core.Models
     public partial class BasketItem
     {
         public System.Guid BasketItemID { get; set; }
-        public Nullable<System.Guid> ProductID { get; set; }
         public Nullable<int> Quantity { get; set; }
+        public Nullable<System.Guid> BasketID { get; set; }
+        public Nullable<System.Guid> SizeQuantityID { get; set; }
+        public Nullable<System.Guid> ProductID { get; set; }
     
-        public virtual BasketItem BasketItem1 { get; set; }
-        public virtual BasketItem BasketItem2 { get; set; }
+        public virtual Basket Basket { get; set; }
         public virtual Product Product { get; set; }
+        public virtual SizeQuantity SizeQuantity { get; set; }
     }
 }

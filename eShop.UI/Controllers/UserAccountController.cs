@@ -86,12 +86,7 @@ namespace eShop.UI.Controllers
             UserAccount user = _contextUserAccount.Collection().SingleOrDefault(ua => ua.UserName == inputtedUserName && ua.UserPassword == inputtedPassword);
             if (user != null)
             {
-                UserProfile userProfile = new UserProfile();
-                userProfile.UserAccountID = user.UserAccountID;
-                userProfile.UserName = user.UserName;
-                userProfile.FirstName = user.FirstName;
-                userProfile.LastName = user.LastName;
-                Session["UserProfile"] = userProfile;
+                Session["UserAccountID"] = user.UserAccountID;
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.LoginMessage = "Wrong Username or Password";
@@ -100,7 +95,7 @@ namespace eShop.UI.Controllers
 
         public ActionResult Logout()
         {
-            Session["UserProfile"] = null;
+            Session["UserAccountID"] = null;
             return RedirectToAction("Index", "Home");
         }
 

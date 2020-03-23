@@ -14,10 +14,17 @@ namespace eShop.Core.Models
     
     public partial class Basket
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Basket()
+        {
+            this.BasketItems = new HashSet<BasketItem>();
+        }
+    
         public System.Guid BasketID { get; set; }
         public Nullable<System.Guid> UserAccountID { get; set; }
-        public Nullable<System.Guid> BasketItemID { get; set; }
     
         public virtual UserAccount UserAccount { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BasketItem> BasketItems { get; set; }
     }
 }

@@ -421,6 +421,10 @@
       <Project>{65ebd0b0-9769-4a54-b9d3-b4cd83dbfce9}</Project>
       <Name>eShop.DataAccess.SQL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\eShop.Services\eShop.Services.csproj">
+      <Project>{b56a8db3-1628-42c2-ba34-967c3d7a49c1}</Project>
+      <Name>eShop.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
