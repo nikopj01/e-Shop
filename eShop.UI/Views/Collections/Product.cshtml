@@ -4,38 +4,72 @@
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
 
-    <div class="container">
-        <h4>@Html.DisplayFor(model => model.product.ProductName)</h4>
-        <hr />
-        <dl class="dl-horizontal">
+<script>
+    $(document).ready(function () {
+        $("#AddToCart").click(function () {
+            if ($('input[name=sizeID]:checked').val()) {
 
-            <dd>
-                @Html.DisplayFor(model => model.product.ProductDescription)
-            </dd>
-            <dd>
-                RM @Html.DisplayFor(model => model.product.ProductPrice)
-            </dd>
+                //if "Size" is clicked
+                var productID = $('#productID').val();
+                var sizeQuantityID = $('input[name=sizeID]:checked').val();
 
-            <dt>
-                <img class="img-thumbnail" style="" src="~/Content/ProductImages/@Model.product.ProductImage" />
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.product.ProductDiscount) % discount
-            </dd>
-
-        </dl>
-        @using (Html.BeginForm("AddToBasket", "Basket", FormMethod.Post))
-        {
-            @Html.HiddenFor(model => model.product.ProductID)
-
-            foreach (var item in Model.sizeQuantities)
-            {
-                @Html.RadioButton("Size", item.SizeQuantityID) @item.SizeName
-                <text>&nbsp;&nbsp; </text>
+                //Post request
+                $.post("/Basket/AddBasketItem",
+                    { productID: productID, sizeQuantityID: sizeQuantityID },
+                    function (data) {}
+                );
+                
+                //Once request completed, direct the page to basket page
+                $(document).ajaxComplete(function () {
+                    window.location.href = '/Basket/Index';
+                });
+            } else {
+                //if "Size" is not clicked
+                alert("Please Check one of the size")
             }
-            <br>
-            <input type="submit" value="Add to Cart" class="btn btn-default" />
+        });
+    });
+
+</script>
+<div class="container">
+    <h4>@Html.DisplayFor(model => model.product.ProductName)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dd>
+            @Html.DisplayFor(model => model.product.ProductDescription)
+        </dd>
+        <dd>
+            RM @Html.DisplayFor(model => model.product.ProductPrice)
+        </dd>
+
+        <dt>
+            <img class="img-thumbnail" style="" src="~/Content/ProductImages/@Model.product.ProductImage" />
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.product.ProductDiscount) % discount
+        </dd>
+
+    </dl>
+    @if (Session["UserAccountID"] != null)
+    {
+        @Html.HiddenFor(model => model.product.ProductID, new { id = "productID" })
+
+        foreach (var item in Model.sizeQuantities)
+        {
+            @Html.RadioButton("sizeID", item.SizeQuantityID) @item.SizeName
+            <text>&nbsp;&nbsp; </text>
         }
-    </div>
+        <br>
+        <input type="submit" value="Add to Cart" class="btn btn-default" id="AddToCart" />
+    }
+    else
+    {
+        <p class="text-danger">Please <a href="@Url.Action("Login", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})">Login</a> to Buy.</p>
+
+    }
+</div>

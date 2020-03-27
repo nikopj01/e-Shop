@@ -32,7 +32,7 @@ namespace eShop.DataAccess.SQL
             db.SaveChanges();
         }
 
-        public void Delete(string Id)
+        public void Delete(Guid Id)
         {
             var t = dbSet.Find(Id);
             if(t != null)

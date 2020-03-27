@@ -10,7 +10,7 @@ namespace eShop.Core.Contracts
     {
         IQueryable<T> Collection();
         void Commit();
-        void Delete(string Id);
+        void Delete(Guid Id);
         T Find(Guid Id);
         void Insert(T t);
         void Update(T t);

@@ -63,7 +63,7 @@ namespace eShop.UI.Controllers
         /// </summary>
         /// <param name="productCategoryID"></param>
         /// <returns></returns>
-        public ActionResult GetProductType(string productCategoryID)
+        public JsonResult GetProductType(string productCategoryID)
         {
             List<ProductType> productTypeList = _contextProductType.Collection().Where(pt => pt.IsActive == true && pt.ProductCategoryID.ToString() == productCategoryID).ToList();
             List<SelectListItem> productTypeNames = new List<SelectListItem>();

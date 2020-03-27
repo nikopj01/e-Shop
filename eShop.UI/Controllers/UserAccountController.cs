@@ -42,6 +42,15 @@ namespace eShop.UI.Controllers
             }
         }
 
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         /// <summary>
         /// Method to display register page
         /// </summary>
@@ -71,7 +80,7 @@ namespace eShop.UI.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
             UserAccount model = new UserAccount();
             return View(model);
@@ -79,7 +88,7 @@ namespace eShop.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(FormCollection formCollection)
+        public ActionResult Login(FormCollection formCollection, string returnUrl)
         {
             byte[] inputtedPassword = ComputeSha256Hash(formCollection["UserPassword"]);
             string inputtedUserName = formCollection["UserName"];
@@ -87,16 +96,16 @@ namespace eShop.UI.Controllers
             if (user != null)
             {
                 Session["UserAccountID"] = user.UserAccountID;
-                return RedirectToAction("Index", "Home");
+                return RedirectToLocal(returnUrl);
             }
             ViewBag.LoginMessage = "Wrong Username or Password";
-            return View();
+            return RedirectToLocal(returnUrl);
         }
 
-        public ActionResult Logout()
+        public ActionResult Logout(string returnUrl)
         {
             Session["UserAccountID"] = null;
-            return RedirectToAction("Index", "Home");
+            return RedirectToLocal(returnUrl);
         }
 
     }

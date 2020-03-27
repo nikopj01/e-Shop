@@ -1,0 +1,102 @@
+﻿@model IEnumerable<eShop.Core.Models.BasketItem>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+<script>
+
+    $(document).ready(function () {
+        $(".Delete").click(function () {
+            var productID = $(this).parent().prev().find("#productID").val();
+            var sizeQuantityID = $(this).parent().prev().find("#sizeID").val();
+            //Post request
+            $.post("/Basket/RemoveBasketItem",
+                { productID: productID, sizeQuantityID: sizeQuantityID },
+                function (data) { }
+            );
+            //Once request completed, direct the page to basket page
+            $(document).ajaxComplete(function () {
+                window.location.href = '/Basket/Index';
+            });
+        });
+        $(".Decrease").click(function () {
+            var productID = $(this).siblings("#productID").val();
+            var sizeQuantityID = $(this).siblings("#sizeID").val();
+            //Post request
+            $.post("/Basket/ReduceBasketItem",
+                { productID: productID, sizeQuantityID: sizeQuantityID },
+                function (data) { }
+            );
+            //Once request completed, direct the page to basket page
+            $(document).ajaxComplete(function () {
+                window.location.href = '/Basket/Index';
+            });
+        });
+
+        $(".Increase").click(function () {
+            var productID = $(this).siblings("#productID").val();
+            var sizeQuantityID = $(this).siblings("#sizeID").val();
+            //Post request
+            $.post("/Basket/AddBasketItem",
+                { productID: productID, sizeQuantityID: sizeQuantityID },
+                function (data) { }
+            );
+            //Once request completed, direct the page to basket page
+            $(document).ajaxComplete(function () {
+                window.location.href = '/Basket/Index';
+            });
+        });
+    });
+</script>
+
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Product Picture")
+            </th>
+            <th>
+                @Html.DisplayName("Product Name")
+            </th>
+            <th>
+                @Html.DisplayName("Quantity")
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img class="img-thumbnail" style="height:50px" src="~/Content/ProductImages/@item.Product.ProductImage" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.ProductName) -
+                    @Html.DisplayFor(modelItem => item.SizeQuantity.SizeName)
+                </td>
+                <td>
+                    @Html.HiddenFor(modelItem => item.ProductID, new { id = "productID" })
+                    @Html.HiddenFor(modelItem => item.SizeQuantityID, new { id = "sizeID" })
+                    <button class="btn Increase"><i style="font-size:24px" class="fa">&#xf067;</i></button>
+                    <label id="quantity"> @item.Quantity </label>
+                    @if (@item.Quantity != 1)
+                    {
+                        <button class="btn Decrease"><i style="font-size:24px" class="fa">&#xf068;</i></button>
+                    }
+                </td>
+                <td>
+                    <button class="btn Delete"><i style="font-size:24px" class="fa">&#xf014;</i></button>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <button onclick="location.href='@Url.Action("Index", "Home")'">Buy</button>
+</div>

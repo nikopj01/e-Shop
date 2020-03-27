@@ -402,10 +402,10 @@
     <Content Include="Views\Collections\MenTops.cshtml" />
     <Content Include="Views\Collections\Product.cshtml" />
     <Content Include="Views\UserAccount\Register.cshtml" />
+    <Content Include="Views\Basket\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Basket\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

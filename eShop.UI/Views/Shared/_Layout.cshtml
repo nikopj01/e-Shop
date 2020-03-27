@@ -76,10 +76,10 @@
                             <a class="nav-link" href="#"><i style="font-size:24px" class="fa fa-search"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"><i style="font-size:24px" class="fa">&#xf07a;</i></a>
+                            <a class="nav-link" href="@Url.Action("Index","Basket")"><i style="font-size:24px" class="fa">&#xf07a;</i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Logout", "UserAccount")">Logout</a>
+                            <a class="nav-link" href="@Url.Action("Logout", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})">Logout</a>
                         </li>
                     </ul>
                 }
@@ -97,7 +97,7 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Login", "UserAccount")"><i style="font-size:24px" class="fa">&#xf007</i></a>
+                            <a class="nav-link" href="@Url.Action("Login", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})"><i style="font-size:24px" class="fa">&#xf007</i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i style="font-size:24px" class="fa fa-search"></i></a>
