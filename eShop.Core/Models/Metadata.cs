@@ -68,13 +68,6 @@ namespace eShop.Core.Models
 
     public class UserAccountMetadata
     {
-        [Required]
-        [Display(Name = ("User Name"))]
-        public string UserName;
-
-        [Required]
-        [Display(Name = ("Password"))]
-        [DataType(DataType.Password)]
-        public string UserPassword;
+       
     }
 }

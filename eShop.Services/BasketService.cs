@@ -50,48 +50,10 @@ namespace eShop.Services
             }
         }
 
-        public int AddBasketItem(string productID, string sizeQuantityID, string userAccountID)
+        public void UpdateBasketItem(string productID, string sizeQuantityID, string userAccountID, int? quantity, bool? isUpdate)
         {
             Guid ProductID = Guid.Parse(productID);
             Guid SizeQuantityID = Guid.Parse(sizeQuantityID);
-            int selectedBasketItemQuantity = 0;
-
-            //Get Basket
-            Basket selectedBasket = GetBasket(userAccountID);
-
-            //Check existance of BasketItem based on productID & SizeQuantityID
-            BasketItem selectedBasketItem = _contextBasketItem.Collection().
-                SingleOrDefault(bi => bi.BasketID == selectedBasket.BasketID 
-                                        && bi.ProductID == ProductID 
-                                        && bi.SizeQuantityID == SizeQuantityID);
-
-            if (selectedBasketItem != null)
-            {
-                //exist
-                selectedBasketItem.Quantity += 1;
-                selectedBasketItemQuantity = selectedBasketItem.Quantity.Value;
-            }
-            else
-            {
-                //not exist
-                BasketItem basketItem = new BasketItem();
-                basketItem.BasketItemID = Guid.NewGuid();
-                basketItem.Quantity = 1;
-                basketItem.BasketID = selectedBasket.BasketID;
-                basketItem.SizeQuantityID = SizeQuantityID;
-                basketItem.ProductID = ProductID;
-                _contextBasketItem.Insert(basketItem);
-                selectedBasketItemQuantity = basketItem.Quantity.Value;
-            }
-            _contextBasketItem.Commit();
-            return selectedBasketItemQuantity;
-        }
-
-        public int ReduceBasketItem(string productID, string sizeQuantityID, string userAccountID)
-        {
-            Guid ProductID = Guid.Parse(productID);
-            Guid SizeQuantityID = Guid.Parse(sizeQuantityID);
-            int selectedBasketItemQuantity = 0;
 
             //Get Basket
             Basket selectedBasket = GetBasket(userAccountID);
@@ -105,11 +67,23 @@ namespace eShop.Services
             if (selectedBasketItem != null)
             {
                 //exist
-                selectedBasketItem.Quantity -= 1;
-                selectedBasketItemQuantity = selectedBasketItem.Quantity.Value;
+                if (isUpdate != null)
+                    selectedBasketItem.Quantity = quantity;
+                else
+                    selectedBasketItem.Quantity += quantity;
+            }
+            else
+            {
+                //not exist
+                BasketItem basketItem = new BasketItem();
+                basketItem.BasketItemID = Guid.NewGuid();
+                basketItem.Quantity = quantity;
+                basketItem.BasketID = selectedBasket.BasketID;
+                basketItem.SizeQuantityID = SizeQuantityID;
+                basketItem.ProductID = ProductID;
+                _contextBasketItem.Insert(basketItem);
             }
             _contextBasketItem.Commit();
-            return selectedBasketItemQuantity;
         }
 
         public void RemoveBasketItem(string productID, string sizeQuantityID, string userAccountID)
@@ -138,9 +112,22 @@ namespace eShop.Services
             List<BasketItem> selectedBasketItems = new List<BasketItem>();
 
             Basket selectedBasket = _contextBasket.Collection().SingleOrDefault(b => b.UserAccountID == userAccountID);
-            selectedBasketItems = _contextBasketItem.Collection().Include(bi => bi.Product).Include(bi => bi.SizeQuantity).Where(bi => bi.BasketID == selectedBasket.BasketID).ToList();
-
+            if(selectedBasket != null)
+                selectedBasketItems = _contextBasketItem.Collection().Include(bi => bi.Product).Include(bi => bi.SizeQuantity).Where(bi => bi.BasketID == selectedBasket.BasketID).ToList();
             return selectedBasketItems;
+        }
+
+        public decimal GetBasketSummary(Guid userAccountID)
+        {
+            List<BasketItem> selectedBasketItems = new List<BasketItem>();
+            decimal basketSubTotal = 0;
+            Basket selectedBasket = _contextBasket.Collection().SingleOrDefault(b => b.UserAccountID == userAccountID);
+            selectedBasketItems = _contextBasketItem.Collection().Include(bi => bi.Product).Where(bi => bi.BasketID == selectedBasket.BasketID).ToList();
+            foreach (var basketItem in selectedBasketItems)
+            {
+                basketSubTotal = basketSubTotal + (basketItem.Quantity * basketItem.Product.ProductPrice).Value;
+            }
+            return basketSubTotal;
         }
     }
 }

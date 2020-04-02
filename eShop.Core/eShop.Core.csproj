@@ -58,11 +58,9 @@
     <Compile Include="Models\Basket.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BasketInMemory.cs" />
     <Compile Include="Models\BasketItem.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BasketItemInMemory.cs" />
     <Compile Include="Models\DbModels.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,7 +76,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DbModels.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\LoginFormModel.cs" />
     <Compile Include="Models\Metadata.cs" />
+    <Compile Include="Models\Order.cs">
+      <DependentUpon>DbModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderItem.cs">
+      <DependentUpon>DbModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Product.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
@@ -91,13 +96,21 @@
     <Compile Include="Models\ProductType.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegisterFormModel.cs" />
     <Compile Include="Models\SizeQuantity.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserAccount.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserAddress.cs">
+      <DependentUpon>DbModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserRole.cs">
+      <DependentUpon>DbModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BasketItemViewModel.cs" />
     <Compile Include="ViewModels\ListOfProductTypeViewModel.cs" />
     <Compile Include="ViewModels\ListOfProductViewModel.cs" />
     <Compile Include="ViewModels\ProductDisplayViewModel.cs" />

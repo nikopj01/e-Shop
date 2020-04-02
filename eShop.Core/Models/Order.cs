@@ -12,26 +12,31 @@ namespace eShop.Core.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductType
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ProductType()
+        public Order()
         {
-            this.Products = new HashSet<Product>();
-            this.Products1 = new HashSet<Product>();
+            this.OrderItems = new HashSet<OrderItem>();
+            this.OrderItems1 = new HashSet<OrderItem>();
         }
     
-        public System.Guid ProductTypeID { get; set; }
-        public string ProductTypeName { get; set; }
-        public Nullable<System.Guid> ProductCategoryID { get; set; }
+        public System.Guid OrderID { get; set; }
+        public Nullable<System.Guid> UserAccountID { get; set; }
+        public Nullable<System.Guid> UserAddressID { get; set; }
+        public string Status { get; set; }
+        public Nullable<System.DateTime> OrderDate { get; set; }
+        public Nullable<System.DateTime> ShipDate { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> ModifiedAt { get; set; }
     
+        public virtual UserAccount UserAccount { get; set; }
+        public virtual UserAccount UserAccount1 { get; set; }
+        public virtual UserAddress UserAddress { get; set; }
+        public virtual UserAddress UserAddress1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products1 { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
-        public virtual ProductCategory ProductCategory1 { get; set; }
+        public virtual ICollection<OrderItem> OrderItems1 { get; set; }
     }
 }

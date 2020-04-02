@@ -13,14 +13,10 @@ namespace eShop.UI.Controllers
 {
     public class BasketController : Controller
     {
-        //private IRepository<Basket> _contextBasket;
-        //private IRepository<BasketItem> _contextBasketItem;
         private BasketService basketService;
 
-        public BasketController(IRepository<Basket> basket, IRepository<BasketItem> basketItem, BasketService basketS)
+        public BasketController(BasketService basketS)
         {
-            //_contextBasket = basket;
-            //_contextBasketItem = basketItem;
             basketService = basketS;
         }
 
@@ -28,56 +24,43 @@ namespace eShop.UI.Controllers
         {
             if (Session["UserAccountID"] != null)
             {
-                List<BasketItem> model = basketService.GetBasketItems(Guid.Parse(Session["UserAccountID"].ToString()));
-                return View(model);
+                BasketItemViewModel viewModel = new BasketItemViewModel()
+                {
+                    basketItems = basketService.GetBasketItems(Guid.Parse(Session["UserAccountID"].ToString())),
+                    basketSubTotal = basketService.GetBasketSummary(Guid.Parse(Session["UserAccountID"].ToString()))
+                };
+                //List<BasketItem> model = basketService.GetBasketItems(Guid.Parse(Session["UserAccountID"].ToString()));
+                return View(viewModel);
             }   
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "UserAccount");
             }
         }
 
-
-        //[HttpPost]
-        //public ActionResult AddBasketItem(FormCollection formCollection)
-        //{
-        //    string ProductID = formCollection["product.ProductID"];
-        //    string SizeQuantityID = formCollection["Size"];
-        //    string UserAccountID = Session["UserAccountID"].ToString();
-        //    basketService.AddBasketItem(ProductID, SizeQuantityID, UserAccountID);
-        //    return RedirectToAction("Product", "Collections", new { Id = Guid.Parse(ProductID) });
-        //}
-
-        public JsonResult AddBasketItem(string productID, string sizeQuantityID)
+        public void UpdateBasketItem(string productID, string sizeQuantityID, int? quantity, bool? isUpdate)
         {
-            int selectedBasketItemQuantity= 0;
-            if (Session["UserAccountID"] != null)
+            if (Session["UserAccountID"] != null && productID != null && sizeQuantityID != null && quantity != null && isUpdate != null)
             {
-                string UserAccountID = Session["UserAccountID"].ToString();
-                selectedBasketItemQuantity = basketService.AddBasketItem(productID, sizeQuantityID, UserAccountID);
+                string userAccountID = Session["UserAccountID"].ToString();
+                basketService.UpdateBasketItem(productID, sizeQuantityID, userAccountID, quantity, isUpdate);
             }
-
-            return Json(selectedBasketItemQuantity, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult ReduceBasketItem(string productID, string sizeQuantityID)
-        {
-            int selectedBasketItemQuantity = 0;
-            if (Session["UserAccountID"] != null)
+            else
             {
-                string UserAccountID = Session["UserAccountID"].ToString();
-                selectedBasketItemQuantity = basketService.ReduceBasketItem(productID, sizeQuantityID, UserAccountID);
+                RedirectToAction("Index");
             }
-
-            return Json(selectedBasketItemQuantity, JsonRequestBehavior.AllowGet);
         }
 
         public void RemoveBasketItem(string productID, string sizeQuantityID)
         {
-            if (Session["UserAccountID"] != null)
+            if (Session["UserAccountID"] != null && productID != null && sizeQuantityID != null)
             {
-                string UserAccountID = Session["UserAccountID"].ToString();
-                basketService.RemoveBasketItem(productID, sizeQuantityID, UserAccountID);
+                string userAccountID = Session["UserAccountID"].ToString();
+                basketService.RemoveBasketItem(productID, sizeQuantityID, userAccountID);
+            }
+            else
+            {
+                RedirectToAction("Index");
             }
         }
     }

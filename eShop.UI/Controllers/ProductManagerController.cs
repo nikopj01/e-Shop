@@ -35,8 +35,8 @@ namespace eShop.UI.Controllers
             var viewModel = new ListOfProductViewModel()
             {
                 products = _contextProduct.Collection().Where(p => p.IsActive == true).ToList(),
-                productCategories = _contextProductCategory.Collection().Where(pc => pc.IsActive == true).ToList(),
-                productTypes = _contextProductType.Collection().Where(pt => pt.IsActive == true).ToList()
+                productCategories = _contextProductCategory.Collection().ToList(),
+                productTypes = _contextProductType.Collection().ToList()
             };
             return View(viewModel);
 
@@ -52,7 +52,7 @@ namespace eShop.UI.Controllers
             {
                 product = new Product(),
                 sizeQuantity = new SizeQuantity(),
-                productCategories = _contextProductCategory.Collection().Where(pc => pc.IsActive == true).ToList(),
+                productCategories = _contextProductCategory.Collection().ToList(),
                 sizeQuantities = new List<SizeQuantity>()
             };
             return View(viewModel);
@@ -65,7 +65,7 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public JsonResult GetProductType(string productCategoryID)
         {
-            List<ProductType> productTypeList = _contextProductType.Collection().Where(pt => pt.IsActive == true && pt.ProductCategoryID.ToString() == productCategoryID).ToList();
+            List<ProductType> productTypeList = _contextProductType.Collection().Where(pt => pt.ProductCategoryID.ToString() == productCategoryID).ToList();
             List<SelectListItem> productTypeNames = new List<SelectListItem>();
             productTypeList.ForEach(pt =>
             {
@@ -190,7 +190,7 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult ListOfProductCategory()
         {
-            IEnumerable<ProductCategory> model = _contextProductCategory.Collection().Where(pc => pc.IsActive == true).ToList();
+            IEnumerable<ProductCategory> model = _contextProductCategory.Collection().ToList();
             return View(model);
         }
 
@@ -215,15 +215,10 @@ namespace eShop.UI.Controllers
         {
             //Find product category that has a same "product category name"
             ProductCategory selectedProductCategory = _contextProductCategory.Collection().SingleOrDefault(pc => pc.ProductCategoryName.ToLower() == productCategory.ProductCategoryName.ToLower());
-            if (selectedProductCategory != null)
-            {
-                selectedProductCategory.IsActive = true;
-            }
-            else
+            if (selectedProductCategory == null)
             {
                 productCategory.ProductCategoryID = Guid.NewGuid();
                 productCategory.CreatedAt = DateTime.Now;
-                productCategory.IsActive = true;
                 _contextProductCategory.Insert(productCategory);
                 _contextProductCategory.Commit();
             }
@@ -239,7 +234,6 @@ namespace eShop.UI.Controllers
         public ActionResult DeleteProductCategory(Guid id)
         {
             ProductCategory productCategory = _contextProductCategory.Find(id);
-            productCategory.IsActive = false;
             _contextProductCategory.Commit();
             return RedirectToAction("ListOfProductCategory");
         }
@@ -280,8 +274,8 @@ namespace eShop.UI.Controllers
         {
             ListOfProductTypeViewModel viewModel = new ListOfProductTypeViewModel()
             {
-                productTypes = _contextProductType.Collection().Where(pt => pt.IsActive == true).ToList(),
-                productCategories = _contextProductCategory.Collection().Where(pc => pc.IsActive == true).ToList()
+                productTypes = _contextProductType.Collection().ToList(),
+                productCategories = _contextProductCategory.Collection().ToList()
             };
             return View(viewModel);
         }
@@ -311,18 +305,13 @@ namespace eShop.UI.Controllers
         {
             //Find product category that has a same "product category name"
             ProductType selectedProductType = _contextProductType.Collection().SingleOrDefault(pc => pc.ProductTypeName.ToLower() == productType.ProductTypeName.ToLower());
-            if (selectedProductType != null)
-            {
-                selectedProductType.IsActive = true;
-            }
-            else
+            if (selectedProductType == null)
             {
                 ProductType AddedProductType = new ProductType();
                 AddedProductType.ProductTypeID = Guid.NewGuid();
                 AddedProductType.ProductTypeName = productType.ProductTypeName;
                 AddedProductType.ProductCategoryID = productType.ProductCategoryID;
                 AddedProductType.CreatedAt = DateTime.Now;
-                AddedProductType.IsActive = true;
                 _contextProductType.Insert(AddedProductType);
                 _contextProductType.Commit();
             }
@@ -337,7 +326,6 @@ namespace eShop.UI.Controllers
         public ActionResult DeleteProductType(Guid id)
         {
             ProductType productType = _contextProductType.Find(id);
-            productType.IsActive = false;
             _contextProductType.Commit();
             return RedirectToAction("ListOfProductType");
         }
@@ -408,7 +396,6 @@ namespace eShop.UI.Controllers
             sizeQuantity.ProductID = Guid.Parse(formCollection["productID"]);
             sizeQuantity.Quantity = int.Parse(formCollection["sizeQuantity.Quantity"]);
             sizeQuantity.CreatedAt = DateTime.Now;
-            sizeQuantity.IsActive = true;
             _contextSizeQuantity.Insert(sizeQuantity);
             _contextSizeQuantity.Commit();
 
@@ -424,7 +411,7 @@ namespace eShop.UI.Controllers
         {
             if (Id != null && (_contextProduct.Find(Id) != null))
             {
-                List<SizeQuantity> model = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id && sq.IsActive == true).ToList();
+                List<SizeQuantity> model = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id).ToList();
                 return View(model);
             }
             else

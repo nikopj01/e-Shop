@@ -27,11 +27,15 @@ namespace eShop.Core.Models
     
         public virtual DbSet<Basket> Baskets { get; set; }
         public virtual DbSet<BasketItem> BasketItems { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductSupplier> ProductSuppliers { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
         public virtual DbSet<SizeQuantity> SizeQuantities { get; set; }
         public virtual DbSet<UserAccount> UserAccounts { get; set; }
+        public virtual DbSet<UserAddress> UserAddresses { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
     }
 }

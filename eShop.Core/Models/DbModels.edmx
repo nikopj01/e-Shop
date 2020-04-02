@@ -11,6 +11,8 @@
           </Key>
           <Property Name="BasketID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserAccountID" Type="uniqueidentifier" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="BasketItem">
           <Key>
@@ -18,9 +20,36 @@
           </Key>
           <Property Name="BasketItemID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Quantity" Type="int" />
-          <Property Name="BasketID" Type="uniqueidentifier" />
           <Property Name="SizeQuantityID" Type="uniqueidentifier" />
           <Property Name="ProductID" Type="uniqueidentifier" />
+          <Property Name="BasketID" Type="uniqueidentifier" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserAccountID" Type="uniqueidentifier" />
+          <Property Name="UserAddressID" Type="uniqueidentifier" />
+          <Property Name="Status" Type="varchar" MaxLength="255" />
+          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="ShipDate" Type="datetime" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="OrderItemID" />
+          </Key>
+          <Property Name="OrderItemID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="SizeQuantityID" Type="uniqueidentifier" />
+          <Property Name="ProductID" Type="uniqueidentifier" />
+          <Property Name="OrderID" Type="uniqueidentifier" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -29,9 +58,9 @@
           <Property Name="ProductID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ProductName" Type="varchar" MaxLength="255" />
           <Property Name="ProductDescription" Type="varchar" MaxLength="255" />
-          <Property Name="ProductPrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ProductPrice" Type="decimal" Precision="5" Scale="2" />
           <Property Name="ProductImage" Type="varchar" MaxLength="255" />
-          <Property Name="ProductDiscount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ProductDiscount" Type="decimal" Precision="18" Scale="3" />
           <Property Name="ProductCategoryID" Type="uniqueidentifier" />
           <Property Name="ProductTypeID" Type="uniqueidentifier" />
           <Property Name="ProductSupplierID" Type="uniqueidentifier" />
@@ -47,7 +76,6 @@
           <Property Name="ProductCategoryName" Type="varchar" MaxLength="255" />
           <Property Name="CreatedAt" Type="datetime" />
           <Property Name="ModifiedAt" Type="datetime" />
-          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="ProductSupplier">
           <Key>
@@ -57,7 +85,6 @@
           <Property Name="ProductSupplierName" Type="varchar" MaxLength="255" />
           <Property Name="CreatedAt" Type="datetime" />
           <Property Name="ModifiedAt" Type="datetime" />
-          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="ProductType">
           <Key>
@@ -68,7 +95,6 @@
           <Property Name="ProductCategoryID" Type="uniqueidentifier" />
           <Property Name="CreatedAt" Type="datetime" />
           <Property Name="ModifiedAt" Type="datetime" />
-          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="SizeQuantity">
           <Key>
@@ -80,7 +106,6 @@
           <Property Name="Quantity" Type="int" />
           <Property Name="CreatedAt" Type="datetime" />
           <Property Name="ModifiedAt" Type="datetime" />
-          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="UserAccount">
           <Key>
@@ -88,16 +113,40 @@
           </Key>
           <Property Name="UserAccountID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="255" />
-          <Property Name="UserPassword" Type="varbinary" MaxLength="32" />
+          <Property Name="UserPassword" Type="char" MaxLength="64" />
           <Property Name="FirstName" Type="varchar" MaxLength="255" />
           <Property Name="LastName" Type="varchar" MaxLength="255" />
           <Property Name="Email" Type="varchar" MaxLength="255" />
-          <Property Name="Role" Type="int" />
+          <Property Name="UserRoleID" Type="uniqueidentifier" />
           <Property Name="CreatedAt" Type="datetime" />
           <Property Name="ModifiedAt" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
-        <Association Name="FK__Basket__UserAcco__7755B73D">
+        <EntityType Name="UserAddress">
+          <Key>
+            <PropertyRef Name="UserAddressID" />
+          </Key>
+          <Property Name="UserAddressID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserAddress" Type="varchar" MaxLength="255" />
+          <Property Name="Country" Type="varchar" MaxLength="255" />
+          <Property Name="Region" Type="varchar" MaxLength="255" />
+          <Property Name="City" Type="varchar" MaxLength="255" />
+          <Property Name="UserAccountID" Type="uniqueidentifier" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserRoleName" Type="varchar" MaxLength="255" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <Association Name="FK__Basket__UserAcco__04459E07">
           <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
           <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
           <ReferentialConstraint>
@@ -109,7 +158,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BasketIte__Baske__7A3223E8">
+        <Association Name="FK__Basket__UserAcco__1293BD5E">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Basket">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__Baske__07220AB2">
           <End Role="Basket" Type="Self.Basket" Multiplicity="0..1" />
           <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -121,7 +182,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BasketIte__Produ__793DFFAF">
+        <Association Name="FK__BasketIte__Baske__15702A09">
+          <End Role="Basket" Type="Self.Basket" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Basket">
+              <PropertyRef Name="BasketID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="BasketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__Produ__062DE679">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -133,7 +206,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BasketIte__SizeQ__7849DB76">
+        <Association Name="FK__BasketIte__Produ__147C05D0">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__SizeQ__0539C240">
           <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
           <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -145,7 +230,139 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__Product__498EEC8D">
+        <Association Name="FK__BasketIte__SizeQ__1387E197">
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeQuantity">
+              <PropertyRef Name="SizeQuantityID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="SizeQuantityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAccou__08162EEB">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAccou__16644E42">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAddre__090A5324">
+          <End Role="UserAddress" Type="Self.UserAddress" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAddress">
+              <PropertyRef Name="UserAddressID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAddre__1758727B">
+          <End Role="UserAddress" Type="Self.UserAddress" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAddress">
+              <PropertyRef Name="UserAddressID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__0BE6BFCF">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__1A34DF26">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Produ__0AF29B96">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Produ__1940BAED">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__SizeQ__09FE775D">
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeQuantity">
+              <PropertyRef Name="SizeQuantityID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="SizeQuantityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__SizeQ__184C96B4">
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeQuantity">
+              <PropertyRef Name="SizeQuantityID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="SizeQuantityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__0CDAE408">
           <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -157,7 +374,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__Product__4A8310C6">
+        <Association Name="FK__Product__Product__0DCF0841">
           <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -169,7 +386,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProductTy__Produ__43D61337">
+        <Association Name="FK__Product__Product__0EC32C7A">
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductSupplier">
+              <PropertyRef Name="ProductSupplierID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductSupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__1B29035F">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__1C1D2798">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="ProductTypeID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__1D114BD1">
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductSupplier">
+              <PropertyRef Name="ProductSupplierID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductSupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductTy__Produ__0FB750B3">
           <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
           <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
           <ReferentialConstraint>
@@ -181,7 +446,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SizeQuant__Produ__4B7734FF">
+        <Association Name="FK__ProductTy__Produ__1E05700A">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
+            </Principal>
+            <Dependent Role="ProductType">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SizeQuant__Produ__10AB74EC">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="*" />
           <ReferentialConstraint>
@@ -193,46 +470,190 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__SizeQuant__Produ__1EF99443">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="SizeQuantity">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__UserR__119F9925">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="UserRoleID" />
+            </Principal>
+            <Dependent Role="UserAccount">
+              <PropertyRef Name="UserRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__UserR__1FEDB87C">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="UserRoleID" />
+            </Principal>
+            <Dependent Role="UserAccount">
+              <PropertyRef Name="UserRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAddre__UserA__20E1DCB5">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="UserAddress" Type="Self.UserAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="UserAddress">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="eShopModelStoreContainer">
           <EntitySet Name="Basket" EntityType="Self.Basket" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BasketItem" EntityType="Self.BasketItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItem" EntityType="Self.OrderItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductSupplier" EntityType="Self.ProductSupplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SizeQuantity" EntityType="Self.SizeQuantity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Basket__UserAcco__7755B73D" Association="Self.FK__Basket__UserAcco__7755B73D">
+          <EntitySet Name="UserAddress" EntityType="Self.UserAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Basket__UserAcco__04459E07" Association="Self.FK__Basket__UserAcco__04459E07">
             <End Role="UserAccount" EntitySet="UserAccount" />
             <End Role="Basket" EntitySet="Basket" />
           </AssociationSet>
-          <AssociationSet Name="FK__BasketIte__Baske__7A3223E8" Association="Self.FK__BasketIte__Baske__7A3223E8">
+          <AssociationSet Name="FK__Basket__UserAcco__1293BD5E" Association="Self.FK__Basket__UserAcco__1293BD5E">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="Basket" EntitySet="Basket" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__Baske__07220AB2" Association="Self.FK__BasketIte__Baske__07220AB2">
             <End Role="Basket" EntitySet="Basket" />
             <End Role="BasketItem" EntitySet="BasketItem" />
           </AssociationSet>
-          <AssociationSet Name="FK__BasketIte__Produ__793DFFAF" Association="Self.FK__BasketIte__Produ__793DFFAF">
+          <AssociationSet Name="FK__BasketIte__Baske__15702A09" Association="Self.FK__BasketIte__Baske__15702A09">
+            <End Role="Basket" EntitySet="Basket" />
+            <End Role="BasketItem" EntitySet="BasketItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__Produ__062DE679" Association="Self.FK__BasketIte__Produ__062DE679">
             <End Role="Product" EntitySet="Product" />
             <End Role="BasketItem" EntitySet="BasketItem" />
           </AssociationSet>
-          <AssociationSet Name="FK__BasketIte__SizeQ__7849DB76" Association="Self.FK__BasketIte__SizeQ__7849DB76">
+          <AssociationSet Name="FK__BasketIte__Produ__147C05D0" Association="Self.FK__BasketIte__Produ__147C05D0">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="BasketItem" EntitySet="BasketItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__SizeQ__0539C240" Association="Self.FK__BasketIte__SizeQ__0539C240">
             <End Role="SizeQuantity" EntitySet="SizeQuantity" />
             <End Role="BasketItem" EntitySet="BasketItem" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__Product__498EEC8D" Association="Self.FK__Product__Product__498EEC8D">
+          <AssociationSet Name="FK__BasketIte__SizeQ__1387E197" Association="Self.FK__BasketIte__SizeQ__1387E197">
+            <End Role="SizeQuantity" EntitySet="SizeQuantity" />
+            <End Role="BasketItem" EntitySet="BasketItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAccou__08162EEB" Association="Self.FK__Order__UserAccou__08162EEB">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAccou__16644E42" Association="Self.FK__Order__UserAccou__16644E42">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAddre__090A5324" Association="Self.FK__Order__UserAddre__090A5324">
+            <End Role="UserAddress" EntitySet="UserAddress" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAddre__1758727B" Association="Self.FK__Order__UserAddre__1758727B">
+            <End Role="UserAddress" EntitySet="UserAddress" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__0BE6BFCF" Association="Self.FK__OrderItem__Order__0BE6BFCF">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__1A34DF26" Association="Self.FK__OrderItem__Order__1A34DF26">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Produ__0AF29B96" Association="Self.FK__OrderItem__Produ__0AF29B96">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Produ__1940BAED" Association="Self.FK__OrderItem__Produ__1940BAED">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__SizeQ__09FE775D" Association="Self.FK__OrderItem__SizeQ__09FE775D">
+            <End Role="SizeQuantity" EntitySet="SizeQuantity" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__SizeQ__184C96B4" Association="Self.FK__OrderItem__SizeQ__184C96B4">
+            <End Role="SizeQuantity" EntitySet="SizeQuantity" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__0CDAE408" Association="Self.FK__Product__Product__0CDAE408">
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__Product__4A8310C6" Association="Self.FK__Product__Product__4A8310C6">
+          <AssociationSet Name="FK__Product__Product__0DCF0841" Association="Self.FK__Product__Product__0DCF0841">
             <End Role="ProductType" EntitySet="ProductType" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProductTy__Produ__43D61337" Association="Self.FK__ProductTy__Produ__43D61337">
+          <AssociationSet Name="FK__Product__Product__0EC32C7A" Association="Self.FK__Product__Product__0EC32C7A">
+            <End Role="ProductSupplier" EntitySet="ProductSupplier" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__1B29035F" Association="Self.FK__Product__Product__1B29035F">
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__1C1D2798" Association="Self.FK__Product__Product__1C1D2798">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__1D114BD1" Association="Self.FK__Product__Product__1D114BD1">
+            <End Role="ProductSupplier" EntitySet="ProductSupplier" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductTy__Produ__0FB750B3" Association="Self.FK__ProductTy__Produ__0FB750B3">
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="ProductType" EntitySet="ProductType" />
           </AssociationSet>
-          <AssociationSet Name="FK__SizeQuant__Produ__4B7734FF" Association="Self.FK__SizeQuant__Produ__4B7734FF">
+          <AssociationSet Name="FK__ProductTy__Produ__1E05700A" Association="Self.FK__ProductTy__Produ__1E05700A">
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+            <End Role="ProductType" EntitySet="ProductType" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SizeQuant__Produ__10AB74EC" Association="Self.FK__SizeQuant__Produ__10AB74EC">
             <End Role="Product" EntitySet="Product" />
             <End Role="SizeQuantity" EntitySet="SizeQuantity" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SizeQuant__Produ__1EF99443" Association="Self.FK__SizeQuant__Produ__1EF99443">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="SizeQuantity" EntitySet="SizeQuantity" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__UserR__119F9925" Association="Self.FK__UserAccou__UserR__119F9925">
+            <End Role="UserRole" EntitySet="UserRole" />
+            <End Role="UserAccount" EntitySet="UserAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__UserR__1FEDB87C" Association="Self.FK__UserAccou__UserR__1FEDB87C">
+            <End Role="UserRole" EntitySet="UserRole" />
+            <End Role="UserAccount" EntitySet="UserAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAddre__UserA__20E1DCB5" Association="Self.FK__UserAddre__UserA__20E1DCB5">
+            <End Role="UserAccount" EntitySet="UserAccount" />
+            <End Role="UserAddress" EntitySet="UserAddress" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -246,8 +667,12 @@
           </Key>
           <Property Name="BasketID" Type="Guid" Nullable="false" />
           <Property Name="UserAccountID" Type="Guid" />
-          <NavigationProperty Name="UserAccount" Relationship="Self.FK__Basket__UserAcco__7755B73D" FromRole="Basket" ToRole="UserAccount" />
-          <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__Baske__7A3223E8" FromRole="Basket" ToRole="BasketItem" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__Basket__UserAcco__04459E07" FromRole="Basket" ToRole="UserAccount" />
+          <NavigationProperty Name="UserAccount1" Relationship="Self.FK__Basket__UserAcco__1293BD5E" FromRole="Basket" ToRole="UserAccount" />
+          <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__Baske__07220AB2" FromRole="Basket" ToRole="BasketItem" />
+          <NavigationProperty Name="BasketItems1" Relationship="Self.FK__BasketIte__Baske__15702A09" FromRole="Basket" ToRole="BasketItem" />
         </EntityType>
         <EntityType Name="BasketItem">
           <Key>
@@ -255,12 +680,54 @@
           </Key>
           <Property Name="BasketItemID" Type="Guid" Nullable="false" />
           <Property Name="Quantity" Type="Int32" />
-          <Property Name="BasketID" Type="Guid" />
           <Property Name="SizeQuantityID" Type="Guid" />
           <Property Name="ProductID" Type="Guid" />
-          <NavigationProperty Name="Basket" Relationship="Self.FK__BasketIte__Baske__7A3223E8" FromRole="BasketItem" ToRole="Basket" />
-          <NavigationProperty Name="Product" Relationship="Self.FK__BasketIte__Produ__793DFFAF" FromRole="BasketItem" ToRole="Product" />
-          <NavigationProperty Name="SizeQuantity" Relationship="Self.FK__BasketIte__SizeQ__7849DB76" FromRole="BasketItem" ToRole="SizeQuantity" />
+          <Property Name="BasketID" Type="Guid" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Basket" Relationship="Self.FK__BasketIte__Baske__07220AB2" FromRole="BasketItem" ToRole="Basket" />
+          <NavigationProperty Name="Basket1" Relationship="Self.FK__BasketIte__Baske__15702A09" FromRole="BasketItem" ToRole="Basket" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__BasketIte__Produ__062DE679" FromRole="BasketItem" ToRole="Product" />
+          <NavigationProperty Name="Product1" Relationship="Self.FK__BasketIte__Produ__147C05D0" FromRole="BasketItem" ToRole="Product" />
+          <NavigationProperty Name="SizeQuantity" Relationship="Self.FK__BasketIte__SizeQ__0539C240" FromRole="BasketItem" ToRole="SizeQuantity" />
+          <NavigationProperty Name="SizeQuantity1" Relationship="Self.FK__BasketIte__SizeQ__1387E197" FromRole="BasketItem" ToRole="SizeQuantity" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Guid" Nullable="false" />
+          <Property Name="UserAccountID" Type="Guid" />
+          <Property Name="UserAddressID" Type="Guid" />
+          <Property Name="Status" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="ShipDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__Order__UserAccou__08162EEB" FromRole="Order" ToRole="UserAccount" />
+          <NavigationProperty Name="UserAccount1" Relationship="Self.FK__Order__UserAccou__16644E42" FromRole="Order" ToRole="UserAccount" />
+          <NavigationProperty Name="UserAddress" Relationship="Self.FK__Order__UserAddre__090A5324" FromRole="Order" ToRole="UserAddress" />
+          <NavigationProperty Name="UserAddress1" Relationship="Self.FK__Order__UserAddre__1758727B" FromRole="Order" ToRole="UserAddress" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__0BE6BFCF" FromRole="Order" ToRole="OrderItem" />
+          <NavigationProperty Name="OrderItems1" Relationship="Self.FK__OrderItem__Order__1A34DF26" FromRole="Order" ToRole="OrderItem" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="OrderItemID" />
+          </Key>
+          <Property Name="OrderItemID" Type="Guid" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="SizeQuantityID" Type="Guid" />
+          <Property Name="ProductID" Type="Guid" />
+          <Property Name="OrderID" Type="Guid" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__0BE6BFCF" FromRole="OrderItem" ToRole="Order" />
+          <NavigationProperty Name="Order1" Relationship="Self.FK__OrderItem__Order__1A34DF26" FromRole="OrderItem" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__OrderItem__Produ__0AF29B96" FromRole="OrderItem" ToRole="Product" />
+          <NavigationProperty Name="Product1" Relationship="Self.FK__OrderItem__Produ__1940BAED" FromRole="OrderItem" ToRole="Product" />
+          <NavigationProperty Name="SizeQuantity" Relationship="Self.FK__OrderItem__SizeQ__09FE775D" FromRole="OrderItem" ToRole="SizeQuantity" />
+          <NavigationProperty Name="SizeQuantity1" Relationship="Self.FK__OrderItem__SizeQ__184C96B4" FromRole="OrderItem" ToRole="SizeQuantity" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -269,19 +736,27 @@
           <Property Name="ProductID" Type="Guid" Nullable="false" />
           <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ProductDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ProductPrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ProductPrice" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="ProductImage" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="ProductDiscount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ProductDiscount" Type="Decimal" Precision="18" Scale="3" />
           <Property Name="ProductCategoryID" Type="Guid" />
           <Property Name="ProductTypeID" Type="Guid" />
           <Property Name="ProductSupplierID" Type="Guid" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__Produ__793DFFAF" FromRole="Product" ToRole="BasketItem" />
-          <NavigationProperty Name="ProductCategory" Relationship="Self.FK__Product__Product__498EEC8D" FromRole="Product" ToRole="ProductCategory" />
-          <NavigationProperty Name="ProductType" Relationship="Self.FK__Product__Product__4A8310C6" FromRole="Product" ToRole="ProductType" />
-          <NavigationProperty Name="SizeQuantities" Relationship="Self.FK__SizeQuant__Produ__4B7734FF" FromRole="Product" ToRole="SizeQuantity" />
+          <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__Produ__062DE679" FromRole="Product" ToRole="BasketItem" />
+          <NavigationProperty Name="BasketItems1" Relationship="Self.FK__BasketIte__Produ__147C05D0" FromRole="Product" ToRole="BasketItem" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Produ__0AF29B96" FromRole="Product" ToRole="OrderItem" />
+          <NavigationProperty Name="OrderItems1" Relationship="Self.FK__OrderItem__Produ__1940BAED" FromRole="Product" ToRole="OrderItem" />
+          <NavigationProperty Name="ProductCategory" Relationship="Self.FK__Product__Product__0CDAE408" FromRole="Product" ToRole="ProductCategory" />
+          <NavigationProperty Name="ProductType" Relationship="Self.FK__Product__Product__0DCF0841" FromRole="Product" ToRole="ProductType" />
+          <NavigationProperty Name="ProductSupplier" Relationship="Self.FK__Product__Product__0EC32C7A" FromRole="Product" ToRole="ProductSupplier" />
+          <NavigationProperty Name="ProductCategory1" Relationship="Self.FK__Product__Product__1B29035F" FromRole="Product" ToRole="ProductCategory" />
+          <NavigationProperty Name="ProductType1" Relationship="Self.FK__Product__Product__1C1D2798" FromRole="Product" ToRole="ProductType" />
+          <NavigationProperty Name="ProductSupplier1" Relationship="Self.FK__Product__Product__1D114BD1" FromRole="Product" ToRole="ProductSupplier" />
+          <NavigationProperty Name="SizeQuantities" Relationship="Self.FK__SizeQuant__Produ__10AB74EC" FromRole="Product" ToRole="SizeQuantity" />
+          <NavigationProperty Name="SizeQuantities1" Relationship="Self.FK__SizeQuant__Produ__1EF99443" FromRole="Product" ToRole="SizeQuantity" />
         </EntityType>
         <EntityType Name="ProductCategory">
           <Key>
@@ -291,9 +766,10 @@
           <Property Name="ProductCategoryName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__498EEC8D" FromRole="ProductCategory" ToRole="Product" />
-          <NavigationProperty Name="ProductTypes" Relationship="Self.FK__ProductTy__Produ__43D61337" FromRole="ProductCategory" ToRole="ProductType" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__0CDAE408" FromRole="ProductCategory" ToRole="Product" />
+          <NavigationProperty Name="Products1" Relationship="Self.FK__Product__Product__1B29035F" FromRole="ProductCategory" ToRole="Product" />
+          <NavigationProperty Name="ProductTypes" Relationship="Self.FK__ProductTy__Produ__0FB750B3" FromRole="ProductCategory" ToRole="ProductType" />
+          <NavigationProperty Name="ProductTypes1" Relationship="Self.FK__ProductTy__Produ__1E05700A" FromRole="ProductCategory" ToRole="ProductType" />
         </EntityType>
         <EntityType Name="ProductSupplier">
           <Key>
@@ -303,7 +779,8 @@
           <Property Name="ProductSupplierName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__0EC32C7A" FromRole="ProductSupplier" ToRole="Product" />
+          <NavigationProperty Name="Products1" Relationship="Self.FK__Product__Product__1D114BD1" FromRole="ProductSupplier" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductType">
           <Key>
@@ -314,9 +791,10 @@
           <Property Name="ProductCategoryID" Type="Guid" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__4A8310C6" FromRole="ProductType" ToRole="Product" />
-          <NavigationProperty Name="ProductCategory" Relationship="Self.FK__ProductTy__Produ__43D61337" FromRole="ProductType" ToRole="ProductCategory" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__0DCF0841" FromRole="ProductType" ToRole="Product" />
+          <NavigationProperty Name="Products1" Relationship="Self.FK__Product__Product__1C1D2798" FromRole="ProductType" ToRole="Product" />
+          <NavigationProperty Name="ProductCategory" Relationship="Self.FK__ProductTy__Produ__0FB750B3" FromRole="ProductType" ToRole="ProductCategory" />
+          <NavigationProperty Name="ProductCategory1" Relationship="Self.FK__ProductTy__Produ__1E05700A" FromRole="ProductType" ToRole="ProductCategory" />
         </EntityType>
         <EntityType Name="SizeQuantity">
           <Key>
@@ -328,9 +806,12 @@
           <Property Name="Quantity" Type="Int32" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__SizeQ__7849DB76" FromRole="SizeQuantity" ToRole="BasketItem" />
-          <NavigationProperty Name="Product" Relationship="Self.FK__SizeQuant__Produ__4B7734FF" FromRole="SizeQuantity" ToRole="Product" />
+          <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__SizeQ__0539C240" FromRole="SizeQuantity" ToRole="BasketItem" />
+          <NavigationProperty Name="BasketItems1" Relationship="Self.FK__BasketIte__SizeQ__1387E197" FromRole="SizeQuantity" ToRole="BasketItem" />
+          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__SizeQ__09FE775D" FromRole="SizeQuantity" ToRole="OrderItem" />
+          <NavigationProperty Name="OrderItems1" Relationship="Self.FK__OrderItem__SizeQ__184C96B4" FromRole="SizeQuantity" ToRole="OrderItem" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__SizeQuant__Produ__10AB74EC" FromRole="SizeQuantity" ToRole="Product" />
+          <NavigationProperty Name="Product1" Relationship="Self.FK__SizeQuant__Produ__1EF99443" FromRole="SizeQuantity" ToRole="Product" />
         </EntityType>
         <EntityType Name="UserAccount">
           <Key>
@@ -338,17 +819,52 @@
           </Key>
           <Property Name="UserAccountID" Type="Guid" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="UserPassword" Type="Binary" MaxLength="32" FixedLength="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
           <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Role" Type="Int32" />
+          <Property Name="UserRoleID" Type="Guid" />
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="Baskets" Relationship="Self.FK__Basket__UserAcco__7755B73D" FromRole="UserAccount" ToRole="Basket" />
+          <NavigationProperty Name="Baskets" Relationship="Self.FK__Basket__UserAcco__04459E07" FromRole="UserAccount" ToRole="Basket" />
+          <NavigationProperty Name="Baskets1" Relationship="Self.FK__Basket__UserAcco__1293BD5E" FromRole="UserAccount" ToRole="Basket" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Order__UserAccou__08162EEB" FromRole="UserAccount" ToRole="Order" />
+          <NavigationProperty Name="Orders1" Relationship="Self.FK__Order__UserAccou__16644E42" FromRole="UserAccount" ToRole="Order" />
+          <NavigationProperty Name="UserRole" Relationship="Self.FK__UserAccou__UserR__119F9925" FromRole="UserAccount" ToRole="UserRole" />
+          <NavigationProperty Name="UserRole1" Relationship="Self.FK__UserAccou__UserR__1FEDB87C" FromRole="UserAccount" ToRole="UserRole" />
+          <NavigationProperty Name="UserAddresses" Relationship="Self.FK__UserAddre__UserA__20E1DCB5" FromRole="UserAccount" ToRole="UserAddress" />
         </EntityType>
-        <Association Name="FK__Basket__UserAcco__7755B73D">
+        <EntityType Name="UserAddress">
+          <Key>
+            <PropertyRef Name="UserAddressID" />
+          </Key>
+          <Property Name="UserAddressID" Type="Guid" Nullable="false" />
+          <Property Name="UserAddress1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UserAccountID" Type="Guid" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Order__UserAddre__090A5324" FromRole="UserAddress" ToRole="Order" />
+          <NavigationProperty Name="Orders1" Relationship="Self.FK__Order__UserAddre__1758727B" FromRole="UserAddress" ToRole="Order" />
+          <NavigationProperty Name="UserAccount" Relationship="Self.FK__UserAddre__UserA__20E1DCB5" FromRole="UserAddress" ToRole="UserAccount" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleID" />
+          </Key>
+          <Property Name="UserRoleID" Type="Guid" Nullable="false" />
+          <Property Name="UserRoleName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="UserAccounts" Relationship="Self.FK__UserAccou__UserR__119F9925" FromRole="UserRole" ToRole="UserAccount" />
+          <NavigationProperty Name="UserAccounts1" Relationship="Self.FK__UserAccou__UserR__1FEDB87C" FromRole="UserRole" ToRole="UserAccount" />
+        </EntityType>
+        <Association Name="FK__Basket__UserAcco__04459E07">
           <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
           <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
           <ReferentialConstraint>
@@ -360,7 +876,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BasketIte__Baske__7A3223E8">
+        <Association Name="FK__Basket__UserAcco__1293BD5E">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Basket">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__Baske__07220AB2">
           <End Role="Basket" Type="Self.Basket" Multiplicity="0..1" />
           <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -372,7 +900,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BasketIte__Produ__793DFFAF">
+        <Association Name="FK__BasketIte__Baske__15702A09">
+          <End Role="Basket" Type="Self.Basket" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Basket">
+              <PropertyRef Name="BasketID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="BasketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__Produ__062DE679">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -384,7 +924,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BasketIte__SizeQ__7849DB76">
+        <Association Name="FK__BasketIte__Produ__147C05D0">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BasketIte__SizeQ__0539C240">
           <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
           <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -396,7 +948,139 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__Product__498EEC8D">
+        <Association Name="FK__BasketIte__SizeQ__1387E197">
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
+          <End Role="BasketItem" Type="Self.BasketItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeQuantity">
+              <PropertyRef Name="SizeQuantityID" />
+            </Principal>
+            <Dependent Role="BasketItem">
+              <PropertyRef Name="SizeQuantityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAccou__08162EEB">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAccou__16644E42">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAddre__090A5324">
+          <End Role="UserAddress" Type="Self.UserAddress" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAddress">
+              <PropertyRef Name="UserAddressID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__UserAddre__1758727B">
+          <End Role="UserAddress" Type="Self.UserAddress" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAddress">
+              <PropertyRef Name="UserAddressID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="UserAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__0BE6BFCF">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__1A34DF26">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Produ__0AF29B96">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Produ__1940BAED">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__SizeQ__09FE775D">
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeQuantity">
+              <PropertyRef Name="SizeQuantityID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="SizeQuantityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__SizeQ__184C96B4">
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="0..1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SizeQuantity">
+              <PropertyRef Name="SizeQuantityID" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="SizeQuantityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__0CDAE408">
           <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -408,7 +1092,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__Product__4A8310C6">
+        <Association Name="FK__Product__Product__0DCF0841">
           <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -420,7 +1104,55 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SizeQuant__Produ__4B7734FF">
+        <Association Name="FK__Product__Product__0EC32C7A">
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductSupplier">
+              <PropertyRef Name="ProductSupplierID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductSupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__1B29035F">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__1C1D2798">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="ProductTypeID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Product__1D114BD1">
+          <End Role="ProductSupplier" Type="Self.ProductSupplier" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductSupplier">
+              <PropertyRef Name="ProductSupplierID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductSupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SizeQuant__Produ__10AB74EC">
           <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
           <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="*" />
           <ReferentialConstraint>
@@ -432,7 +1164,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProductTy__Produ__43D61337">
+        <Association Name="FK__SizeQuant__Produ__1EF99443">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="SizeQuantity" Type="Self.SizeQuantity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="SizeQuantity">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProductTy__Produ__0FB750B3">
           <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
           <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
           <ReferentialConstraint>
@@ -444,46 +1188,190 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__ProductTy__Produ__1E05700A">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryID" />
+            </Principal>
+            <Dependent Role="ProductType">
+              <PropertyRef Name="ProductCategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__UserR__119F9925">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="UserRoleID" />
+            </Principal>
+            <Dependent Role="UserAccount">
+              <PropertyRef Name="UserRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAccou__UserR__1FEDB87C">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="0..1" />
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="UserRoleID" />
+            </Principal>
+            <Dependent Role="UserAccount">
+              <PropertyRef Name="UserRoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserAddre__UserA__20E1DCB5">
+          <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
+          <End Role="UserAddress" Type="Self.UserAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="UserAccountID" />
+            </Principal>
+            <Dependent Role="UserAddress">
+              <PropertyRef Name="UserAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DbModel" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Baskets" EntityType="Self.Basket" />
           <EntitySet Name="BasketItems" EntityType="Self.BasketItem" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="OrderItems" EntityType="Self.OrderItem" />
           <EntitySet Name="Products" EntityType="Self.Product" />
           <EntitySet Name="ProductCategories" EntityType="Self.ProductCategory" />
           <EntitySet Name="ProductSuppliers" EntityType="Self.ProductSupplier" />
           <EntitySet Name="ProductTypes" EntityType="Self.ProductType" />
           <EntitySet Name="SizeQuantities" EntityType="Self.SizeQuantity" />
           <EntitySet Name="UserAccounts" EntityType="Self.UserAccount" />
-          <AssociationSet Name="FK__Basket__UserAcco__7755B73D" Association="Self.FK__Basket__UserAcco__7755B73D">
+          <EntitySet Name="UserAddresses" EntityType="Self.UserAddress" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <AssociationSet Name="FK__Basket__UserAcco__04459E07" Association="Self.FK__Basket__UserAcco__04459E07">
             <End Role="UserAccount" EntitySet="UserAccounts" />
             <End Role="Basket" EntitySet="Baskets" />
           </AssociationSet>
-          <AssociationSet Name="FK__BasketIte__Baske__7A3223E8" Association="Self.FK__BasketIte__Baske__7A3223E8">
+          <AssociationSet Name="FK__Basket__UserAcco__1293BD5E" Association="Self.FK__Basket__UserAcco__1293BD5E">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="Basket" EntitySet="Baskets" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__Baske__07220AB2" Association="Self.FK__BasketIte__Baske__07220AB2">
             <End Role="Basket" EntitySet="Baskets" />
             <End Role="BasketItem" EntitySet="BasketItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__BasketIte__Produ__793DFFAF" Association="Self.FK__BasketIte__Produ__793DFFAF">
+          <AssociationSet Name="FK__BasketIte__Baske__15702A09" Association="Self.FK__BasketIte__Baske__15702A09">
+            <End Role="Basket" EntitySet="Baskets" />
+            <End Role="BasketItem" EntitySet="BasketItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__Produ__062DE679" Association="Self.FK__BasketIte__Produ__062DE679">
             <End Role="Product" EntitySet="Products" />
             <End Role="BasketItem" EntitySet="BasketItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__BasketIte__SizeQ__7849DB76" Association="Self.FK__BasketIte__SizeQ__7849DB76">
+          <AssociationSet Name="FK__BasketIte__Produ__147C05D0" Association="Self.FK__BasketIte__Produ__147C05D0">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="BasketItem" EntitySet="BasketItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BasketIte__SizeQ__0539C240" Association="Self.FK__BasketIte__SizeQ__0539C240">
             <End Role="SizeQuantity" EntitySet="SizeQuantities" />
             <End Role="BasketItem" EntitySet="BasketItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__Product__498EEC8D" Association="Self.FK__Product__Product__498EEC8D">
+          <AssociationSet Name="FK__BasketIte__SizeQ__1387E197" Association="Self.FK__BasketIte__SizeQ__1387E197">
+            <End Role="SizeQuantity" EntitySet="SizeQuantities" />
+            <End Role="BasketItem" EntitySet="BasketItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAccou__08162EEB" Association="Self.FK__Order__UserAccou__08162EEB">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAccou__16644E42" Association="Self.FK__Order__UserAccou__16644E42">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAddre__090A5324" Association="Self.FK__Order__UserAddre__090A5324">
+            <End Role="UserAddress" EntitySet="UserAddresses" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__UserAddre__1758727B" Association="Self.FK__Order__UserAddre__1758727B">
+            <End Role="UserAddress" EntitySet="UserAddresses" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__0BE6BFCF" Association="Self.FK__OrderItem__Order__0BE6BFCF">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__1A34DF26" Association="Self.FK__OrderItem__Order__1A34DF26">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Produ__0AF29B96" Association="Self.FK__OrderItem__Produ__0AF29B96">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Produ__1940BAED" Association="Self.FK__OrderItem__Produ__1940BAED">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__SizeQ__09FE775D" Association="Self.FK__OrderItem__SizeQ__09FE775D">
+            <End Role="SizeQuantity" EntitySet="SizeQuantities" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__SizeQ__184C96B4" Association="Self.FK__OrderItem__SizeQ__184C96B4">
+            <End Role="SizeQuantity" EntitySet="SizeQuantities" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__0CDAE408" Association="Self.FK__Product__Product__0CDAE408">
             <End Role="ProductCategory" EntitySet="ProductCategories" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__Product__4A8310C6" Association="Self.FK__Product__Product__4A8310C6">
+          <AssociationSet Name="FK__Product__Product__0DCF0841" Association="Self.FK__Product__Product__0DCF0841">
             <End Role="ProductType" EntitySet="ProductTypes" />
             <End Role="Product" EntitySet="Products" />
           </AssociationSet>
-          <AssociationSet Name="FK__SizeQuant__Produ__4B7734FF" Association="Self.FK__SizeQuant__Produ__4B7734FF">
+          <AssociationSet Name="FK__Product__Product__0EC32C7A" Association="Self.FK__Product__Product__0EC32C7A">
+            <End Role="ProductSupplier" EntitySet="ProductSuppliers" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__1B29035F" Association="Self.FK__Product__Product__1B29035F">
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__1C1D2798" Association="Self.FK__Product__Product__1C1D2798">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Product__1D114BD1" Association="Self.FK__Product__Product__1D114BD1">
+            <End Role="ProductSupplier" EntitySet="ProductSuppliers" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SizeQuant__Produ__10AB74EC" Association="Self.FK__SizeQuant__Produ__10AB74EC">
             <End Role="Product" EntitySet="Products" />
             <End Role="SizeQuantity" EntitySet="SizeQuantities" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProductTy__Produ__43D61337" Association="Self.FK__ProductTy__Produ__43D61337">
+          <AssociationSet Name="FK__SizeQuant__Produ__1EF99443" Association="Self.FK__SizeQuant__Produ__1EF99443">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="SizeQuantity" EntitySet="SizeQuantities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductTy__Produ__0FB750B3" Association="Self.FK__ProductTy__Produ__0FB750B3">
             <End Role="ProductCategory" EntitySet="ProductCategories" />
             <End Role="ProductType" EntitySet="ProductTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProductTy__Produ__1E05700A" Association="Self.FK__ProductTy__Produ__1E05700A">
+            <End Role="ProductCategory" EntitySet="ProductCategories" />
+            <End Role="ProductType" EntitySet="ProductTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__UserR__119F9925" Association="Self.FK__UserAccou__UserR__119F9925">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAccou__UserR__1FEDB87C" Association="Self.FK__UserAccou__UserR__1FEDB87C">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserAddre__UserA__20E1DCB5" Association="Self.FK__UserAddre__UserA__20E1DCB5">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="UserAddress" EntitySet="UserAddresses" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -497,6 +1385,8 @@
               <MappingFragment StoreEntitySet="Basket">
                 <ScalarProperty Name="BasketID" ColumnName="BasketID" />
                 <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -505,9 +1395,38 @@
               <MappingFragment StoreEntitySet="BasketItem">
                 <ScalarProperty Name="BasketItemID" ColumnName="BasketItemID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="BasketID" ColumnName="BasketID" />
                 <ScalarProperty Name="SizeQuantityID" ColumnName="SizeQuantityID" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="BasketID" ColumnName="BasketID" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="eShopModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="UserAddressID" ColumnName="UserAddressID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderItems">
+            <EntityTypeMapping TypeName="eShopModel.OrderItem">
+              <MappingFragment StoreEntitySet="OrderItem">
+                <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SizeQuantityID" ColumnName="SizeQuantityID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -536,7 +1455,6 @@
                 <ScalarProperty Name="ProductCategoryName" ColumnName="ProductCategoryName" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -547,7 +1465,6 @@
                 <ScalarProperty Name="ProductSupplierName" ColumnName="ProductSupplierName" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -559,7 +1476,6 @@
                 <ScalarProperty Name="ProductCategoryID" ColumnName="ProductCategoryID" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -572,7 +1488,6 @@
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -585,7 +1500,33 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAddresses">
+            <EntityTypeMapping TypeName="eShopModel.UserAddress">
+              <MappingFragment StoreEntitySet="UserAddress">
+                <ScalarProperty Name="UserAddressID" ColumnName="UserAddressID" />
+                <ScalarProperty Name="UserAddress1" ColumnName="UserAddress" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="UserAccountID" ColumnName="UserAccountID" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="eShopModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+                <ScalarProperty Name="UserRoleName" ColumnName="UserRoleName" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />

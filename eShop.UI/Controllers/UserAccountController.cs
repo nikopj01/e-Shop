@@ -1,5 +1,6 @@
 ﻿using eShop.Core.Contracts;
 using eShop.Core.Models;
+using eShop.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,33 +14,12 @@ namespace eShop.UI.Controllers
     public class UserAccountController : Controller
     {
         private IRepository<UserAccount> _contextUserAccount;
+        private UserAccountService userAccountS;
 
-        public UserAccountController(IRepository<UserAccount> userAccount)
+        public UserAccountController(IRepository<UserAccount> userAccount, UserAccountService userAccountService)
         {
             _contextUserAccount = userAccount;
-        }
-
-        /// <summary>
-        /// Method to create a SHA256 
-        /// </summary>
-        /// <param name="rawData"></param>
-        /// <returns></returns>
-        private static Byte[] ComputeSha256Hash(string rawData)
-        {
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                return bytes;
-                // Convert byte array to a string   
-                //StringBuilder builder = new StringBuilder();
-                //for (int i = 0; i < bytes.Length; i++)
-                //{
-                //    builder.Append(bytes[i].ToString("x2"));
-                //}
-                //return builder.ToString();
-            }
+            userAccountS = userAccountService;
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
@@ -57,49 +37,62 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult Register()
         {
-            UserAccount model = new UserAccount();
+            RegisterFormModel model = new RegisterFormModel();
             return View(model);
         }
 
+        /// <summary>
+        /// Method to register new user
+        /// </summary>
+        /// <param name="formCollection"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(FormCollection formCollection)
+        public ActionResult Register(RegisterFormModel registerFormModel )
         {
+            string registerMessage = null;
             if (ModelState.IsValid)
             {
-                UserAccount userAccount = new UserAccount();
-                userAccount.UserAccountID = Guid.NewGuid();
-                userAccount.UserName = formCollection["UserName"];
-                userAccount.UserPassword = ComputeSha256Hash(formCollection["UserPassword"]);
-                userAccount.FirstName = formCollection["FirstName"];
-                userAccount.LastName = formCollection["LastName"];
-                userAccount.Email = formCollection["Email"];
-                _contextUserAccount.Insert(userAccount);
-                _contextUserAccount.Commit();
+                //Validate inputted username and email
+                registerMessage = userAccountS.ValidateUsernameEmail(registerFormModel.UserName, registerFormModel.Email);
+
+                if (registerMessage == null)
+                {
+                    //Valid username & email
+                    userAccountS.RegisterUser(registerFormModel);
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    //Invalid username & email
+                    ViewBag.RegisterMessage = registerMessage;
+                    return View(registerFormModel);
+                }
             }
-            return RedirectToAction("Login");
+            return View(registerFormModel);
         }
 
         public ActionResult Login(string returnUrl)
         {
-            UserAccount model = new UserAccount();
+            LoginFormModel model = new LoginFormModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(FormCollection formCollection, string returnUrl)
+        public ActionResult Login(LoginFormModel loginFormModel, string returnUrl)
         {
-            byte[] inputtedPassword = ComputeSha256Hash(formCollection["UserPassword"]);
-            string inputtedUserName = formCollection["UserName"];
-            UserAccount user = _contextUserAccount.Collection().SingleOrDefault(ua => ua.UserName == inputtedUserName && ua.UserPassword == inputtedPassword);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                Session["UserAccountID"] = user.UserAccountID;
-                return RedirectToLocal(returnUrl);
+                Guid? userAccountID = userAccountS.LoginUser(loginFormModel); 
+                if (userAccountID != null)
+                {
+                    Session["UserAccountID"] = userAccountID;
+                    return RedirectToLocal(returnUrl);
+                }
+                ViewBag.LoginMessage = "Wrong Username or Password";
             }
-            ViewBag.LoginMessage = "Wrong Username or Password";
-            return RedirectToLocal(returnUrl);
+            return View(loginFormModel);
         }
 
         public ActionResult Logout(string returnUrl)

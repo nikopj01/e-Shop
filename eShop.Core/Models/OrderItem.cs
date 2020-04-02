@@ -12,18 +12,18 @@ namespace eShop.Core.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BasketItem
+    public partial class OrderItem
     {
-        public System.Guid BasketItemID { get; set; }
+        public System.Guid OrderItemID { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<System.Guid> SizeQuantityID { get; set; }
         public Nullable<System.Guid> ProductID { get; set; }
-        public Nullable<System.Guid> BasketID { get; set; }
+        public Nullable<System.Guid> OrderID { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> ModifiedAt { get; set; }
     
-        public virtual Basket Basket { get; set; }
-        public virtual Basket Basket1 { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Order Order1 { get; set; }
         public virtual Product Product { get; set; }
         public virtual Product Product1 { get; set; }
         public virtual SizeQuantity SizeQuantity { get; set; }

@@ -12,26 +12,24 @@ namespace eShop.Core.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductType
+    public partial class UserRole
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ProductType()
+        public UserRole()
         {
-            this.Products = new HashSet<Product>();
-            this.Products1 = new HashSet<Product>();
+            this.UserAccounts = new HashSet<UserAccount>();
+            this.UserAccounts1 = new HashSet<UserAccount>();
         }
     
-        public System.Guid ProductTypeID { get; set; }
-        public string ProductTypeName { get; set; }
-        public Nullable<System.Guid> ProductCategoryID { get; set; }
+        public System.Guid UserRoleID { get; set; }
+        public string UserRoleName { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> ModifiedAt { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<UserAccount> UserAccounts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products1 { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
-        public virtual ProductCategory ProductCategory1 { get; set; }
+        public virtual ICollection<UserAccount> UserAccounts1 { get; set; }
     }
 }

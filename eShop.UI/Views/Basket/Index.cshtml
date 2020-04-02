@@ -1,4 +1,4 @@
-﻿@model IEnumerable<eShop.Core.Models.BasketItem>
+﻿@model eShop.Core.ViewModels.BasketItemViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -11,6 +11,23 @@
 <script>
 
     $(document).ready(function () {
+        $(".Quantity").change(function () {
+            var productID = $(this).siblings("#productID").val();
+            var sizeQuantityID = $(this).siblings("#sizeID").val();
+            var quantity = $(this).val();
+            var isUpdate = true;
+
+            //Post request
+            $.post("/Basket/UpdateBasketItem",
+                { productID: productID, sizeQuantityID: sizeQuantityID, quantity: quantity, isUpdate: isUpdate },
+                function (data) { }
+            );
+            //Once request completed, direct the page to basket page
+            $(document).ajaxComplete(function () {
+                window.location.href = '/Basket/Index';
+            });
+        });
+
         $(".Delete").click(function () {
             var productID = $(this).parent().prev().find("#productID").val();
             var sizeQuantityID = $(this).parent().prev().find("#sizeID").val();
@@ -24,12 +41,16 @@
                 window.location.href = '/Basket/Index';
             });
         });
+
         $(".Decrease").click(function () {
             var productID = $(this).siblings("#productID").val();
             var sizeQuantityID = $(this).siblings("#sizeID").val();
+            var quantity = -1;
+            var isUpdate = false;
+
             //Post request
-            $.post("/Basket/ReduceBasketItem",
-                { productID: productID, sizeQuantityID: sizeQuantityID },
+            $.post("/Basket/UpdateBasketItem",
+                { productID: productID, sizeQuantityID: sizeQuantityID, quantity: quantity, isUpdate: isUpdate },
                 function (data) { }
             );
             //Once request completed, direct the page to basket page
@@ -41,9 +62,12 @@
         $(".Increase").click(function () {
             var productID = $(this).siblings("#productID").val();
             var sizeQuantityID = $(this).siblings("#sizeID").val();
+            var quantity = 1;
+            var isUpdate = false;
+
             //Post request
-            $.post("/Basket/AddBasketItem",
-                { productID: productID, sizeQuantityID: sizeQuantityID },
+            $.post("/Basket/UpdateBasketItem",
+                { productID: productID, sizeQuantityID: sizeQuantityID, quantity: quantity, isUpdate: isUpdate },
                 function (data) { }
             );
             //Once request completed, direct the page to basket page
@@ -67,12 +91,15 @@
                 @Html.DisplayName("Quantity")
             </th>
             <th>
+                @Html.DisplayName("Total Price")
+            </th>
+            <th>
                 Action
             </th>
         </tr>
-
-        @foreach (var item in Model)
+        @foreach (var item in Model.basketItems)
         {
+            var totalProductPrice = item.Quantity * item.Product.ProductPrice;
             <tr>
                 <td>
                     <img class="img-thumbnail" style="height:50px" src="~/Content/ProductImages/@item.Product.ProductImage" />
@@ -85,11 +112,14 @@
                     @Html.HiddenFor(modelItem => item.ProductID, new { id = "productID" })
                     @Html.HiddenFor(modelItem => item.SizeQuantityID, new { id = "sizeID" })
                     <button class="btn Increase"><i style="font-size:24px" class="fa">&#xf067;</i></button>
-                    <label id="quantity"> @item.Quantity </label>
+                    <input class="Quantity" type="number" value="@item.Quantity" style="width:50px" />
                     @if (@item.Quantity != 1)
                     {
                         <button class="btn Decrease"><i style="font-size:24px" class="fa">&#xf068;</i></button>
                     }
+                </td>
+                <td>
+                    <label>$ @totalProductPrice</label>
                 </td>
                 <td>
                     <button class="btn Delete"><i style="font-size:24px" class="fa">&#xf014;</i></button>
@@ -97,6 +127,6 @@
             </tr>
         }
     </table>
-
+    @Model.basketSubTotal <br>
     <button onclick="location.href='@Url.Action("Index", "Home")'">Buy</button>
 </div>

@@ -18,7 +18,11 @@ namespace eShop.Core.Models
         public Product()
         {
             this.BasketItems = new HashSet<BasketItem>();
+            this.BasketItems1 = new HashSet<BasketItem>();
+            this.OrderItems = new HashSet<OrderItem>();
+            this.OrderItems1 = new HashSet<OrderItem>();
             this.SizeQuantities = new HashSet<SizeQuantity>();
+            this.SizeQuantities1 = new HashSet<SizeQuantity>();
         }
     
         public System.Guid ProductID { get; set; }
@@ -36,9 +40,21 @@ namespace eShop.Core.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasketItem> BasketItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BasketItem> BasketItems1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderItem> OrderItems1 { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ProductType ProductType { get; set; }
+        public virtual ProductSupplier ProductSupplier { get; set; }
+        public virtual ProductCategory ProductCategory1 { get; set; }
+        public virtual ProductType ProductType1 { get; set; }
+        public virtual ProductSupplier ProductSupplier1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SizeQuantity> SizeQuantities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SizeQuantity> SizeQuantities1 { get; set; }
     }
 }

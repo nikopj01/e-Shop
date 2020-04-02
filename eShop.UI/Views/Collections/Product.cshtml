@@ -15,13 +15,15 @@
                 //if "Size" is clicked
                 var productID = $('#productID').val();
                 var sizeQuantityID = $('input[name=sizeID]:checked').val();
+                var quantity = 1;
+                var isUpdate = false;
 
                 //Post request
-                $.post("/Basket/AddBasketItem",
-                    { productID: productID, sizeQuantityID: sizeQuantityID },
-                    function (data) {}
+                $.post("/Basket/UpdateBasketItem",
+                    { productID: productID, sizeQuantityID: sizeQuantityID, quantity: quantity, isUpdate: isUpdate },
+                    function (data) { }
                 );
-                
+
                 //Once request completed, direct the page to basket page
                 $(document).ajaxComplete(function () {
                     window.location.href = '/Basket/Index';
