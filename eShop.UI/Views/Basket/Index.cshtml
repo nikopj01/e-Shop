@@ -29,8 +29,8 @@
         });
 
         $(".Delete").click(function () {
-            var productID = $(this).parent().prev().find("#productID").val();
-            var sizeQuantityID = $(this).parent().prev().find("#sizeID").val();
+            var productID = $(this).parent().prev().prev().find("#productID").val();
+            var sizeQuantityID = $(this).parent().prev().prev().find("#sizeID").val();
             //Post request
             $.post("/Basket/RemoveBasketItem",
                 { productID: productID, sizeQuantityID: sizeQuantityID },
@@ -127,6 +127,9 @@
             </tr>
         }
     </table>
-    @Model.basketSubTotal <br>
+    @if (Model.basketSubTotal != 0)
+    {
+        @Model.basketSubTotal<br>
+    }
     <button onclick="location.href='@Url.Action("Index", "Home")'">Buy</button>
 </div>

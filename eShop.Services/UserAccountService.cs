@@ -20,32 +20,7 @@ namespace eShop.Services
         }
 
         /// <summary>
-        /// Method to check existance of username and email
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public string ValidateUsernameEmail(string userName, string email)
-        {
-            string registerMessage = null;
-
-            //Check username
-            UserAccount selectedUserAccountforUsername = _contextUserAccount.Collection().SingleOrDefault(ua => ua.UserName == userName);
-            //Check email
-            UserAccount selectedUserAccountforEmail = _contextUserAccount.Collection().SingleOrDefault(ua => ua.Email == email);
-
-            if (selectedUserAccountforUsername != null && selectedUserAccountforEmail != null)
-                registerMessage = "Username & Email are taken, please use other Username & Email.";
-            else if (selectedUserAccountforUsername != null )
-                registerMessage = "Username is taken, please use other username.";
-            else if (selectedUserAccountforEmail != null)
-                registerMessage = "Email is taken, please use other Email.";
-
-            return registerMessage;
-        }
-
-        /// <summary>
-        /// Method to create a SHA256 
+        /// Method to compute a SHA256 
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
@@ -67,22 +42,61 @@ namespace eShop.Services
         }
 
         /// <summary>
+        /// Method to check existance of username and email
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public string ValidateUsernameEmail(string userName, string email)
+        {
+            string registerMessage = null;
+
+            //selected User based on inputted username
+            UserAccount selectedUserAccountforUsername = _contextUserAccount.Collection().SingleOrDefault(ua => ua.UserName == userName);
+            
+            //selected User based on inputted email
+            UserAccount selectedUserAccountforEmail = _contextUserAccount.Collection().SingleOrDefault(ua => ua.Email == email);
+
+            if (selectedUserAccountforUsername != null && selectedUserAccountforEmail != null)
+                registerMessage = "Username & Email are taken, please use other Username & Email.";
+            else if (selectedUserAccountforUsername != null)
+                registerMessage = "Username is taken, please use other username.";
+            else if (selectedUserAccountforEmail != null)
+                registerMessage = "Email is taken, please use other Email.";
+
+            return registerMessage;
+        }
+
+        /// <summary>
         /// Method to register new user
         /// </summary>
         /// <param name="registerFormModel"></param>
-        public void RegisterUser(RegisterFormModel registerFormModel)
+        public string RegisterUser(RegisterFormModel registerFormModel)
         {
-            UserAccount inputtedUserAccount = new UserAccount();
-            inputtedUserAccount.UserAccountID = Guid.NewGuid();
-            inputtedUserAccount.UserName = registerFormModel.UserName;
-            inputtedUserAccount.UserPassword = ComputeSha256Hash(registerFormModel.UserPassword); 
-            inputtedUserAccount.FirstName = registerFormModel.FirstName;
-            inputtedUserAccount.LastName = registerFormModel.LastName;
-            inputtedUserAccount.Email = registerFormModel.Email;
-            _contextUserAccount.Insert(inputtedUserAccount);
-            _contextUserAccount.Commit();
+            string registerMessage = ValidateUsernameEmail(registerFormModel.UserName, registerFormModel.Email);
+
+            if (registerMessage == null)
+            {
+                //Valid username & email (New User)
+                UserAccount inputtedUserAccount = new UserAccount();
+                inputtedUserAccount.UserAccountID = Guid.NewGuid();
+                inputtedUserAccount.UserName = registerFormModel.UserName;
+                inputtedUserAccount.UserPassword = ComputeSha256Hash(registerFormModel.UserPassword);
+                inputtedUserAccount.FirstName = registerFormModel.FirstName;
+                inputtedUserAccount.LastName = registerFormModel.LastName;
+                inputtedUserAccount.Email = registerFormModel.Email;
+                _contextUserAccount.Insert(inputtedUserAccount);
+                _contextUserAccount.Commit();
+            }
+
+            return registerMessage;
         }
 
+        /// <summary>
+        /// Method to check existance of user
+        /// </summary>
+        /// <param name="loginFormModel"></param>
+        /// <returns></returns>
         public Guid? LoginUser(LoginFormModel loginFormModel)
         {
             string inputtedUserName = loginFormModel.UserName;

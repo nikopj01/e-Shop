@@ -38,6 +38,7 @@ namespace eShop.Services
                     Basket newBasket = new Basket();
                     newBasket.BasketID = Guid.NewGuid();
                     newBasket.UserAccountID = UserAccountID;
+                    newBasket.CreatedAt = DateTime.Now;
                     _contextBasket.Insert(newBasket);
                     _contextBasket.Commit();
                     return newBasket;
@@ -67,7 +68,7 @@ namespace eShop.Services
             if (selectedBasketItem != null)
             {
                 //exist
-                if (isUpdate != null)
+                if (isUpdate == true)
                     selectedBasketItem.Quantity = quantity;
                 else
                     selectedBasketItem.Quantity += quantity;
@@ -81,6 +82,7 @@ namespace eShop.Services
                 basketItem.BasketID = selectedBasket.BasketID;
                 basketItem.SizeQuantityID = SizeQuantityID;
                 basketItem.ProductID = ProductID;
+                basketItem.CreatedAt = DateTime.Now;
                 _contextBasketItem.Insert(basketItem);
             }
             _contextBasketItem.Commit();
@@ -122,10 +124,13 @@ namespace eShop.Services
             List<BasketItem> selectedBasketItems = new List<BasketItem>();
             decimal basketSubTotal = 0;
             Basket selectedBasket = _contextBasket.Collection().SingleOrDefault(b => b.UserAccountID == userAccountID);
-            selectedBasketItems = _contextBasketItem.Collection().Include(bi => bi.Product).Where(bi => bi.BasketID == selectedBasket.BasketID).ToList();
-            foreach (var basketItem in selectedBasketItems)
+            if (selectedBasket != null)
             {
-                basketSubTotal = basketSubTotal + (basketItem.Quantity * basketItem.Product.ProductPrice).Value;
+                selectedBasketItems = _contextBasketItem.Collection().Include(bi => bi.Product).Where(bi => bi.BasketID == selectedBasket.BasketID).ToList();
+                foreach (var basketItem in selectedBasketItems)
+                {
+                    basketSubTotal = basketSubTotal + (basketItem.Quantity * basketItem.Product.ProductPrice).Value;
+                }
             }
             return basketSubTotal;
         }

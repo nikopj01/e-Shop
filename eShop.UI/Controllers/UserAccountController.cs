@@ -22,6 +22,11 @@ namespace eShop.UI.Controllers
             userAccountS = userAccountService;
         }
 
+        /// <summary>
+        /// Method to redirect to default home page if the return url not valid
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         private ActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -48,18 +53,17 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterFormModel registerFormModel )
+        public ActionResult Register(RegisterFormModel registerFormModel)
         {
             string registerMessage = null;
             if (ModelState.IsValid)
             {
-                //Validate inputted username and email
-                registerMessage = userAccountS.ValidateUsernameEmail(registerFormModel.UserName, registerFormModel.Email);
+                //Validate inputted username & email and Register User
+                registerMessage = userAccountS.RegisterUser(registerFormModel);
 
                 if (registerMessage == null)
                 {
                     //Valid username & email
-                    userAccountS.RegisterUser(registerFormModel);
                     return RedirectToAction("Login");
                 }
                 else
@@ -72,12 +76,23 @@ namespace eShop.UI.Controllers
             return View(registerFormModel);
         }
 
+        /// <summary>
+        /// method to display Login page
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public ActionResult Login(string returnUrl)
         {
             LoginFormModel model = new LoginFormModel();
             return View(model);
         }
 
+        /// <summary>
+        /// Method to validate inputted login form
+        /// </summary>
+        /// <param name="loginFormModel"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginFormModel loginFormModel, string returnUrl)
@@ -95,6 +110,11 @@ namespace eShop.UI.Controllers
             return View(loginFormModel);
         }
 
+        /// <summary>
+        /// Method to log out an user
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public ActionResult Logout(string returnUrl)
         {
             Session["UserAccountID"] = null;

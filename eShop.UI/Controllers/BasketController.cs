@@ -29,12 +29,11 @@ namespace eShop.UI.Controllers
                     basketItems = basketService.GetBasketItems(Guid.Parse(Session["UserAccountID"].ToString())),
                     basketSubTotal = basketService.GetBasketSummary(Guid.Parse(Session["UserAccountID"].ToString()))
                 };
-                //List<BasketItem> model = basketService.GetBasketItems(Guid.Parse(Session["UserAccountID"].ToString()));
                 return View(viewModel);
             }   
             else
             {
-                return RedirectToAction("Login", "UserAccount");
+                return RedirectToAction("Login", "UserAccount", new { returnUrl = "/Basket/Index"});
             }
         }
 
