@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -25,17 +26,12 @@
                     <li class="nav-item">
                         @Html.ActionLink("List of Product Type", "ListOfProductType", "ProductManager", null, new { @class = "nav-link" })
                     </li>
-                    @*Drop down Navigation menu*@
-                    @*<li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                            PRODUCT
-                        </a>
-                        <div class="dropdown-menu">
-                        </div>
-                        @Html.ActionLink("List of Product", "Index", "ProductManager", null, new { @class = "dropdown-item" })
-                        @Html.ActionLink("List of Product Category", "ListOfProductCategory", "ProductManager", null, new { @class = "dropdown-item" })
-                        @Html.ActionLink("List of Product Type", "ListOfProductType", "ProductManager", null, new { @class = "dropdown-item" })
-                    </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})"><i style="font-size:24px" class="fa">&#xf007</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Logout", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})">Logout</a>
+                    </li>
                 </ul>
             </div>
         </nav>

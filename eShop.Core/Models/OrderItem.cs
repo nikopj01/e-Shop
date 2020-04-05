@@ -23,10 +23,7 @@ namespace eShop.Core.Models
         public Nullable<System.DateTime> ModifiedAt { get; set; }
     
         public virtual Order Order { get; set; }
-        public virtual Order Order1 { get; set; }
         public virtual Product Product { get; set; }
-        public virtual Product Product1 { get; set; }
         public virtual SizeQuantity SizeQuantity { get; set; }
-        public virtual SizeQuantity SizeQuantity1 { get; set; }
     }
 }

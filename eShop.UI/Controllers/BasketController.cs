@@ -22,7 +22,7 @@ namespace eShop.UI.Controllers
 
         public ActionResult Index()
         {
-            if (Session["UserAccountID"] != null)
+            if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
             {
                 BasketItemViewModel viewModel = new BasketItemViewModel()
                 {
@@ -39,7 +39,8 @@ namespace eShop.UI.Controllers
 
         public void UpdateBasketItem(string productID, string sizeQuantityID, int? quantity, bool? isUpdate)
         {
-            if (Session["UserAccountID"] != null && productID != null && sizeQuantityID != null && quantity != null && isUpdate != null)
+            if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer" 
+                && productID != null && sizeQuantityID != null && quantity != null && isUpdate != null)
             {
                 string userAccountID = Session["UserAccountID"].ToString();
                 basketService.UpdateBasketItem(productID, sizeQuantityID, userAccountID, quantity, isUpdate);
@@ -52,7 +53,8 @@ namespace eShop.UI.Controllers
 
         public void RemoveBasketItem(string productID, string sizeQuantityID)
         {
-            if (Session["UserAccountID"] != null && productID != null && sizeQuantityID != null)
+            if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer"
+                && productID != null && sizeQuantityID != null)
             {
                 string userAccountID = Session["UserAccountID"].ToString();
                 basketService.RemoveBasketItem(productID, sizeQuantityID, userAccountID);

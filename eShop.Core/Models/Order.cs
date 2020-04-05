@@ -18,7 +18,6 @@ namespace eShop.Core.Models
         public Order()
         {
             this.OrderItems = new HashSet<OrderItem>();
-            this.OrderItems1 = new HashSet<OrderItem>();
         }
     
         public System.Guid OrderID { get; set; }
@@ -31,12 +30,8 @@ namespace eShop.Core.Models
         public Nullable<System.DateTime> ModifiedAt { get; set; }
     
         public virtual UserAccount UserAccount { get; set; }
-        public virtual UserAccount UserAccount1 { get; set; }
         public virtual UserAddress UserAddress { get; set; }
-        public virtual UserAddress UserAddress1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderItem> OrderItems1 { get; set; }
     }
 }

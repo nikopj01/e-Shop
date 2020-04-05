@@ -18,7 +18,6 @@ namespace eShop.Core.Models
         public Basket()
         {
             this.BasketItems = new HashSet<BasketItem>();
-            this.BasketItems1 = new HashSet<BasketItem>();
         }
     
         public System.Guid BasketID { get; set; }
@@ -27,10 +26,7 @@ namespace eShop.Core.Models
         public Nullable<System.DateTime> ModifiedAt { get; set; }
     
         public virtual UserAccount UserAccount { get; set; }
-        public virtual UserAccount UserAccount1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasketItem> BasketItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BasketItem> BasketItems1 { get; set; }
     }
 }

@@ -18,9 +18,7 @@ namespace eShop.Core.Models
         public ProductCategory()
         {
             this.Products = new HashSet<Product>();
-            this.Products1 = new HashSet<Product>();
             this.ProductTypes = new HashSet<ProductType>();
-            this.ProductTypes1 = new HashSet<ProductType>();
         }
     
         public System.Guid ProductCategoryID { get; set; }
@@ -31,10 +29,6 @@ namespace eShop.Core.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Product> Products { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Product> Products1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductType> ProductTypes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductType> ProductTypes1 { get; set; }
     }
 }

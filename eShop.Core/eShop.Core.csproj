@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="ViewModels\UserAddressFormViewModel.cs" />
     <Compile Include="Models\Basket.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
@@ -76,6 +77,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DbModels.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\EditProfileFormModel.cs" />
     <Compile Include="Models\LoginFormModel.cs" />
     <Compile Include="Models\Metadata.cs" />
     <Compile Include="Models\Order.cs">
@@ -117,6 +119,7 @@
     <Compile Include="ViewModels\ProductSizeQuantityFormViewModel.cs" />
     <Compile Include="ViewModels\ProductFormViewModel.cs" />
     <Compile Include="ViewModels\ProductTypeFormViewModel.cs" />
+    <Compile Include="ViewModels\UserAccountViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

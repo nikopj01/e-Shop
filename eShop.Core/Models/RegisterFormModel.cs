@@ -22,6 +22,7 @@ namespace eShop.Core.Models
         [Display(Name = ("User Name"))]
         public string FirstName { get; set; }
 
+        [Display(Name = ("Last Name"))]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "E-mail is required")]

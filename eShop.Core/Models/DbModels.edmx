@@ -127,7 +127,7 @@
             <PropertyRef Name="UserAddressID" />
           </Key>
           <Property Name="UserAddressID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="UserAddress" Type="varchar" MaxLength="255" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
           <Property Name="Country" Type="varchar" MaxLength="255" />
           <Property Name="Region" Type="varchar" MaxLength="255" />
           <Property Name="City" Type="varchar" MaxLength="255" />
@@ -670,9 +670,7 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="UserAccount" Relationship="Self.FK__Basket__UserAcco__04459E07" FromRole="Basket" ToRole="UserAccount" />
-          <NavigationProperty Name="UserAccount1" Relationship="Self.FK__Basket__UserAcco__1293BD5E" FromRole="Basket" ToRole="UserAccount" />
           <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__Baske__07220AB2" FromRole="Basket" ToRole="BasketItem" />
-          <NavigationProperty Name="BasketItems1" Relationship="Self.FK__BasketIte__Baske__15702A09" FromRole="Basket" ToRole="BasketItem" />
         </EntityType>
         <EntityType Name="BasketItem">
           <Key>
@@ -686,11 +684,8 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Basket" Relationship="Self.FK__BasketIte__Baske__07220AB2" FromRole="BasketItem" ToRole="Basket" />
-          <NavigationProperty Name="Basket1" Relationship="Self.FK__BasketIte__Baske__15702A09" FromRole="BasketItem" ToRole="Basket" />
           <NavigationProperty Name="Product" Relationship="Self.FK__BasketIte__Produ__062DE679" FromRole="BasketItem" ToRole="Product" />
-          <NavigationProperty Name="Product1" Relationship="Self.FK__BasketIte__Produ__147C05D0" FromRole="BasketItem" ToRole="Product" />
           <NavigationProperty Name="SizeQuantity" Relationship="Self.FK__BasketIte__SizeQ__0539C240" FromRole="BasketItem" ToRole="SizeQuantity" />
-          <NavigationProperty Name="SizeQuantity1" Relationship="Self.FK__BasketIte__SizeQ__1387E197" FromRole="BasketItem" ToRole="SizeQuantity" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -705,11 +700,8 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="UserAccount" Relationship="Self.FK__Order__UserAccou__08162EEB" FromRole="Order" ToRole="UserAccount" />
-          <NavigationProperty Name="UserAccount1" Relationship="Self.FK__Order__UserAccou__16644E42" FromRole="Order" ToRole="UserAccount" />
           <NavigationProperty Name="UserAddress" Relationship="Self.FK__Order__UserAddre__090A5324" FromRole="Order" ToRole="UserAddress" />
-          <NavigationProperty Name="UserAddress1" Relationship="Self.FK__Order__UserAddre__1758727B" FromRole="Order" ToRole="UserAddress" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__0BE6BFCF" FromRole="Order" ToRole="OrderItem" />
-          <NavigationProperty Name="OrderItems1" Relationship="Self.FK__OrderItem__Order__1A34DF26" FromRole="Order" ToRole="OrderItem" />
         </EntityType>
         <EntityType Name="OrderItem">
           <Key>
@@ -723,11 +715,8 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__0BE6BFCF" FromRole="OrderItem" ToRole="Order" />
-          <NavigationProperty Name="Order1" Relationship="Self.FK__OrderItem__Order__1A34DF26" FromRole="OrderItem" ToRole="Order" />
           <NavigationProperty Name="Product" Relationship="Self.FK__OrderItem__Produ__0AF29B96" FromRole="OrderItem" ToRole="Product" />
-          <NavigationProperty Name="Product1" Relationship="Self.FK__OrderItem__Produ__1940BAED" FromRole="OrderItem" ToRole="Product" />
           <NavigationProperty Name="SizeQuantity" Relationship="Self.FK__OrderItem__SizeQ__09FE775D" FromRole="OrderItem" ToRole="SizeQuantity" />
-          <NavigationProperty Name="SizeQuantity1" Relationship="Self.FK__OrderItem__SizeQ__184C96B4" FromRole="OrderItem" ToRole="SizeQuantity" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -746,17 +735,11 @@
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__Produ__062DE679" FromRole="Product" ToRole="BasketItem" />
-          <NavigationProperty Name="BasketItems1" Relationship="Self.FK__BasketIte__Produ__147C05D0" FromRole="Product" ToRole="BasketItem" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Produ__0AF29B96" FromRole="Product" ToRole="OrderItem" />
-          <NavigationProperty Name="OrderItems1" Relationship="Self.FK__OrderItem__Produ__1940BAED" FromRole="Product" ToRole="OrderItem" />
           <NavigationProperty Name="ProductCategory" Relationship="Self.FK__Product__Product__0CDAE408" FromRole="Product" ToRole="ProductCategory" />
           <NavigationProperty Name="ProductType" Relationship="Self.FK__Product__Product__0DCF0841" FromRole="Product" ToRole="ProductType" />
           <NavigationProperty Name="ProductSupplier" Relationship="Self.FK__Product__Product__0EC32C7A" FromRole="Product" ToRole="ProductSupplier" />
-          <NavigationProperty Name="ProductCategory1" Relationship="Self.FK__Product__Product__1B29035F" FromRole="Product" ToRole="ProductCategory" />
-          <NavigationProperty Name="ProductType1" Relationship="Self.FK__Product__Product__1C1D2798" FromRole="Product" ToRole="ProductType" />
-          <NavigationProperty Name="ProductSupplier1" Relationship="Self.FK__Product__Product__1D114BD1" FromRole="Product" ToRole="ProductSupplier" />
           <NavigationProperty Name="SizeQuantities" Relationship="Self.FK__SizeQuant__Produ__10AB74EC" FromRole="Product" ToRole="SizeQuantity" />
-          <NavigationProperty Name="SizeQuantities1" Relationship="Self.FK__SizeQuant__Produ__1EF99443" FromRole="Product" ToRole="SizeQuantity" />
         </EntityType>
         <EntityType Name="ProductCategory">
           <Key>
@@ -767,9 +750,7 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__0CDAE408" FromRole="ProductCategory" ToRole="Product" />
-          <NavigationProperty Name="Products1" Relationship="Self.FK__Product__Product__1B29035F" FromRole="ProductCategory" ToRole="Product" />
           <NavigationProperty Name="ProductTypes" Relationship="Self.FK__ProductTy__Produ__0FB750B3" FromRole="ProductCategory" ToRole="ProductType" />
-          <NavigationProperty Name="ProductTypes1" Relationship="Self.FK__ProductTy__Produ__1E05700A" FromRole="ProductCategory" ToRole="ProductType" />
         </EntityType>
         <EntityType Name="ProductSupplier">
           <Key>
@@ -780,7 +761,6 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__0EC32C7A" FromRole="ProductSupplier" ToRole="Product" />
-          <NavigationProperty Name="Products1" Relationship="Self.FK__Product__Product__1D114BD1" FromRole="ProductSupplier" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductType">
           <Key>
@@ -792,9 +772,7 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Products" Relationship="Self.FK__Product__Product__0DCF0841" FromRole="ProductType" ToRole="Product" />
-          <NavigationProperty Name="Products1" Relationship="Self.FK__Product__Product__1C1D2798" FromRole="ProductType" ToRole="Product" />
           <NavigationProperty Name="ProductCategory" Relationship="Self.FK__ProductTy__Produ__0FB750B3" FromRole="ProductType" ToRole="ProductCategory" />
-          <NavigationProperty Name="ProductCategory1" Relationship="Self.FK__ProductTy__Produ__1E05700A" FromRole="ProductType" ToRole="ProductCategory" />
         </EntityType>
         <EntityType Name="SizeQuantity">
           <Key>
@@ -807,11 +785,8 @@
           <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <NavigationProperty Name="BasketItems" Relationship="Self.FK__BasketIte__SizeQ__0539C240" FromRole="SizeQuantity" ToRole="BasketItem" />
-          <NavigationProperty Name="BasketItems1" Relationship="Self.FK__BasketIte__SizeQ__1387E197" FromRole="SizeQuantity" ToRole="BasketItem" />
           <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__SizeQ__09FE775D" FromRole="SizeQuantity" ToRole="OrderItem" />
-          <NavigationProperty Name="OrderItems1" Relationship="Self.FK__OrderItem__SizeQ__184C96B4" FromRole="SizeQuantity" ToRole="OrderItem" />
           <NavigationProperty Name="Product" Relationship="Self.FK__SizeQuant__Produ__10AB74EC" FromRole="SizeQuantity" ToRole="Product" />
-          <NavigationProperty Name="Product1" Relationship="Self.FK__SizeQuant__Produ__1EF99443" FromRole="SizeQuantity" ToRole="Product" />
         </EntityType>
         <EntityType Name="UserAccount">
           <Key>
@@ -828,11 +803,8 @@
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="Baskets" Relationship="Self.FK__Basket__UserAcco__04459E07" FromRole="UserAccount" ToRole="Basket" />
-          <NavigationProperty Name="Baskets1" Relationship="Self.FK__Basket__UserAcco__1293BD5E" FromRole="UserAccount" ToRole="Basket" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__Order__UserAccou__08162EEB" FromRole="UserAccount" ToRole="Order" />
-          <NavigationProperty Name="Orders1" Relationship="Self.FK__Order__UserAccou__16644E42" FromRole="UserAccount" ToRole="Order" />
           <NavigationProperty Name="UserRole" Relationship="Self.FK__UserAccou__UserR__119F9925" FromRole="UserAccount" ToRole="UserRole" />
-          <NavigationProperty Name="UserRole1" Relationship="Self.FK__UserAccou__UserR__1FEDB87C" FromRole="UserAccount" ToRole="UserRole" />
           <NavigationProperty Name="UserAddresses" Relationship="Self.FK__UserAddre__UserA__20E1DCB5" FromRole="UserAccount" ToRole="UserAddress" />
         </EntityType>
         <EntityType Name="UserAddress">
@@ -840,7 +812,7 @@
             <PropertyRef Name="UserAddressID" />
           </Key>
           <Property Name="UserAddressID" Type="Guid" Nullable="false" />
-          <Property Name="UserAddress1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Region" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -849,7 +821,6 @@
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__Order__UserAddre__090A5324" FromRole="UserAddress" ToRole="Order" />
-          <NavigationProperty Name="Orders1" Relationship="Self.FK__Order__UserAddre__1758727B" FromRole="UserAddress" ToRole="Order" />
           <NavigationProperty Name="UserAccount" Relationship="Self.FK__UserAddre__UserA__20E1DCB5" FromRole="UserAddress" ToRole="UserAccount" />
         </EntityType>
         <EntityType Name="UserRole">
@@ -862,7 +833,6 @@
           <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="UserAccounts" Relationship="Self.FK__UserAccou__UserR__119F9925" FromRole="UserRole" ToRole="UserAccount" />
-          <NavigationProperty Name="UserAccounts1" Relationship="Self.FK__UserAccou__UserR__1FEDB87C" FromRole="UserRole" ToRole="UserAccount" />
         </EntityType>
         <Association Name="FK__Basket__UserAcco__04459E07">
           <End Role="UserAccount" Type="Self.UserAccount" Multiplicity="0..1" />
@@ -1511,7 +1481,7 @@
             <EntityTypeMapping TypeName="eShopModel.UserAddress">
               <MappingFragment StoreEntitySet="UserAddress">
                 <ScalarProperty Name="UserAddressID" ColumnName="UserAddressID" />
-                <ScalarProperty Name="UserAddress1" ColumnName="UserAddress" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="City" ColumnName="City" />

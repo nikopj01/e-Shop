@@ -18,9 +18,7 @@ namespace eShop.Core.Models
         public SizeQuantity()
         {
             this.BasketItems = new HashSet<BasketItem>();
-            this.BasketItems1 = new HashSet<BasketItem>();
             this.OrderItems = new HashSet<OrderItem>();
-            this.OrderItems1 = new HashSet<OrderItem>();
         }
     
         public System.Guid SizeQuantityID { get; set; }
@@ -33,12 +31,7 @@ namespace eShop.Core.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BasketItem> BasketItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BasketItem> BasketItems1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderItem> OrderItems1 { get; set; }
         public virtual Product Product { get; set; }
-        public virtual Product Product1 { get; set; }
     }
 }

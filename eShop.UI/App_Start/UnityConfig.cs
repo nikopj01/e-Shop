@@ -50,8 +50,12 @@ namespace eShop.UI
             container.RegisterType<IRepository<ProductType>, SQLRepository<ProductType>>();
             container.RegisterType<IRepository<SizeQuantity>, SQLRepository<SizeQuantity>>();
             container.RegisterType<IRepository<UserAccount>, SQLRepository<UserAccount>>();
+            container.RegisterType<IRepository<UserRole>, SQLRepository<UserRole>>();
+            container.RegisterType<IRepository<UserAddress>, SQLRepository<UserAddress>>();
             container.RegisterType<IRepository<Basket>, SQLRepository<Basket>>();
             container.RegisterType<IRepository<BasketItem>, SQLRepository<BasketItem>>();
+            container.RegisterType<IRepository<Order>, SQLRepository<Order>>();
+            container.RegisterType<IRepository<OrderItem>, SQLRepository<OrderItem>>();
         }
     }
 }

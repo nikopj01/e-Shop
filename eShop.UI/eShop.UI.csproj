@@ -393,6 +393,10 @@
     <Content Include="Views\Collections\Product.cshtml" />
     <Content Include="Views\UserAccount\Register.cshtml" />
     <Content Include="Views\Basket\Index.cshtml" />
+    <Content Include="Views\UserAccount\Index.cshtml" />
+    <Content Include="Views\UserAccount\EditProfile.cshtml" />
+    <Content Include="Views\UserAccount\AddAddress.cshtml" />
+    <Content Include="Views\UserAccount\EditAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

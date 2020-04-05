@@ -18,7 +18,6 @@ namespace eShop.Core.Models
         public UserRole()
         {
             this.UserAccounts = new HashSet<UserAccount>();
-            this.UserAccounts1 = new HashSet<UserAccount>();
         }
     
         public System.Guid UserRoleID { get; set; }
@@ -29,7 +28,5 @@ namespace eShop.Core.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAccount> UserAccounts { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserAccount> UserAccounts1 { get; set; }
     }
 }

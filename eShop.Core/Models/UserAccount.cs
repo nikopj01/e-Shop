@@ -18,9 +18,7 @@ namespace eShop.Core.Models
         public UserAccount()
         {
             this.Baskets = new HashSet<Basket>();
-            this.Baskets1 = new HashSet<Basket>();
             this.Orders = new HashSet<Order>();
-            this.Orders1 = new HashSet<Order>();
             this.UserAddresses = new HashSet<UserAddress>();
         }
     
@@ -38,13 +36,8 @@ namespace eShop.Core.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Basket> Baskets { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Basket> Baskets1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders1 { get; set; }
         public virtual UserRole UserRole { get; set; }
-        public virtual UserRole UserRole1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAddress> UserAddresses { get; set; }
     }

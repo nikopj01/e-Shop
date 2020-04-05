@@ -1,6 +1,7 @@
 ﻿using eShop.Core.Contracts;
 using eShop.Core.Models;
 using eShop.Core.ViewModels;
+using eShop.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,8 @@ namespace eShop.UI.Controllers
         private IRepository<ProductType> _contextProductType;
         private IRepository<SizeQuantity> _contextSizeQuantity;
 
-        public ProductManagerController(IRepository<Product> product, IRepository<ProductCategory> productCategory, IRepository<ProductType> productType, IRepository<SizeQuantity> sizeQuantity)
+        public ProductManagerController(IRepository<Product> product, IRepository<ProductCategory> productCategory, 
+            IRepository<ProductType> productType, IRepository<SizeQuantity> sizeQuantity)
         {
             _contextProduct = product;
             _contextProductCategory = productCategory;
@@ -31,14 +33,20 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            //List<Product> model = _contextProduct.Collection().Where(pc => pc.IsActive == true).ToList();
-            var viewModel = new ListOfProductViewModel()
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                products = _contextProduct.Collection().Where(p => p.IsActive == true).ToList(),
-                productCategories = _contextProductCategory.Collection().ToList(),
-                productTypes = _contextProductType.Collection().ToList()
-            };
-            return View(viewModel);
+                var viewModel = new ListOfProductViewModel()
+                {
+                    products = _contextProduct.Collection().Where(p => p.IsActive == true).ToList(),
+                    productCategories = _contextProductCategory.Collection().ToList(),
+                    productTypes = _contextProductType.Collection().ToList()
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
 
         }
 
@@ -48,14 +56,21 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult CreateProduct()
         {
-            ProductFormViewModel viewModel = new ProductFormViewModel()
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                product = new Product(),
-                sizeQuantity = new SizeQuantity(),
-                productCategories = _contextProductCategory.Collection().ToList(),
-                sizeQuantities = new List<SizeQuantity>()
-            };
-            return View(viewModel);
+                ProductFormViewModel viewModel = new ProductFormViewModel()
+                {
+                    product = new Product(),
+                    sizeQuantity = new SizeQuantity(),
+                    productCategories = _contextProductCategory.Collection().ToList(),
+                    sizeQuantities = new List<SizeQuantity>()
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -65,13 +80,20 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public JsonResult GetProductType(string productCategoryID)
         {
-            List<ProductType> productTypeList = _contextProductType.Collection().Where(pt => pt.ProductCategoryID.ToString() == productCategoryID).ToList();
-            List<SelectListItem> productTypeNames = new List<SelectListItem>();
-            productTypeList.ForEach(pt =>
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                productTypeNames.Add(new SelectListItem { Text = pt.ProductTypeName, Value = pt.ProductTypeID.ToString() });
-            });
-            return Json(productTypeNames, JsonRequestBehavior.AllowGet);
+                List<ProductType> productTypeList = _contextProductType.Collection().Where(pt => pt.ProductCategoryID.ToString() == productCategoryID).ToList();
+                List<SelectListItem> productTypeNames = new List<SelectListItem>();
+                productTypeList.ForEach(pt =>
+                {
+                    productTypeNames.Add(new SelectListItem { Text = pt.ProductTypeName, Value = pt.ProductTypeID.ToString() });
+                });
+                return Json(productTypeNames, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
         }
 
         /// <summary>
@@ -80,57 +102,63 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult CreateProduct(FormCollection formCollection, HttpPostedFileBase file)
         {
-            //Assign formcollection value to Product object
-            Product newProduct = new Product();
-            var productId = Guid.NewGuid();
-            newProduct.ProductID = productId;
-            newProduct.ProductName = formCollection["product.ProductName"];
-            newProduct.ProductDescription = formCollection["product.ProductDescription"];
-            newProduct.ProductPrice = decimal.Parse(formCollection["product.ProductPrice"]);
-            newProduct.ProductImage = productId + Path.GetExtension(file.FileName);
-            file.SaveAs(Server.MapPath("//Content//ProductImages//") + newProduct.ProductImage);
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                //Assign formcollection value to Product object
+                Product newProduct = new Product();
+                var productId = Guid.NewGuid();
+                newProduct.ProductID = productId;
+                newProduct.ProductName = formCollection["product.ProductName"];
+                newProduct.ProductDescription = formCollection["product.ProductDescription"];
+                newProduct.ProductPrice = decimal.Parse(formCollection["product.ProductPrice"]);
+                newProduct.ProductImage = productId + Path.GetExtension(file.FileName);
+                file.SaveAs(Server.MapPath("//Content//ProductImages//") + newProduct.ProductImage);
 
-            if (formCollection["product.ProductDiscount"] != null)
-                newProduct.ProductDiscount = decimal.Parse(formCollection["product.ProductDiscount"]);
+                if (formCollection["product.ProductDiscount"] != null)
+                    newProduct.ProductDiscount = decimal.Parse(formCollection["product.ProductDiscount"]);
 
-            newProduct.ProductCategoryID = Guid.Parse(formCollection["product.ProductCategoryID"]);
-            if(formCollection["product.ProductTypeID"] != null)
-                newProduct.ProductTypeID = Guid.Parse(formCollection["product.ProductTypeID"]);
-            newProduct.CreatedAt = DateTime.Now;
-            newProduct.IsActive = true;
-            //add new product
-            _contextProduct.Insert(newProduct);
-            _contextProduct.Commit();
+                newProduct.ProductCategoryID = Guid.Parse(formCollection["product.ProductCategoryID"]);
+                if (formCollection["product.ProductTypeID"] != null)
+                    newProduct.ProductTypeID = Guid.Parse(formCollection["product.ProductTypeID"]);
+                newProduct.CreatedAt = DateTime.Now;
+                newProduct.IsActive = true;
+                //add new product
+                _contextProduct.Insert(newProduct);
+                _contextProduct.Commit();
 
 
-            //Dynamic Add size & quantity
-            //if (!string.IsNullOrWhiteSpace(formCollection["sizeQuantity.SizeDescription"].Replace(",", "")))
-            //    if (formCollection["sizeQuantity.SizeName"] != null)
-            //    {
-            //        add size of product
-            //        string[] listofSize = formCollection["sizeQuantity.SizeDescription"].Split(',');
-            //        var listofQuantity = formCollection["sizeQuantity.Quantity"].Replace(",", "").ToCharArray();
+                //Dynamic Add size & quantity
+                //if (!string.IsNullOrWhiteSpace(formCollection["sizeQuantity.SizeDescription"].Replace(",", "")))
+                //    if (formCollection["sizeQuantity.SizeName"] != null)
+                //    {
+                //        add size of product
+                //        string[] listofSize = formCollection["sizeQuantity.SizeDescription"].Split(',');
+                //        var listofQuantity = formCollection["sizeQuantity.Quantity"].Replace(",", "").ToCharArray();
 
-            //        int currentIndex = 0;
-            //        foreach (var item in listofSize)
-            //        {
-            //            SizeQuantity sizeQuantity = new SizeQuantity();
-            //            sizeQuantity.SizeQuantityID = Guid.NewGuid();
-            //            sizeQuantity.SizeName = item.ToString();
-            //            sizeQuantity.SizeQuantityID = productId;
-            //            sizeQuantity.Quantity = int.Parse(listofQuantity[currentIndex].ToString());
-            //            sizeQuantity.CreatedAt = DateTime.Now;
-            //            _contextSizeQuantity.Insert(sizeQuantity);
-            //            _contextSizeQuantity.Commit();
+                //        int currentIndex = 0;
+                //        foreach (var item in listofSize)
+                //        {
+                //            SizeQuantity sizeQuantity = new SizeQuantity();
+                //            sizeQuantity.SizeQuantityID = Guid.NewGuid();
+                //            sizeQuantity.SizeName = item.ToString();
+                //            sizeQuantity.SizeQuantityID = productId;
+                //            sizeQuantity.Quantity = int.Parse(listofQuantity[currentIndex].ToString());
+                //            sizeQuantity.CreatedAt = DateTime.Now;
+                //            _contextSizeQuantity.Insert(sizeQuantity);
+                //            _contextSizeQuantity.Commit();
 
-            //            currentIndex += 1;
-            //        }
-            //    }
+                //            currentIndex += 1;
+                //        }
+                //    }
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -140,10 +168,17 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult DeleteProduct(Guid id)
         {
-            Product product = _contextProduct.Find(id);
-            product.IsActive = false;
-            _contextProduct.Commit();
-            return RedirectToAction("Index");
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                Product product = _contextProduct.Find(id);
+                product.IsActive = false;
+                _contextProduct.Commit();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -153,13 +188,19 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult EditProduct(Guid id)
         {
-            ProductFormViewModel viewModel = new ProductFormViewModel
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                product = _contextProduct.Find(id),
-                productCategories = _contextProductCategory.Collection().ToList()
-            };
-
-            return View(viewModel);
+                ProductFormViewModel viewModel = new ProductFormViewModel
+                {
+                    product = _contextProduct.Find(id),
+                    productCategories = _contextProductCategory.Collection().ToList()
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -171,17 +212,24 @@ namespace eShop.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProduct(Product product)
         {
-            Product selectedProduct = _contextProduct.Find(product.ProductID);
-            selectedProduct.ProductName = product.ProductName;
-            selectedProduct.ProductDescription = product.ProductDescription;
-            selectedProduct.ProductPrice = product.ProductPrice;
-            selectedProduct.ProductImage = product.ProductImage;
-            selectedProduct.ProductDiscount = product.ProductDiscount;
-            selectedProduct.ProductCategoryID = product.ProductCategoryID;
-            selectedProduct.ModifiedAt = DateTime.Now;
-            _contextProduct.Commit();
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                Product selectedProduct = _contextProduct.Find(product.ProductID);
+                selectedProduct.ProductName = product.ProductName;
+                selectedProduct.ProductDescription = product.ProductDescription;
+                selectedProduct.ProductPrice = product.ProductPrice;
+                selectedProduct.ProductImage = product.ProductImage;
+                selectedProduct.ProductDiscount = product.ProductDiscount;
+                selectedProduct.ProductCategoryID = product.ProductCategoryID;
+                selectedProduct.ModifiedAt = DateTime.Now;
+                _contextProduct.Commit();
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -190,8 +238,15 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult ListOfProductCategory()
         {
-            IEnumerable<ProductCategory> model = _contextProductCategory.Collection().ToList();
-            return View(model);
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                IEnumerable<ProductCategory> model = _contextProductCategory.Collection().ToList();
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -200,8 +255,15 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult CreateProductCategory()
         {
-            ProductCategory model = new ProductCategory();
-            return View(model);
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                ProductCategory model = new ProductCategory();
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -213,17 +275,23 @@ namespace eShop.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateProductCategory(ProductCategory productCategory)
         {
-            //Find product category that has a same "product category name"
-            ProductCategory selectedProductCategory = _contextProductCategory.Collection().SingleOrDefault(pc => pc.ProductCategoryName.ToLower() == productCategory.ProductCategoryName.ToLower());
-            if (selectedProductCategory == null)
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                productCategory.ProductCategoryID = Guid.NewGuid();
-                productCategory.CreatedAt = DateTime.Now;
-                _contextProductCategory.Insert(productCategory);
-                _contextProductCategory.Commit();
+                //Find product category that has a same "product category name"
+                ProductCategory selectedProductCategory = _contextProductCategory.Collection().SingleOrDefault(pc => pc.ProductCategoryName.ToLower() == productCategory.ProductCategoryName.ToLower());
+                if (selectedProductCategory == null)
+                {
+                    productCategory.ProductCategoryID = Guid.NewGuid();
+                    productCategory.CreatedAt = DateTime.Now;
+                    _contextProductCategory.Insert(productCategory);
+                    _contextProductCategory.Commit();
+                }
+                return RedirectToAction("ListOfProductCategory");
             }
-
-            return RedirectToAction("ListOfProductCategory");
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -233,9 +301,16 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult DeleteProductCategory(Guid id)
         {
-            ProductCategory productCategory = _contextProductCategory.Find(id);
-            _contextProductCategory.Commit();
-            return RedirectToAction("ListOfProductCategory");
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                ProductCategory productCategory = _contextProductCategory.Find(id);
+                _contextProductCategory.Commit();
+                return RedirectToAction("ListOfProductCategory");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -245,8 +320,15 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult EditProductCategory(Guid id)
         {
-            ProductCategory productCategory = _contextProductCategory.Find(id);
-            return View(productCategory);
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                ProductCategory productCategory = _contextProductCategory.Find(id);
+                return View(productCategory);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -258,12 +340,19 @@ namespace eShop.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProductCategory(ProductCategory productCategory)
         {
-            ProductCategory selectedProduct = _contextProductCategory.Find(productCategory.ProductCategoryID);
-            selectedProduct.ProductCategoryName = productCategory.ProductCategoryName;
-            selectedProduct.ModifiedAt = DateTime.Now;
-            _contextProductCategory.Commit();
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                ProductCategory selectedProduct = _contextProductCategory.Find(productCategory.ProductCategoryID);
+                selectedProduct.ProductCategoryName = productCategory.ProductCategoryName;
+                selectedProduct.ModifiedAt = DateTime.Now;
+                _contextProductCategory.Commit();
 
-            return RedirectToAction("ListOfProductCategory");
+                return RedirectToAction("ListOfProductCategory");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -272,12 +361,19 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult ListOfProductType()
         {
-            ListOfProductTypeViewModel viewModel = new ListOfProductTypeViewModel()
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                productTypes = _contextProductType.Collection().ToList(),
-                productCategories = _contextProductCategory.Collection().ToList()
-            };
-            return View(viewModel);
+                ListOfProductTypeViewModel viewModel = new ListOfProductTypeViewModel()
+                {
+                    productTypes = _contextProductType.Collection().ToList(),
+                    productCategories = _contextProductCategory.Collection().ToList()
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -286,12 +382,19 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult CreateProductType()
         {
-            ProductTypeFormViewModel viewModel = new ProductTypeFormViewModel()
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                productType = new ProductType(),
-                productCategories = _contextProductCategory.Collection().ToList()
-        };
-            return View(viewModel);
+                ProductTypeFormViewModel viewModel = new ProductTypeFormViewModel()
+                {
+                    productType = new ProductType(),
+                    productCategories = _contextProductCategory.Collection().ToList()
+                };
+                return View(viewModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -303,19 +406,26 @@ namespace eShop.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateProductType(ProductType productType)
         {
-            //Find product category that has a same "product category name"
-            ProductType selectedProductType = _contextProductType.Collection().SingleOrDefault(pc => pc.ProductTypeName.ToLower() == productType.ProductTypeName.ToLower());
-            if (selectedProductType == null)
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                ProductType AddedProductType = new ProductType();
-                AddedProductType.ProductTypeID = Guid.NewGuid();
-                AddedProductType.ProductTypeName = productType.ProductTypeName;
-                AddedProductType.ProductCategoryID = productType.ProductCategoryID;
-                AddedProductType.CreatedAt = DateTime.Now;
-                _contextProductType.Insert(AddedProductType);
-                _contextProductType.Commit();
+                //Find product category that has a same "product category name"
+                ProductType selectedProductType = _contextProductType.Collection().SingleOrDefault(pc => pc.ProductTypeName.ToLower() == productType.ProductTypeName.ToLower());
+                if (selectedProductType == null)
+                {
+                    ProductType AddedProductType = new ProductType();
+                    AddedProductType.ProductTypeID = Guid.NewGuid();
+                    AddedProductType.ProductTypeName = productType.ProductTypeName;
+                    AddedProductType.ProductCategoryID = productType.ProductCategoryID;
+                    AddedProductType.CreatedAt = DateTime.Now;
+                    _contextProductType.Insert(AddedProductType);
+                    _contextProductType.Commit();
+                }
+                return RedirectToAction("ListOfProductType");
             }
-            return RedirectToAction("ListOfProductType");
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -325,9 +435,16 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult DeleteProductType(Guid id)
         {
-            ProductType productType = _contextProductType.Find(id);
-            _contextProductType.Commit();
-            return RedirectToAction("ListOfProductType");
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                ProductType productType = _contextProductType.Find(id);
+                _contextProductType.Commit();
+                return RedirectToAction("ListOfProductType");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -337,8 +454,15 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult EditProductType(Guid id)
         {
-            ProductType productType = _contextProductType.Find(id);
-            return View(productType);
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                ProductType productType = _contextProductType.Find(id);
+                return View(productType);
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -350,12 +474,19 @@ namespace eShop.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProductType(ProductType productType)
         {
-            ProductType selectedProduct = _contextProductType.Find(productType.ProductTypeID);
-            selectedProduct.ProductTypeName = productType.ProductTypeName;
-            selectedProduct.ModifiedAt = DateTime.Now;
-            _contextProductType.Commit();
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                ProductType selectedProduct = _contextProductType.Find(productType.ProductTypeID);
+                selectedProduct.ProductTypeName = productType.ProductTypeName;
+                selectedProduct.ModifiedAt = DateTime.Now;
+                _contextProductType.Commit();
 
-            return RedirectToAction("ListOfProductType");
+                return RedirectToAction("ListOfProductType");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -363,21 +494,29 @@ namespace eShop.UI.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ActionResult CreateProductSizeQuantity(Guid Id)
+        public ActionResult CreateProductSizeQuantity(Guid productId)
         {
-            if(Id != null && (_contextProduct.Find(Id) != null))
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                ProductSizeQuantityFormViewModel viewModel = new ProductSizeQuantityFormViewModel()
-                {
-                    sizeQuantity = new SizeQuantity(),
-                    productID = Id
-                };
 
-                return View(viewModel);
+                if (productId != null && (_contextProduct.Find(productId) != null))
+                {
+                    ProductSizeQuantityFormViewModel viewModel = new ProductSizeQuantityFormViewModel()
+                    {
+                        sizeQuantity = new SizeQuantity(),
+                        productID = productId
+                    };
+
+                    return View(viewModel);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Login", "UserAccount");
             }
         }
 
@@ -390,16 +529,23 @@ namespace eShop.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateProductSizeQuantity(FormCollection formCollection)
         {
-            SizeQuantity sizeQuantity = new SizeQuantity();
-            sizeQuantity.SizeQuantityID = Guid.NewGuid();
-            sizeQuantity.SizeName = formCollection["sizeQuantity.SizeName"];
-            sizeQuantity.ProductID = Guid.Parse(formCollection["productID"]);
-            sizeQuantity.Quantity = int.Parse(formCollection["sizeQuantity.Quantity"]);
-            sizeQuantity.CreatedAt = DateTime.Now;
-            _contextSizeQuantity.Insert(sizeQuantity);
-            _contextSizeQuantity.Commit();
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
+            {
+                SizeQuantity sizeQuantity = new SizeQuantity();
+                sizeQuantity.SizeQuantityID = Guid.NewGuid();
+                sizeQuantity.SizeName = formCollection["sizeQuantity.SizeName"];
+                sizeQuantity.ProductID = Guid.Parse(formCollection["productID"]);
+                sizeQuantity.Quantity = int.Parse(formCollection["sizeQuantity.Quantity"]);
+                sizeQuantity.CreatedAt = DateTime.Now;
+                _contextSizeQuantity.Insert(sizeQuantity);
+                _contextSizeQuantity.Commit();
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
         /// <summary>
@@ -409,14 +555,21 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult EditProductSizeQuantity(Guid Id)
         {
-            if (Id != null && (_contextProduct.Find(Id) != null))
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                List<SizeQuantity> model = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id).ToList();
-                return View(model);
+                if (Id != null && (_contextProduct.Find(Id) != null))
+                {
+                    List<SizeQuantity> model = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id).ToList();
+                    return View(model);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Login", "UserAccount");
             }
         }
 
@@ -429,15 +582,22 @@ namespace eShop.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProductSizeQuantity(List<SizeQuantity> sizeQuantity)
         {
-            foreach(var item in sizeQuantity)
+            if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                SizeQuantity selectedSizeQuantity = _contextSizeQuantity.Find(item.SizeQuantityID);
-                selectedSizeQuantity.SizeName = item.SizeName;
-                selectedSizeQuantity.Quantity = item.Quantity;
-                selectedSizeQuantity.ModifiedAt = DateTime.Now;
+                foreach (var item in sizeQuantity)
+                {
+                    SizeQuantity selectedSizeQuantity = _contextSizeQuantity.Find(item.SizeQuantityID);
+                    selectedSizeQuantity.SizeName = item.SizeName;
+                    selectedSizeQuantity.Quantity = item.Quantity;
+                    selectedSizeQuantity.ModifiedAt = DateTime.Now;
+                }
+                _contextSizeQuantity.Commit();
+                return RedirectToAction("Index");
             }
-            _contextSizeQuantity.Commit();
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Login", "UserAccount");
+            }
         }
 
     }
