@@ -97,6 +97,7 @@ namespace eShop.Services
                 inputtedUserAccount.LastName = registerFormModel.LastName;
                 inputtedUserAccount.Email = registerFormModel.Email;
                 inputtedUserAccount.UserRoleID = _contextUserRole.Collection().SingleOrDefault(ur => ur.UserRoleName == "Customer").UserRoleID;
+                inputtedUserAccount.IsActive = true;
                 _contextUserAccount.Insert(inputtedUserAccount);
                 _contextUserAccount.Commit();
             }
@@ -109,16 +110,14 @@ namespace eShop.Services
         /// </summary>
         /// <param name="loginFormModel"></param>
         /// <returns></returns>
-        public Guid? LoginUser(LoginFormModel loginFormModel)
+        public UserAccount LoginUser(LoginFormModel loginFormModel)
         {
             string inputtedUserName = loginFormModel.UserName;
             string inputtedPassword = ComputeSha256Hash(loginFormModel.UserPassword);
-            UserAccount user = _contextUserAccount.Collection().SingleOrDefault(ua => ua.UserName == inputtedUserName && ua.UserPassword == inputtedPassword);
-            if (user != null)
-            {
-                return user.UserAccountID;
-            }
-            return null;
+            UserAccount selectedUser = _contextUserAccount.Collection().Include(ua => ua.UserRole)
+                .SingleOrDefault(ua => ua.UserName == inputtedUserName && ua.UserPassword == inputtedPassword 
+                && ua.UserRole.IsActive == true);
+            return selectedUser;
         }
 
         /// <summary>
@@ -226,6 +225,7 @@ namespace eShop.Services
         public void DeleteUserAddress(Guid UserAddressID)
         {
             UserAddress selectedUserAddress = _contextUserAddress.Find(UserAddressID);
+            selectedUserAddress.ModifiedAt = DateTime.Now;
             selectedUserAddress.IsActive = false;
             _contextUserAddress.Commit();
         }

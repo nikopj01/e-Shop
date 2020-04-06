@@ -171,6 +171,7 @@ namespace eShop.UI.Controllers
             if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
                 Product product = _contextProduct.Find(id);
+                product.ModifiedAt = DateTime.Now;
                 product.IsActive = false;
                 _contextProduct.Commit();
                 return RedirectToAction("Index");
@@ -303,7 +304,7 @@ namespace eShop.UI.Controllers
         {
             if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                ProductCategory productCategory = _contextProductCategory.Find(id);
+                _contextProductCategory.Delete(id);
                 _contextProductCategory.Commit();
                 return RedirectToAction("ListOfProductCategory");
             }
@@ -437,7 +438,7 @@ namespace eShop.UI.Controllers
         {
             if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                ProductType productType = _contextProductType.Find(id);
+                _contextProductType.Delete(id);
                 _contextProductType.Commit();
                 return RedirectToAction("ListOfProductType");
             }

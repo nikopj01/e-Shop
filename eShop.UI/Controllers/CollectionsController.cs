@@ -3,6 +3,7 @@ using eShop.Core.Models;
 using eShop.Core.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,9 +23,8 @@ namespace eShop.UI.Controllers
 
         public ActionResult MenTops()
         {
-            IEnumerable<Product> model = _contextProduct.Collection().Where(p =>
-                                                                        p.ProductType.ProductTypeName == "Top" &&
-                                                                        p.IsActive == true).ToList();
+            IEnumerable<Product> model = _contextProduct.Collection()
+                .Where(p =>p.ProductType.ProductTypeName == "Top" && p.IsActive == true).ToList();
             return View(model);
         }
 
@@ -32,8 +32,8 @@ namespace eShop.UI.Controllers
         {
             ProductDisplayViewModel viewModel = new ProductDisplayViewModel()
             {
-                product = _contextProduct.Collection().SingleOrDefault(p => p.ProductID == Id),
-                sizeQuantities = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id && sq.Quantity > 0).OrderBy(sq => sq.SizeName).ToList()
+                product = _contextProduct.Collection().SingleOrDefault(p => p.ProductID == Id && p.IsActive == true),
+                sizeQuantities = _contextSizeQuantity.Collection().Include(sq => sq.Product).Where(sq => sq.ProductID == Id && sq.Quantity > 0 && sq.Product.IsActive == true).OrderBy(sq => sq.SizeName).ToList()
             };
             return View(viewModel);
         }

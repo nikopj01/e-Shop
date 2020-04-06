@@ -227,16 +227,25 @@ namespace eShop.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid? userAccountID = userAccountS.LoginUser(loginFormModel);
-                if (userAccountID != null)
+                UserAccount userAccount = userAccountS.LoginUser(loginFormModel);
+                if (userAccount != null)
                 {
-                    //Existed user
-                    Session["UserAccountID"] = userAccountID;
-                    Session["UserRole"] = userAccountS.CheckUserRole(userAccountID);
-                    if (Session["UserRole"] as string == "Customer")
-                        return RedirectToLocal(returnUrl);
-                    else
-                        return RedirectToAction("Index", "ProductManager");
+                    if (userAccount.IsActive == true)
+                    {
+                        //Existed user - active user
+                        Session["UserAccountID"] = userAccount.UserAccountID;
+                        Session["UserRole"] = userAccountS.CheckUserRole(userAccount.UserAccountID);
+                        if (Session["UserRole"] as string == "Customer")
+                            return RedirectToLocal(returnUrl);
+                        else
+                            return RedirectToAction("Index", "ProductManager");
+                    }
+                    else if (userAccount.IsActive == false)
+                    {
+                        //Existed user - Deactivate user
+                        ViewBag.LoginMessage = "You have been deactived by admin";
+                        return View(loginFormModel);
+                    }
                 }
                 //Not existed user
                 ViewBag.LoginMessage = "Wrong Username or Password";

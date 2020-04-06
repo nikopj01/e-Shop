@@ -116,7 +116,8 @@ namespace eShop.Services
             Basket selectedBasket = _contextBasket.Collection().SingleOrDefault(b => b.UserAccountID == userAccountID);
             if(selectedBasket != null)
                 selectedBasketItems = _contextBasketItem.Collection().Include(bi => bi.Product).Include(bi => bi.SizeQuantity).Include(bi => bi.Product).
-                    Where(bi => bi.BasketID == selectedBasket.BasketID).OrderBy(bi => bi.Product.ProductName).ThenBy(bi => bi.SizeQuantity.SizeName).ToList();
+                    Where(bi => bi.BasketID == selectedBasket.BasketID && bi.Product.IsActive == true).
+                    OrderBy(bi => bi.Product.ProductName).ThenBy(bi => bi.SizeQuantity.SizeName).ToList();
             return selectedBasketItems;
         }
 
