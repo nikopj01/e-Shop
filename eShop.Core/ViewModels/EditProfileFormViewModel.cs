@@ -5,15 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eShop.Core.Models
+namespace eShop.Core.ViewModels
 {
-    public class LoginFormModel
+    public class EditProfileFormViewModel
     {
-        [Required(ErrorMessage = "User Name is required")]
-        [Display(Name = ("User Name"))]
-        public string UserName { get; set; }
+        public System.Guid UserAccountID { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "First Name is required")]
+        [Display(Name = ("User Name"))]
+        public string FirstName { get; set; }
+
+        [Display(Name = ("Last Name"))]
+        public string LastName { get; set; }
+
         [Display(Name = ("Password"))]
         [DataType(DataType.Password)]
         public string UserPassword { get; set; }

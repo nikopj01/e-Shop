@@ -82,20 +82,20 @@ namespace eShop.Services
         /// Method to register new user
         /// </summary>
         /// <param name="registerFormModel"></param>
-        public string RegisterUser(RegisterFormModel registerFormModel)
+        public string RegisterUser(RegisterFormViewModel registerFormViewModel)
         {
-            string registerMessage = ValidateUsernameEmail(registerFormModel.UserName, registerFormModel.Email);
+            string registerMessage = ValidateUsernameEmail(registerFormViewModel.UserName, registerFormViewModel.Email);
 
             if (registerMessage == null)
             {
                 //Valid username & email (New User)
                 UserAccount inputtedUserAccount = new UserAccount();
                 inputtedUserAccount.UserAccountID = Guid.NewGuid();
-                inputtedUserAccount.UserName = registerFormModel.UserName;
-                inputtedUserAccount.UserPassword = ComputeSha256Hash(registerFormModel.UserPassword);
-                inputtedUserAccount.FirstName = registerFormModel.FirstName;
-                inputtedUserAccount.LastName = registerFormModel.LastName;
-                inputtedUserAccount.Email = registerFormModel.Email;
+                inputtedUserAccount.UserName = registerFormViewModel.UserName;
+                inputtedUserAccount.UserPassword = ComputeSha256Hash(registerFormViewModel.UserPassword);
+                inputtedUserAccount.FirstName = registerFormViewModel.FirstName;
+                inputtedUserAccount.LastName = registerFormViewModel.LastName;
+                inputtedUserAccount.Email = registerFormViewModel.Email;
                 inputtedUserAccount.UserRoleID = _contextUserRole.Collection().SingleOrDefault(ur => ur.UserRoleName == "Customer").UserRoleID;
                 inputtedUserAccount.IsActive = true;
                 _contextUserAccount.Insert(inputtedUserAccount);
@@ -108,12 +108,12 @@ namespace eShop.Services
         /// <summary>
         /// Method to check existance of user
         /// </summary>
-        /// <param name="loginFormModel"></param>
+        /// <param name="LoginFormViewModel"></param>
         /// <returns></returns>
-        public UserAccount LoginUser(LoginFormModel loginFormModel)
+        public UserAccount LoginUser(LoginFormViewModel loginFormViewModel)
         {
-            string inputtedUserName = loginFormModel.UserName;
-            string inputtedPassword = ComputeSha256Hash(loginFormModel.UserPassword);
+            string inputtedUserName = loginFormViewModel.UserName;
+            string inputtedPassword = ComputeSha256Hash(loginFormViewModel.UserPassword);
             UserAccount selectedUser = _contextUserAccount.Collection().Include(ua => ua.UserRole)
                 .SingleOrDefault(ua => ua.UserName == inputtedUserName && ua.UserPassword == inputtedPassword 
                 && ua.UserRole.IsActive == true);
@@ -137,10 +137,10 @@ namespace eShop.Services
         /// </summary>
         /// <param name="userAccountID"></param>
         /// <returns></returns>
-        public EditProfileFormModel GetEditProfileFormModel(Guid? userAccountID)
+        public EditProfileFormViewModel GetEditProfileFormModel(Guid? userAccountID)
         {
             UserAccount selectedUserAccount = _contextUserAccount.Collection().Include(ua => ua.UserRole).SingleOrDefault(ua => ua.UserAccountID == userAccountID);
-            EditProfileFormModel model = new EditProfileFormModel();
+            EditProfileFormViewModel model = new EditProfileFormViewModel();
             model.UserAccountID = selectedUserAccount.UserAccountID;
             model.FirstName = selectedUserAccount.FirstName;
             model.LastName = selectedUserAccount.LastName;

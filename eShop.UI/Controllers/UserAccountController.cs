@@ -62,7 +62,7 @@ namespace eShop.UI.Controllers
             if (Session["UserAccountID"] != null)
             {
                 Guid? userAccountID = Session["UserAccountID"] as Guid?;
-                EditProfileFormModel model = userAccountS.GetEditProfileFormModel(userAccountID);
+                EditProfileFormViewModel model = userAccountS.GetEditProfileFormModel(userAccountID);
                 return View(model);
             }
             return RedirectToAction("Login");
@@ -75,25 +75,25 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProfile(EditProfileFormModel editProfileFormModel)
+        public ActionResult EditProfile(EditProfileFormViewModel editProfileFormViewModel)
         {
             if (ModelState.IsValid)
             {
                 if (Session["UserAccountID"] != null)
                 {
-                    UserAccount selectedUserAccount = _contextUserAccount.Collection().Include(ua => ua.UserRole).SingleOrDefault(ua => ua.UserAccountID == editProfileFormModel.UserAccountID);
+                    UserAccount selectedUserAccount = _contextUserAccount.Collection().Include(ua => ua.UserRole).SingleOrDefault(ua => ua.UserAccountID == editProfileFormViewModel.UserAccountID);
 
-                    selectedUserAccount.FirstName = editProfileFormModel.FirstName;
-                    selectedUserAccount.LastName = editProfileFormModel.LastName;
-                    if (editProfileFormModel.UserPassword != null)
-                        selectedUserAccount.UserPassword = userAccountS.ComputeSha256Hash(editProfileFormModel.UserPassword);
+                    selectedUserAccount.FirstName = editProfileFormViewModel.FirstName;
+                    selectedUserAccount.LastName = editProfileFormViewModel.LastName;
+                    if (editProfileFormViewModel.UserPassword != null)
+                        selectedUserAccount.UserPassword = userAccountS.ComputeSha256Hash(editProfileFormViewModel.UserPassword);
                     selectedUserAccount.ModifiedAt = DateTime.Now;
                     _contextUserAccount.Commit();
                     return RedirectToAction("Index");
                 }
                 return RedirectToAction("Login");
             }
-            return View(editProfileFormModel);
+            return View(editProfileFormViewModel);
         }
 
         public ActionResult AddAddress(string returnUrl = null)
@@ -170,7 +170,7 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         public ActionResult Register()
         {
-            RegisterFormModel model = new RegisterFormModel();
+            RegisterFormViewModel model = new RegisterFormViewModel();
             return View(model);
         }
 
@@ -181,13 +181,13 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterFormModel registerFormModel)
+        public ActionResult Register(RegisterFormViewModel registerFormViewModel)
         {
             string registerMessage = null;
             if (ModelState.IsValid)
             {
                 //Validate inputted username & email and Register User
-                registerMessage = userAccountS.RegisterUser(registerFormModel);
+                registerMessage = userAccountS.RegisterUser(registerFormViewModel);
 
                 if (registerMessage == null)
                 {
@@ -198,10 +198,10 @@ namespace eShop.UI.Controllers
                 {
                     //Invalid username & email
                     ViewBag.RegisterMessage = registerMessage;
-                    return View(registerFormModel);
+                    return View(registerFormViewModel);
                 }
             }
-            return View(registerFormModel);
+            return View(registerFormViewModel);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace eShop.UI.Controllers
         {
             if (Session["UserAccountID"] == null)
             {
-                LoginFormModel model = new LoginFormModel();
+                LoginFormViewModel model = new LoginFormViewModel();
                 return View(model);
             }
             else
@@ -230,11 +230,11 @@ namespace eShop.UI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginFormModel loginFormModel, string returnUrl)
+        public ActionResult Login(LoginFormViewModel loginFormViewModel, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                UserAccount userAccount = userAccountS.LoginUser(loginFormModel);
+                UserAccount userAccount = userAccountS.LoginUser(loginFormViewModel);
                 if (userAccount != null)
                 {
                     if (userAccount.IsActive == true)
@@ -251,13 +251,13 @@ namespace eShop.UI.Controllers
                     {
                         //Existed user - Deactivate user
                         ViewBag.LoginMessage = "You have been deactived by admin";
-                        return View(loginFormModel);
+                        return View(loginFormViewModel);
                     }
                 }
                 //Not existed user
                 ViewBag.LoginMessage = "Wrong Username or Password";
             }
-            return View(loginFormModel);
+            return View(loginFormViewModel);
         }
 
         /// <summary>

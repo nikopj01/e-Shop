@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eShop.Core.Models
+namespace eShop.Core.ViewModels
 {
-    public class RegisterFormModel
+    public class LoginFormViewModel
     {
         [Required(ErrorMessage = "User Name is required")]
         [Display(Name = ("User Name"))]
@@ -17,16 +17,5 @@ namespace eShop.Core.Models
         [Display(Name = ("Password"))]
         [DataType(DataType.Password)]
         public string UserPassword { get; set; }
-
-        [Required(ErrorMessage = "First Name is required")]
-        [Display(Name = ("User Name"))]
-        public string FirstName { get; set; }
-
-        [Display(Name = ("Last Name"))]
-        public string LastName { get; set; }
-
-        [Required(ErrorMessage = "E-mail is required")]
-        [Display(Name = ("E-mail"))]
-        public string Email { get; set; }
     }
 }
