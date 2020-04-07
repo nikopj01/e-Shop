@@ -96,6 +96,11 @@ namespace eShop.UI.Controllers
             return View(editProfileFormViewModel);
         }
 
+        /// <summary>
+        /// Method to display add address page
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         public ActionResult AddAddress(string returnUrl = null)
         {
             if(Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
@@ -106,6 +111,12 @@ namespace eShop.UI.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Method to add address to user account
+        /// </summary>
+        /// <param name="UserAddressFormModel"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddAddress(UserAddressFormModel UserAddressFormModel, string returnUrl = null)
@@ -128,6 +139,11 @@ namespace eShop.UI.Controllers
             return View(UserAddressFormModel);
         }
 
+        /// <summary>
+        /// Method to display edit address page
+        /// </summary>
+        /// <param name="userAddressID"></param>
+        /// <returns></returns>
         public ActionResult EditAddress(Guid userAddressID)
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
@@ -138,6 +154,11 @@ namespace eShop.UI.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Method to edit certain address
+        /// </summary>
+        /// <param name="userAddressFormModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditAddress(UserAddressFormModel userAddressFormModel)
@@ -155,6 +176,11 @@ namespace eShop.UI.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Method to Delete certain address
+        /// </summary>
+        /// <param name="userAddressID"></param>
+        /// <returns></returns>
         public ActionResult DeleteAddress(Guid userAddressID)
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")

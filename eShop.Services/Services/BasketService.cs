@@ -26,6 +26,11 @@ namespace eShop.Services
             _contextBasketItem = basketItem;
         }
 
+        /// <summary>
+        /// Method to get basket based on UserAccountID, if none, then basket will be created
+        /// </summary>
+        /// <param name="userAccountID"></param>
+        /// <returns></returns>
         public Basket GetBasket(string userAccountID)
         {
             if (userAccountID != null)
@@ -51,6 +56,14 @@ namespace eShop.Services
             }
         }
 
+        /// <summary>
+        /// Method to add or substract quantity of basket item
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="sizeQuantityID"></param>
+        /// <param name="userAccountID"></param>
+        /// <param name="quantity"></param>
+        /// <param name="isUpdate"></param>
         public void UpdateBasketItem(string productID, string sizeQuantityID, string userAccountID, int? quantity, bool? isUpdate)
         {
             Guid ProductID = Guid.Parse(productID);
@@ -88,6 +101,12 @@ namespace eShop.Services
             _contextBasketItem.Commit();
         }
 
+        /// <summary>
+        /// Method to delete selected basket item
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="sizeQuantityID"></param>
+        /// <param name="userAccountID"></param>
         public void RemoveBasketItem(string productID, string sizeQuantityID, string userAccountID)
         {
             Guid ProductID = Guid.Parse(productID);
@@ -109,6 +128,11 @@ namespace eShop.Services
             }
         }
 
+        /// <summary>
+        /// Method to get list of basket Item based on UserAccountID
+        /// </summary>
+        /// <param name="userAccountID"></param>
+        /// <returns></returns>
         public List<BasketItem> GetBasketItems(Guid? userAccountID)
         {
             List<BasketItem> selectedBasketItems = new List<BasketItem>();
@@ -121,6 +145,11 @@ namespace eShop.Services
             return selectedBasketItems;
         }
 
+        /// <summary>
+        /// Method to get subtotal of all basket item based on UserAccountID
+        /// </summary>
+        /// <param name="userAccountID"></param>
+        /// <returns></returns>
         public decimal GetBasketSubTotal(Guid? userAccountID)
         {
             List<BasketItem> selectedBasketItems = new List<BasketItem>();

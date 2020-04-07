@@ -32,6 +32,11 @@ namespace eShop.Services
         }
 
 
+        /// <summary>
+        /// Method to get list of address of selected user
+        /// </summary>
+        /// <param name="userAccountID"></param>
+        /// <returns></returns>
         public IEnumerable<UserAddress> GetUserAddress(Guid? userAccountID)
         {
             IEnumerable<UserAddress> userAddress = null;
@@ -40,6 +45,11 @@ namespace eShop.Services
             return userAddress;
         }
 
+        /// <summary>
+        /// Method to get discount percentage of inputted discount code
+        /// </summary>
+        /// <param name="discountCode"></param>
+        /// <returns></returns>
         public decimal? GetDiscountPercentage(string discountCode)
         {
             decimal? discountPercentage = 0;
@@ -51,6 +61,12 @@ namespace eShop.Services
             return discountPercentage;
         }
 
+        /// <summary>
+        /// Method to apply discount code to subtotal
+        /// </summary>
+        /// <param name="userAccountID"></param>
+        /// <param name="discountCode"></param>
+        /// <returns></returns>
         public decimal? ApplyDiscountCode(Guid? userAccountID, string discountCode)
         {
             decimal? discountPercentage = GetDiscountPercentage(discountCode);
@@ -64,6 +80,12 @@ namespace eShop.Services
             return subTotal;
         }
 
+        /// <summary>
+        /// Method to add order and all basket item to order item & to delete basket and basket item data
+        /// </summary>
+        /// <param name="userAccountID"></param>
+        /// <param name="discountCode"></param>
+        /// <param name="selectedAddressID"></param>
         public void PlaceOrder(Guid? userAccountID, string discountCode, Guid? selectedAddressID)
         {
             //***Add new order***

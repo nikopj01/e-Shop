@@ -19,6 +19,10 @@ namespace eShop.UI.Controllers
             orderService = orderS;
         }
 
+        /// <summary>
+        /// Method to display order page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
@@ -46,6 +50,11 @@ namespace eShop.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to apply inputted discount code to subtotal
+        /// </summary>
+        /// <param name="discountCode"></param>
+        /// <returns></returns>
         public JsonResult ApplyDiscountCode(string discountCode)
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
@@ -59,6 +68,11 @@ namespace eShop.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to place order
+        /// </summary>
+        /// <param name="orderViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult PlaceOrder(OrderViewModel orderViewModel)

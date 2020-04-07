@@ -21,6 +21,10 @@ namespace eShop.UI.Controllers
             _contextSizeQuantity = sizeQuantity;
         }
 
+        /// <summary>
+        /// Method to display collection of Men-Top product
+        /// </summary>
+        /// <returns></returns>
         public ActionResult MenTops()
         {
             IEnumerable<Product> model = _contextProduct.Collection()
@@ -30,12 +34,17 @@ namespace eShop.UI.Controllers
             return View(model);
         }
 
-        public ActionResult Product(Guid Id)
+        /// <summary>
+        /// Method to display certain product based on productID
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <returns></returns>
+        public ActionResult Product(Guid productID)
         {
             ProductDisplayViewModel viewModel = new ProductDisplayViewModel()
             {
-                product = _contextProduct.Collection().SingleOrDefault(p => p.ProductID == Id && p.IsActive == true),
-                sizeQuantities = _contextSizeQuantity.Collection().Include(sq => sq.Product).Where(sq => sq.ProductID == Id && sq.Quantity > 0 && sq.Product.IsActive == true).OrderBy(sq => sq.SizeName).ToList()
+                product = _contextProduct.Collection().SingleOrDefault(p => p.ProductID == productID && p.IsActive == true),
+                sizeQuantities = _contextSizeQuantity.Collection().Include(sq => sq.Product).Where(sq => sq.ProductID == productID && sq.Quantity > 0 && sq.Product.IsActive == true).OrderBy(sq => sq.SizeName).ToList()
             };
             return View(viewModel);
         }

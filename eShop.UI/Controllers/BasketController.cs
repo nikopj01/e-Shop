@@ -20,6 +20,10 @@ namespace eShop.UI.Controllers
             basketService = basketS;
         }
 
+        /// <summary>
+        /// Method to display basket page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
@@ -37,6 +41,13 @@ namespace eShop.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to update quantity of basket item (Add 1 / Delete 1 / Add n <inputted quantity>)
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="sizeQuantityID"></param>
+        /// <param name="quantity"></param>
+        /// <param name="isUpdate"></param>
         public void UpdateBasketItem(string productID, string sizeQuantityID, int? quantity, bool? isUpdate)
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer" 
@@ -51,6 +62,11 @@ namespace eShop.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to delete selected basket item
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="sizeQuantityID"></param>
         public void RemoveBasketItem(string productID, string sizeQuantityID)
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer"
