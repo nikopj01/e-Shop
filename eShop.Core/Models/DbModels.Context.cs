@@ -27,6 +27,7 @@ namespace eShop.Core.Models
     
         public virtual DbSet<Basket> Baskets { get; set; }
         public virtual DbSet<BasketItem> BasketItems { get; set; }
+        public virtual DbSet<DiscountCode> DiscountCodes { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Product> Products { get; set; }

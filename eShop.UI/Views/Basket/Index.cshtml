@@ -1,4 +1,4 @@
-﻿@model eShop.Core.ViewModels.BasketItemViewModel
+﻿@model eShop.Core.ViewModels.BasketViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -129,7 +129,7 @@
     </table>
     @if (Model.basketSubTotal != 0)
     {
-        @Model.basketSubTotal<br>
+        <text>Subtotal: USD $</text>@Model.basketSubTotal<br>
     }
-    <button onclick="location.href='@Url.Action("Index", "Home")'">Buy</button>
+    <button onclick="location.href='@Url.Action("Index", "Order")'">Proceed to Checkout</button>
 </div>

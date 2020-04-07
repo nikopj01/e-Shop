@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace eShop.Core.ViewModels
 {
-    public class BasketItemViewModel
+    public class BasketViewModel
     {
         public IEnumerable<BasketItem> basketItems { get; set; }
         public decimal basketSubTotal { get; set; }

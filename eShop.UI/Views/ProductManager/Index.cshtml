@@ -53,11 +53,11 @@
                         }
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "EditProduct", new { id = item.ProductID }) | <br>
-                        @Html.ActionLink("Add Size & Quantity", "CreateProductSizeQuantity", new { id = item.ProductID }) | <br>
-                        @Html.ActionLink("Edit Size & Quantity", "EditProductSizeQuantity", new { id = item.ProductID }) | <br>
-                        @Html.ActionLink("Details", "Details", new { id = item.ProductID }) | <br>
-                        @Html.ActionLink("Delete", "DeleteProduct", new { id = item.ProductID })
+                        @Html.ActionLink("Edit", "EditProduct", new { productID = item.ProductID }) | <br>
+                        @Html.ActionLink("Add Size & Quantity", "CreateProductSizeQuantity", new { productID = item.ProductID }) | <br>
+                        @Html.ActionLink("Edit Size & Quantity", "EditProductSizeQuantity", new { productID = item.ProductID }) | <br>
+                        @*@Html.ActionLink("Details", "Details", new { id = item.ProductID }) | <br>*@
+                        @Html.ActionLink("Delete", "DeleteProduct", new { productID = item.ProductID })
                     </td>
                 </tr>
             }

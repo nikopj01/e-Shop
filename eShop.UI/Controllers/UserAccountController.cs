@@ -96,7 +96,7 @@ namespace eShop.UI.Controllers
             return View(editProfileFormModel);
         }
 
-        public ActionResult AddAddress()
+        public ActionResult AddAddress(string returnUrl = null)
         {
             if(Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
             {
@@ -108,7 +108,7 @@ namespace eShop.UI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddAddress(UserAddressFormModel UserAddressFormModel)
+        public ActionResult AddAddress(UserAddressFormModel UserAddressFormModel, string returnUrl = null)
         {
             if (ModelState.IsValid)
             {
@@ -116,7 +116,14 @@ namespace eShop.UI.Controllers
                 {
                     userAccountS.AddUserAddress(UserAddressFormModel, Session["UserAccountID"] as Guid?);
                 }
-                return RedirectToAction("Index");
+                if(returnUrl == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                else if (returnUrl != null)
+                {
+                    return RedirectToLocal(returnUrl);
+                }
             }
             return View(UserAddressFormModel);
         }

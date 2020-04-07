@@ -164,13 +164,13 @@ namespace eShop.UI.Controllers
         /// <summary>
         /// Method to delete product based on Id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="productID"></param>
         /// <returns></returns>
-        public ActionResult DeleteProduct(Guid id)
+        public ActionResult DeleteProduct(Guid productID)
         {
             if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                Product product = _contextProduct.Find(id);
+                Product product = _contextProduct.Find(productID);
                 product.ModifiedAt = DateTime.Now;
                 product.IsActive = false;
                 _contextProduct.Commit();
@@ -185,15 +185,15 @@ namespace eShop.UI.Controllers
         /// <summary>
         /// method to display "edit product" page
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="productID"></param>
         /// <returns></returns>
-        public ActionResult EditProduct(Guid id)
+        public ActionResult EditProduct(Guid productID)
         {
             if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
                 ProductFormViewModel viewModel = new ProductFormViewModel
                 {
-                    product = _contextProduct.Find(id),
+                    product = _contextProduct.Find(productID),
                     productCategories = _contextProductCategory.Collection().ToList()
                 };
                 return View(viewModel);
@@ -495,17 +495,17 @@ namespace eShop.UI.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ActionResult CreateProductSizeQuantity(Guid productId)
+        public ActionResult CreateProductSizeQuantity(Guid productID)
         {
             if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
 
-                if (productId != null && (_contextProduct.Find(productId) != null))
+                if (productID != null && (_contextProduct.Find(productID) != null))
                 {
                     ProductSizeQuantityFormViewModel viewModel = new ProductSizeQuantityFormViewModel()
                     {
                         sizeQuantity = new SizeQuantity(),
-                        productID = productId
+                        productID = productID
                     };
 
                     return View(viewModel);
@@ -554,13 +554,13 @@ namespace eShop.UI.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ActionResult EditProductSizeQuantity(Guid Id)
+        public ActionResult EditProductSizeQuantity(Guid productID)
         {
             if (Session["UserRole"] != null && Session["UserRole"] as string == "Admin")
             {
-                if (Id != null && (_contextProduct.Find(Id) != null))
+                if (productID != null && (_contextProduct.Find(productID) != null))
                 {
-                    List<SizeQuantity> model = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == Id).ToList();
+                    List<SizeQuantity> model = _contextSizeQuantity.Collection().Where(sq => sq.ProductID == productID).ToList();
                     return View(model);
                 }
                 else

@@ -1,0 +1,130 @@
+﻿@model eShop.Core.ViewModels.OrderViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#deleteDC").hide();
+
+        $("#submitDC").click(function () {
+            if ($("#discountCode").val().length > 0) {
+                var discountCode = $("#discountCode").val();
+                //Post request
+                $.post("/Order/ApplyDiscountCode",
+                    { discountCode: discountCode },
+                    function (data) {
+                        if (data == 0) {
+                            $("#discountCodeSuccessMessage").text("");
+                            $("#discountCode").removeAttr("disabled").val("");
+                            $("#discountCodeErrorMessage").text("The discount code is not valid.");
+                            $("#deleteDC").hide();
+                            $("#submitDC").show();
+                        } else {
+                            $("#discountCodeErrorMessage").text("");
+                            $("#discountCodeSuccessMessage").text("The discount code is successfully applied.");
+                            $("#subTotal").text(data);
+                            $("#discountCode").attr("disabled", "disabled");
+                            $("#deleteDC").show();
+                            $("#submitDC").hide();
+                            $("#discountCodeHiddenValue").val($("#discountCode").val());
+                        }
+                    }
+                );
+                //Once request completed, display delete discount code button
+                $(document).ajaxComplete(function () {
+                });
+            } else {
+                alert("Please input discount Code");
+
+            }
+
+        });
+
+        $("#deleteDC").click(function () {
+            var oriSubTotal = $("#oriSubTotal").val();
+            $("#subTotal").text(oriSubTotal);
+            $("#discountCodeErrorMessage").text("");
+            $("#discountCodeSuccessMessage").text("");
+            $("#deleteDC").hide();
+            $("#submitDC").show();
+            $("#discountCode").removeAttr("disabled").val("");
+            $("#discountCodeHiddenValue").val("");
+        });
+    });
+</script>
+
+<div class="container">
+    <table class="table">
+        <tr>
+            <th class="text-center">
+                @Html.DisplayName("Product Picture")
+            </th>
+            <th class="text-center">
+                @Html.DisplayName("Product Name")
+            </th>
+            <th class="text-center">
+                @Html.DisplayName("Quantity")
+            </th>
+            <th class="text-center">
+                @Html.DisplayName("Total Price")
+            </th>
+        </tr>
+        @foreach (var item in Model.basketItems)
+        {
+            var totalProductPrice = item.Quantity * item.Product.ProductPrice;
+            <tr>
+                <td class="text-center">
+                    <img class="img-thumbnail" style="height:50px" src="~/Content/ProductImages/@item.Product.ProductImage" />
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Product.ProductName) -
+                    @Html.DisplayFor(modelItem => item.SizeQuantity.SizeName)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td class="text-center">
+                    <label>$ @totalProductPrice</label>
+                </td>
+            </tr>
+        }
+    </table>
+    @if (Model.basketSubTotal != 0)
+    {
+        @Html.HiddenFor(model => model.basketSubTotal, new { id = "oriSubTotal" })
+        <label id="subTotal">@Model.basketSubTotal </label>
+    }
+    <div>
+        <label for="usr">Discount Code:</label> <br>
+        @Html.TextBoxFor(Model => Model.InputtedDiscountCode, new { id = "discountCode" })
+        <label class="text-success" id="discountCodeSuccessMessage"></label>
+        <label class="text-danger" id="discountCodeErrorMessage"></label>
+        <button type="submit" class="btn btn-primary" id="submitDC">Submit</button>
+        <button type="submit" class="btn btn-primary" id="deleteDC">Delete</button>
+    </div>
+    <br>
+    @using (Html.BeginForm("PlaceOrder", "Order", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ActionLink("Add Address", "AddAddress", "UserAccount", new { returnUrl = Request.Url.PathAndQuery}, null)
+        <div class="form-group">
+            @Html.LabelFor(model => model.selectedAddressID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.selectedAddressID, new SelectList(Model.userAddresses, "UserAddressID", "Address"), "Select One Address", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.selectedAddressID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.HiddenFor(Model => Model.InputtedDiscountCode, new { id = "discountCodeHiddenValue" })
+        <button type="submit" class="btn btn-primary" id="submitDC">Place Order</button>
+    }
+</div>

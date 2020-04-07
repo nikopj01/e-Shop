@@ -109,7 +109,7 @@ namespace eShop.Services
             }
         }
 
-        public List<BasketItem> GetBasketItems(Guid userAccountID)
+        public List<BasketItem> GetBasketItems(Guid? userAccountID)
         {
             List<BasketItem> selectedBasketItems = new List<BasketItem>();
 
@@ -121,7 +121,7 @@ namespace eShop.Services
             return selectedBasketItems;
         }
 
-        public decimal GetBasketSummary(Guid userAccountID)
+        public decimal GetBasketSubTotal(Guid? userAccountID)
         {
             List<BasketItem> selectedBasketItems = new List<BasketItem>();
             decimal basketSubTotal = 0;

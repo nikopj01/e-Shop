@@ -24,7 +24,9 @@ namespace eShop.UI.Controllers
         public ActionResult MenTops()
         {
             IEnumerable<Product> model = _contextProduct.Collection()
-                .Where(p =>p.ProductType.ProductTypeName == "Top" && p.IsActive == true).ToList();
+                .Where(p => p.ProductType.ProductTypeName == "Top" && p.IsActive == true).ToList();
+            //IEnumerable<Product> model = _contextProduct.Collection()
+            //    .Where(p => p.ProductType.ProductTypeName.Contains("op") && p.IsActive == true).ToList();
             return View(model);
         }
 

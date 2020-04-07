@@ -24,16 +24,16 @@ namespace eShop.UI.Controllers
         {
             if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
             {
-                BasketItemViewModel viewModel = new BasketItemViewModel()
+                BasketViewModel viewModel = new BasketViewModel()
                 {
                     basketItems = basketService.GetBasketItems(Guid.Parse(Session["UserAccountID"].ToString())),
-                    basketSubTotal = basketService.GetBasketSummary(Guid.Parse(Session["UserAccountID"].ToString()))
+                    basketSubTotal = basketService.GetBasketSubTotal(Guid.Parse(Session["UserAccountID"].ToString()))
                 };
                 return View(viewModel);
             }   
             else
             {
-                return RedirectToAction("Login", "UserAccount", new { returnUrl = "/Basket/Index"});
+                return RedirectToAction("Login", "UserAccount", new { returnUrl = "/Basket"});
             }
         }
 

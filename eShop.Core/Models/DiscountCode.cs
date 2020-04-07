@@ -12,29 +12,24 @@ namespace eShop.Core.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class DiscountCode
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Order()
+        public DiscountCode()
         {
-            this.OrderItems = new HashSet<OrderItem>();
+            this.Orders = new HashSet<Order>();
         }
     
-        public System.Guid OrderID { get; set; }
-        public Nullable<System.Guid> UserAccountID { get; set; }
-        public Nullable<System.Guid> UserAddressID { get; set; }
-        public Nullable<System.Guid> DiscountCodeID { get; set; }
-        public string Status { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
-        public Nullable<System.DateTime> ShipDate { get; set; }
+        public System.Guid DiscountCodeID { get; set; }
+        public string Code { get; set; }
+        public string DiscountCodeDescription { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
         public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> ModifiedAt { get; set; }
-        public Nullable<decimal> Total { get; set; }
+        public Nullable<decimal> DiscountPercentage { get; set; }
     
-        public virtual DiscountCode DiscountCode { get; set; }
-        public virtual UserAccount UserAccount { get; set; }
-        public virtual UserAddress UserAddress { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }
