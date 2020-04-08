@@ -16,7 +16,7 @@
                         <img class="card-img-top" src="~/Content/ProductImages/@item.ProductImage">
                         <div class="card-footer text-center" style="border: none;">
                             @*<a href="#" class="text-dark font-weight-bold">@item.ProductName</a>*@
-                            @Html.ActionLink(@item.ProductName, "Product","Collections", new { id = item.ProductID }, new { @class = "text-dark font-weight-bold"})<br>
+                            @Html.ActionLink(@item.ProductName, "Product","Collections", new { productID = item.ProductID }, new { @class = "text-dark font-weight-bold"})<br>
                             <a href="#" class="text-dark">RM @item.ProductPrice</a>
                             <br>
                             @*<small class="text-muted"><del>RM 1000</del></small>*@

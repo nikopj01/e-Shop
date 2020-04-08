@@ -54,7 +54,8 @@ namespace eShop.Services
         {
             decimal? discountPercentage = 0;
             DiscountCode selectedDiscountCode = _contextDiscountCode.Collection().SingleOrDefault(dc => dc.Code == discountCode);
-            if (selectedDiscountCode != null)
+            DateTime currentDate = DateTime.Now;
+            if (selectedDiscountCode != null && currentDate >= selectedDiscountCode.StartDate && currentDate <= selectedDiscountCode.EndDate)
             {
                 discountPercentage = selectedDiscountCode.DiscountPercentage;
             }

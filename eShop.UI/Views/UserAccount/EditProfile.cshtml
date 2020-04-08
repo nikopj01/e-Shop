@@ -11,54 +11,83 @@
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }
 }
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
 
-    <div class="container">
-        <h2>Edit Profile</h2>
+<script>
 
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+    $(document).ready(function () {
+        $("#newPasswordDiv").hide();
+        $("#cancelNewPasswordBtn").hide();
 
-    <div class="form-horizontal">
-        <h4>UserAccount</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.UserAccountID)
+        $("#newPasswordBtn").click(function () {
+            $("#newPasswordDiv").show();
+            $('#userPasswordInput').attr('required', 'required');
+            $("#cancelNewPasswordBtn").show();
+            $(this).hide();
+        });
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+        $("#cancelNewPasswordBtn").click(function () {
+            $('#userPasswordInput').removeAttr('required');
+            $("#newPasswordDiv").hide();
+            $(this).hide();
+            $("#newPasswordBtn").show();
+        });
+    });
+</script>
+<div class="container">
+    <h2>Edit Profile</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>UserAccount</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserAccountID)
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Username : </label>
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">First Name : </label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Last Name : </label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" id="newPasswordDiv">
+                <label class="control-label col-md-12">New Password :</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @class = "form-control", id = "userPasswordInput"} })
+                    @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
             </div>
         </div>
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-12">New Password (Left it to use existing password)</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-        }
-
-        <div>
-            @Html.ActionLink("Back to Profile", "Index")
-        </div>
-    </div>
+    <button type="button" class="ml-3 btn btn-info" id="newPasswordBtn">Add New Password</button>
+    <button type="button" class="ml-3 btn btn-danger " id="cancelNewPasswordBtn">Cancel New Password</button>
+</div>

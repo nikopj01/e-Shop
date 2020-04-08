@@ -141,6 +141,7 @@ namespace eShop.Services
         {
             UserAccount selectedUserAccount = _contextUserAccount.Collection().Include(ua => ua.UserRole).SingleOrDefault(ua => ua.UserAccountID == userAccountID);
             EditProfileFormViewModel model = new EditProfileFormViewModel();
+            model.UserName = selectedUserAccount.UserName;
             model.UserAccountID = selectedUserAccount.UserAccountID;
             model.FirstName = selectedUserAccount.FirstName;
             model.LastName = selectedUserAccount.LastName;

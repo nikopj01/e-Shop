@@ -11,8 +11,12 @@ namespace eShop.Core.ViewModels
     {
         public System.Guid UserAccountID { get; set; }
 
-        [Required(ErrorMessage = "First Name is required")]
+
         [Display(Name = ("User Name"))]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "First Name is required")]
+        [Display(Name = ("First Name"))]
         public string FirstName { get; set; }
 
         [Display(Name = ("Last Name"))]
