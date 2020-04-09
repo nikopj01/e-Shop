@@ -109,6 +109,7 @@
     <Compile Include="Models\UserRole.cs">
       <DependentUpon>DbModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BasketItemCountViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\UserAddressFormViewModel.cs" />
     <Compile Include="ViewModels\EditProfileFormViewModel.cs" />

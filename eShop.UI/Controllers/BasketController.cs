@@ -80,5 +80,21 @@ namespace eShop.UI.Controllers
                 RedirectToAction("Index");
             }
         }
+
+        public PartialViewResult BasketPartial()
+        {
+            BasketItemCountViewModel model = new BasketItemCountViewModel();
+            if (Session["UserAccountID"] != null && Session["UserRole"] as string == "Customer")
+            {
+                IEnumerable<BasketItem> basketItems = basketService.GetBasketItems(Guid.Parse(Session["UserAccountID"].ToString()));
+                
+                if(basketItems.Count() > 0)
+                {
+                    foreach (var item in basketItems)
+                        model.basketItemCount += 1;
+                }
+            }
+            return PartialView(model);
+        }
     }
 }

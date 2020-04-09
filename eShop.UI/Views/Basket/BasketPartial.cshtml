@@ -1,0 +1,16 @@
+﻿@model eShop.Core.ViewModels.BasketItemCountViewModel
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+
+
+<li class="nav-item">
+    <a class="nav-link" href="@Url.Action("Index","Basket")">
+        <i style="font-size:24px" class="fa">
+            &#xf07a;<span class="badge badge-pill badge-danger" style="font-size:10px">@Model.basketItemCount</span>
+        </i>
+    </a>
+</li>
+

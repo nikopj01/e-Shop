@@ -1,143 +1,50 @@
-﻿<!DOCTYPE html>
-<html>
+﻿
+
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    @Scripts.Render("~/bundles/jquery")
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/js/mdb.min.js"></script>
-    <link rel="stylesheet" type="text/css" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        #ex4 .p1[data-count]:after {
+            position: absolute;
+            right: 20%;
+            top: 15%;
+            content: attr(data-count);
+            font-size: 37%;
+            padding: .1em;
+            border-radius: 50%;
+            line-height: 1em;
+            color: white;
+            background: rgba(255,0,0,.85);
+            text-align: center;
+            min-width: 1em;
+            font-weight:bold;
+        }
+    </style>
 </head>
 <body>
-
-    <!--Pagination -->
-    <nav>
-        <ul class="pagination ">
-
-            <!--Numbers-->
-            <li class="page-item"><a class="page-link">1</a></li>
-            <li class="page-item"><a class="page-link">2</a></li>
-            <li class="page-item"><a class="page-link">3</a></li>
-            <li class="page-item"><a class="page-link">4</a></li>
-
-        </ul>
-    </nav>
-    <!--/Pagination -->
-
-    <hr />
-    @*Jquery*@ 
-    <script type="text/javascript">
-    	$(document).ready(function(){
-
-    		//Hide all cards
-    		$(".card").each(function(index, value){
-    			$('.card').hide();
-    		})
-
-
-    		$(".page-link").on('click', function(){
-
-                //remove previous active page-link
-    			$(".page-link").each(function(index, value){
-    				$(value).parent().removeClass("active");
-    			});
-
-    			//Hide all cards
-	    		$(".card").each(function(index, value){
-	    			$('.card').hide();
-	    		})
-
-                //add the "active" class to the page-link
-                $(this).parent().addClass("active");
-                //get the id from the page-link "text"
-                var cardId = "#" + $(this).text();
-                //show it
-    			$(cardId).show();
-    		});
-
-    	});
-    </script>
-
-
-
-
-    <div class="container">
-        <!--Card-->
-        <div id="1" class="card">
-
-            <!--Card image-->
-            <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg" alt="Card image cap">
-            <!--/.Card image-->
-            <!--Card content-->
-            <div class="card-block">
-                <!--Title-->
-                <h4 class="card-title">This is card 1</h4>
-                <!--Text-->
-                <p class="card-text">First content</p>
-                <a href="#" class="btn btn-primary">Button</a>
-            </div>
-            <!--/.Card content-->
-
+    @if (true)
+    {
+        var count = 44;
+        <div id="ex4">
+            <span class="p1 fa-stack fa-2x has-badge" data-count="44">
+                <i style="font-size:24px" class="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse" ></i>
+            </span>
         </div>
-        <!--/.Card-->
-        <!--Card-->
-        <div id="2" class="card">
-
-            <!--Card image-->
-            <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg" alt="Card image cap">
-            <!--/.Card image-->
-            <!--Card content-->
-            <div class="card-block">
-                <!--Title-->
-                <h4 class="card-title">This is card 2</h4>
-                <!--Text-->
-                <p class="card-text">Second content</p>
-                <a href="#" class="btn btn-primary">Button</a>
-            </div>
-            <!--/.Card content-->
-
+    }
+    else
+    {
+        <div id="ex4">
+            <span class="p1 fa-stack fa-2x has-badge" >
+                <i style="font-size:24px" class="p3 fa fa-shopping-cart fa-stack-1x xfa-inverse"></i>
+            </span>
         </div>
-        <!--/.Card-->
-        <!--Card-->
-        <div id="3" class="card">
-
-            <!--Card image-->
-            <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg" alt="Card image cap">
-            <!--/.Card image-->
-            <!--Card content-->
-            <div class="card-block">
-                <!--Title-->
-                <h4 class="card-title">This is card 3</h4>
-                <!--Text-->
-                <p class="card-text">Third content</p>
-                <a href="#" class="btn btn-primary">Button</a>
-            </div>
-            <!--/.Card content-->
-
-        </div>
-        <!--/.Card-->
-        <!--Card-->
-        <div id="4" class="card">
-
-            <!--Card image-->
-            <img class="img-fluid" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg" alt="Card image cap">
-            <!--/.Card image-->
-            <!--Card content-->
-            <div class="card-block">
-                <!--Title-->
-                <h4 class="card-title">This is card 4</h4>
-                <!--Text-->
-                <p class="card-text">Fourth content</p>
-                <a href="#" class="btn btn-primary">Button</a>
-            </div>
-            <!--/.Card content-->
-
-        </div>
-        <!--/.Card-->
-    </div>
-
-
-
+    }
 
 </body>
 </html>
