@@ -1,5 +1,7 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    ViewBag.LayoutMessage = @TempData["LayoutMessage"];
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container-fluid">

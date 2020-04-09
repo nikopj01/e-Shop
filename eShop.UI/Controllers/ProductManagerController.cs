@@ -153,6 +153,7 @@ namespace eShop.UI.Controllers
                 //        }
                 //    }
 
+                TempData["AdminLayoutMessage"] = "Succesfully Added New Product";
                 return RedirectToAction("Index");
             }
             else
@@ -174,6 +175,7 @@ namespace eShop.UI.Controllers
                 product.ModifiedAt = DateTime.Now;
                 product.IsActive = false;
                 _contextProduct.Commit();
+                TempData["AdminLayoutMessage"] = "Succesfully Deleted Product";
                 return RedirectToAction("Index");
             }
             else
@@ -225,6 +227,7 @@ namespace eShop.UI.Controllers
                 selectedProduct.ModifiedAt = DateTime.Now;
                 _contextProduct.Commit();
 
+                TempData["AdminLayoutMessage"] = "Succesfully Edited Product";
                 return RedirectToAction("Index");
             }
             else
@@ -287,6 +290,7 @@ namespace eShop.UI.Controllers
                     _contextProductCategory.Insert(productCategory);
                     _contextProductCategory.Commit();
                 }
+                TempData["AdminLayoutMessage"] = "Succesfully Added New Product Category";
                 return RedirectToAction("ListOfProductCategory");
             }
             else
@@ -306,6 +310,7 @@ namespace eShop.UI.Controllers
             {
                 _contextProductCategory.Delete(id);
                 _contextProductCategory.Commit();
+                TempData["AdminLayoutMessage"] = "Succesfully Deleted Product Category";
                 return RedirectToAction("ListOfProductCategory");
             }
             else
@@ -347,6 +352,8 @@ namespace eShop.UI.Controllers
                 selectedProduct.ProductCategoryName = productCategory.ProductCategoryName;
                 selectedProduct.ModifiedAt = DateTime.Now;
                 _contextProductCategory.Commit();
+
+                TempData["AdminLayoutMessage"] = "Succesfully Edited New Product Category";
 
                 return RedirectToAction("ListOfProductCategory");
             }
@@ -421,6 +428,7 @@ namespace eShop.UI.Controllers
                     _contextProductType.Insert(AddedProductType);
                     _contextProductType.Commit();
                 }
+                TempData["AdminLayoutMessage"] = "Succesfully Created New Product Type";
                 return RedirectToAction("ListOfProductType");
             }
             else
@@ -440,6 +448,7 @@ namespace eShop.UI.Controllers
             {
                 _contextProductType.Delete(id);
                 _contextProductType.Commit();
+                TempData["AdminLayoutMessage"] = "Succesfully Deleted Product Type";
                 return RedirectToAction("ListOfProductType");
             }
             else
@@ -481,6 +490,7 @@ namespace eShop.UI.Controllers
                 selectedProduct.ProductTypeName = productType.ProductTypeName;
                 selectedProduct.ModifiedAt = DateTime.Now;
                 _contextProductType.Commit();
+                TempData["AdminLayoutMessage"] = "Succesfully Edited Product Type";
 
                 return RedirectToAction("ListOfProductType");
             }
@@ -541,6 +551,7 @@ namespace eShop.UI.Controllers
                 _contextSizeQuantity.Insert(sizeQuantity);
                 _contextSizeQuantity.Commit();
 
+                TempData["AdminLayoutMessage"] = "Succesfully Added New Size of Selected Product";
                 return RedirectToAction("Index");
             }
             else
@@ -593,6 +604,7 @@ namespace eShop.UI.Controllers
                     selectedSizeQuantity.ModifiedAt = DateTime.Now;
                 }
                 _contextSizeQuantity.Commit();
+                TempData["AdminLayoutMessage"] = "Succesfully Edited Size of Selected Product";
                 return RedirectToAction("Index");
             }
             else

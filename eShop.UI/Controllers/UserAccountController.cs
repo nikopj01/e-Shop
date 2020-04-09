@@ -217,6 +217,7 @@ namespace eShop.UI.Controllers
 
                 if (registerMessage == null)
                 {
+                    TempData["LayoutMessage"] = "Succesfully Registered, Please Login";
                     //Valid username & email
                     return RedirectToAction("Login");
                 }
@@ -268,6 +269,7 @@ namespace eShop.UI.Controllers
                         //Existed user - active user
                         Session["UserAccountID"] = userAccount.UserAccountID;
                         Session["UserRole"] = userAccountS.CheckUserRole(userAccount.UserAccountID);
+                        TempData["LayoutMessage"] = "Welcome Back " + userAccount.FirstName + " " + userAccount.LastName;
                         if (Session["UserRole"] as string == "Customer")
                             return RedirectToLocal(returnUrl);
                         else
