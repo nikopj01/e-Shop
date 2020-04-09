@@ -48,5 +48,23 @@ namespace eShop.UI.Controllers
             };
             return View(viewModel);
         }
+
+        /// <summary>
+        /// Method to display collection of product based on inputted product name
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Search(string productName)
+        {
+            if(productName != null)
+            {
+                IEnumerable<Product> model = _contextProduct.Collection()
+                    .Where(p => p.ProductName.Contains(productName) && p.IsActive == true).ToList();
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
     }
 }

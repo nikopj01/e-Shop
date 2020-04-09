@@ -109,6 +109,11 @@
                 }
             </div>
         </nav>
+        @*@using (Html.BeginForm("Search", "Collections", FormMethod.Post, null))
+        {
+        <input type="text" id="productName" name="productName" />
+        <input type="submit" value="Submit" />
+        }*@
     </div>
     @RenderBody()
     <footer>

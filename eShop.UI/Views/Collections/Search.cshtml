@@ -1,0 +1,28 @@
+﻿@model IEnumerable<eShop.Core.Models.Product>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.LayoutMessage = @TempData["LayoutMessage"];
+}
+
+<div class="row ">
+    <div class="container">
+        <h1>MEN'S TOPS</h1>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 mb-2">
+                    <div class="card" style="border: none;">
+                        <img class="card-img-top" src="~/Content/ProductImages/@item.ProductImage">
+                        <div class="card-footer text-center" style="border: none;">
+                            @Html.ActionLink(@item.ProductName, "Product", "Collections", new { productID = item.ProductID }, new { @class = "text-dark font-weight-bold" })<br>
+                            <a href="#" class="text-dark">RM @item.ProductPrice</a>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
