@@ -196,6 +196,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PagesController.cs" />
     <Compile Include="Controllers\ProductManagerController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
@@ -217,6 +218,22 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\CompanyLogo\Black Logo.PNG" />
     <Content Include="Content\CompanyLogo\White Logo.PNG" />
+    <Content Include="Content\HomePage\HomePage-1.PNG" />
+    <Content Include="Content\HomePage\HomePage-2.PNG" />
+    <Content Include="Content\HomePage\HomePage-3.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %281%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %2810%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %282%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %283%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %284%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %285%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %286%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %287%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %288%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-Bottom %289%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-SocialMedia %281%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-SocialMedia %282%29.PNG" />
+    <Content Include="Content\HomePage\Homepage-SocialMedia %283%29.PNG" />
     <Content Include="Content\ProductImages\8b6e1e64-23d8-496d-9435-0c161f79204d.PNG" />
     <Content Include="Content\ProductImages\d6b7688f-fc36-41d0-9af9-47d93579bab6.PNG" />
     <Content Include="favicon.ico" />
@@ -399,6 +416,12 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\Basket\BasketPartial.cshtml" />
     <Content Include="Views\Collections\Search.cshtml" />
+    <Content Include="Views\Pages\ContactUs.cshtml" />
+    <Content Include="Views\Pages\ReturnPolicy.cshtml" />
+    <Content Include="Views\Pages\ShippingPolicy.cshtml" />
+    <Content Include="Views\Pages\TermsOfService.cshtml" />
+    <Content Include="Views\Pages\PrivacyPolicy.cshtml" />
+    <Content Include="Views\Collections\NewRelease.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

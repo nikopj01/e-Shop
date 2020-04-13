@@ -11,3 +11,34 @@
     height: 15vw;
     object-fit: cover;
 }
+
+#shopNow {
+    background-image: url('HomePage/HomePage-1.PNG');
+    /* Full height */
+    height: 680px;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom:100px;
+}
+
+#shopNowText {
+    text-align: center;
+    color: white;
+    width:100%;
+    margin-top:220px;
+}
+
+#shopNowLink {
+    margin-bottom: 150px;
+}
+
+.card-img-top{
+    height:260px;
+}
+
+#viewAllLink {
+    margin:auto;
+    display:block;
+}

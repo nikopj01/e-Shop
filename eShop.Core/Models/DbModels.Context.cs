@@ -38,5 +38,7 @@ namespace eShop.Core.Models
         public virtual DbSet<UserAccount> UserAccounts { get; set; }
         public virtual DbSet<UserAddress> UserAddresses { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<Subscriber> Subscribers { get; set; }
+        public virtual DbSet<Inquiry> Inquiries { get; set; }
     }
 }

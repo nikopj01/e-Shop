@@ -7,6 +7,8 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 
 </head>
 <body>
@@ -14,8 +16,13 @@
         <div id="layoutMessageDiv" style="text-align:center;">
             <label id="layoutMessageLbl" style="color: green">@ViewBag.LayoutMessage</label>
         </div>
-        <nav class="navbar navbar-expand-md navbar-light">
-            <a class="navbar-brand" href="#">
+        <div id="searchDiv" style="background-color:#f8f8f8;height:50px;">
+            <button class="btn" id="searchBtn"><i class="fa fa-search" style="font-size:30px"></i></button> &nbsp;&nbsp;
+            <input type="text" id="searchQuery" style="width:800px;border:none;background-color:#f8f8f8;font-size:25px;" placeholder="Search our store">
+            <button class="btn" id="searchCancelBtn" style="float:right"><i class="fa fa-close" style="font-size:30px;"></i></button>
+        </div>
+        <nav class="navbar navbar-expand-md " id="menuBar">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home")">
                 <img src="~/Content/CompanyLogo/Black Logo.PNG" alt="Logo" style="width:60px;">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -25,7 +32,7 @@
                 <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="color: black !important;">
                             SHOP
                         </a>
                         <div class="dropdown-menu">
@@ -46,105 +53,94 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">BOLT COLLECTION</a>
+                        <a class="nav-link" href="#" style="color: black !important;">BOLT COLLECTION</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">METAL POSTERS</a>
+                        <a class="nav-link" href="#" style="color: black !important;">METAL POSTERS</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">STREET HUNTER</a>
+                        <a class="nav-link" href="#" style="color: black !important;">STREET HUNTER</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">2020 EVENTS</a>
+                        <a class="nav-link" href="#" style="color: black !important;">2020 EVENTS</a>
                     </li>
                 </ul>
 
-                @if (Session["UserAccountID"] != null)
-                {
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                                Currency
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Link 1</a>
-                                <a class="dropdown-item" href="#">Link 2</a>
-                                <a class="dropdown-item" href="#">Link 3</a>
-                            </div>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown" style="color: black !important;">
+                            USD
+                        </a>
+                        <div class="dropdown-menu" style="min-width: 0px !important;" id="test">
+                            <a class="test dropdown-item" href="#">USD</a>
+                            <a class="test dropdown-item" href="#">CAD</a>
+                            <a class="test dropdown-item" href="#">INR</a>
+                            <a class="test dropdown-item" href="#">GBP</a>
+                            <a class="test dropdown-item" href="#">AUD</a>
+                            <a class="test dropdown-item" href="#">EUR</a>
+                            <a class="test dropdown-item" href="#">JPY</a>
+                        </div>
+                    </li>
+                    @if (Session["UserAccountID"] != null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: black !important;" href="@Url.Action("Index", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})"><i style="font-size:24px;" class="fa">&#xf007</i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})"><i style="font-size:24px" class="fa">&#xf007</i></a>
+                            <button class="btn" style="float:right" id="searchDisplayBtn"><i class="fa fa-search" style="font-size:24px;color: black !important;"></i></button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i style="font-size:24px" class="fa fa-search"></i></a>
-                        </li>
-                        @{
+                        {
                             Html.RenderAction("BasketPartial", "Basket");
                         }
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Logout", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})">Logout</a>
+                            <a class="nav-link" href="@Url.Action("Logout", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})" style="color: black !important;">Logout</a>
                         </li>
-                    </ul>
-                }
-                else
-                {
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                                Currency
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Link 1</a>
-                                <a class="dropdown-item" href="#">Link 2</a>
-                                <a class="dropdown-item" href="#">Link 3</a>
-                            </div>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Login", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})" style="color: black !important;"><i style="font-size:24px" class="fa">&#xf007</i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Login", "UserAccount", new { returnUrl = Request.Url.PathAndQuery})"><i style="font-size:24px" class="fa">&#xf007</i></a>
+                            <button class="btn" style="float:right" id="searchDisplayBtn"><i class="fa fa-search" style="font-size:24px;color: black !important;"></i></button>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i style="font-size:24px" class="fa fa-search"></i></a>
-                        </li>
-                    </ul>
-                }
+                    }
+                </ul>
             </div>
         </nav>
-        @*@using (Html.BeginForm("Search", "Collections", FormMethod.Post, null))
-        {
-        <input type="text" id="productName" name="productName" />
-        <input type="submit" value="Submit" />
-        }*@
     </div>
     @RenderBody()
     <footer>
-        <div class="container" style="">
+        <div class="container-fluid pt-4" style="background-color:black;color:white">
             <div class="row justify-content-center">
-                <img src="~/Content/CompanyLogo/White Logo.PNG" alt="Logo" style="width:60px;">
+                <a href="@Url.Action("Index", "Home")"><img src="~/Content/CompanyLogo/White Logo.PNG" alt="Logo" style="width:150px;"></a>
+            </div>
+            <div class="row justify-content-center mb-3 mt-4">
+                <a href="https://twitter.com/huntandcompany/"><img src="~/Content/HomePage/Homepage-SocialMedia (1).PNG" /></a> &nbsp;&nbsp;&nbsp;
+                <a href="https://www.instagram.com/thehuntandcompany/"><img src="~/Content/HomePage/Homepage-SocialMedia (2).PNG" /></a> &nbsp;&nbsp;&nbsp;
+                <a href="https://www.youtube.com/user/ironmenfan1/"><img src="~/Content/HomePage/Homepage-SocialMedia (3).PNG" /></a>
             </div>
             <div class="row justify-content-center">
-                Social Media
-            </div>
-            <div class="row justify-content-center">
-                <nav class="navbar navbar-expand-md navbar-light">
+                <nav class="navbar navbar-expand-md navbar-dark">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="collapsibleNavbar">
                         <ul class="navbar-nav ">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Contact Us</a>
+                                <a class="nav-link" href="@Url.Action("ContactUs", "Pages")">Contact Us</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Return Policy</a>
+                                <a class="nav-link" href="@Url.Action("ReturnPolicy", "Pages")">Return Policy</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Shipping Policy</a>
+                                <a class="nav-link" href="@Url.Action("ShippingPolicy", "Pages")">Shipping Policy</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Terms of Service</a>
+                                <a class="nav-link" href="@Url.Action("TermsOfService", "Pages")">Terms of Service</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Privacy Policy</a>
+                                <a class="nav-link" href="@Url.Action("PrivacyPolicy", "Pages")">Privacy Policy</a>
                             </li>
                         </ul>
                     </div>
@@ -157,19 +153,40 @@
         </div>
     </footer>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
 
 <script>
     $(document).ready(function () {
+        //Display and Hide search bar
+        $("#searchDiv").hide();
+        $("#searchDisplayBtn").click(function (x) {
+            $("#menuBar").slideUp();
+            $("#searchDiv").delay(400).slideDown();
+        });
+        $("#searchCancelBtn").click(function (x) {
+            $("#searchDiv").slideUp();
+            $("#menuBar").delay(400).slideDown();
+        });
+
+        //Display layout message
         var layoutMessage = $("#layoutMessageLbl").text();
         if (layoutMessage == '') {
             $("#layoutMessageDiv").hide();
         } else {
             $("#layoutMessageDiv").delay(3000).slideUp("slow");
         }
+
+        //Search Query
+        $("#searchBtn").click(function () {
+            var searchQuery = $("#searchQuery").val();
+            if (searchQuery != "") {
+                window.location.href = '/Collections/Search?searchQuery=' + searchQuery;
+            } else {
+                alert("Please Add Product Name")
+            }
+        });
+
     });
 </script>

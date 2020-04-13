@@ -45,6 +45,8 @@
         <AssociationConnector Association="eShopModel.FK__UserAccou__UserR__119F9925" ManuallyRouted="false" />
         <AssociationConnector Association="eShopModel.FK__UserAccou__UserR__1FEDB87C" ManuallyRouted="false" />
         <AssociationConnector Association="eShopModel.FK__UserAddre__UserA__20E1DCB5" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="eShopModel.Subscriber" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="eShopModel.Inquiry" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

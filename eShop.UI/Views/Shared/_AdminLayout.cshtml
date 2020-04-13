@@ -7,7 +7,20 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            //$("#adminlayoutMessageDiv").hide();
+            var layoutMessage = $("#adminLayoutMessageLbl").text();
+            if (layoutMessage == '') {
+                $("#adminlayoutMessageDiv").hide();
+            } else {
+                $("#adminlayoutMessageDiv").delay(3000).slideUp("slow");
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -48,19 +61,6 @@
         </div>
     </footer>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>
 
-<script>
-    $(document).ready(function () {
-        var layoutMessage = $("#adminlayoutMessageLbl").text();
-        if (layoutMessage == '') {
-            $("#adminlayoutMessageDiv").hide();
-        } else {
-            $("#adminlayoutMessageDiv").delay(3000).slideUp("slow");
-        }
-    });
-</script>

@@ -1,118 +1,92 @@
-﻿@{
+﻿@model eShop.Core.ViewModels.HomepageViewModel
+@{
     ViewBag.Title = "Home Page";
     ViewBag.LayoutMessage = @TempData["LayoutMessage"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <a class="nav-link" href="#">SHOP NOW</a>
-    </div>
+    <div class="container-fluid">
 
-    <div class="row ">
-        <div class="container">
-            <h1>NEW TO THE SHOP</h1>
-            <div class="row">
-                <div class="col-md-3 mb-2">
-                    <div class="card" style="border: none;">
-                        <img class="card-img-top" src="http://www.mihanmedia.ir/userfile/736708307-580x567.jpg">
-                        <div class="card-footer text-center" style="border: none;">
-                            <a href="#" class="text-dark">Product 1</a>
-                            <div class="badge badge-danger">30%</div>
-                            <a href="#" class="text-danger">RM 700</a>
-                            <br>
-                            <small class="text-muted"><del>RM 1000</del></small>
+        <div class="row justify-content-center" id="shopNow">
+            <div id="shopNowText">
+                <text style="font-size:100px;">NEW RELEASES</text>
+                <br><br>
+                <text>THE BOLD COLLECTION</text>
+            </div>
+            <a href="@Url.Action("NewRelease", "Collections")" id="shopNowLink">
+                <button type="button" class="btn btn-primary">SHOP NOW</button>
+            </a>
+        </div>
+
+        <div class="row">
+            <div class="container">
+                <h2>NEW TO THE SHOP</h2> <br>
+                <div class="row">
+                    @foreach (var product in Model.products)
+                    {
+                        <div class="col-md-3 mb-2">
+                            <div class="card" style="border: none;">
+                                <img class="card-img-top" src="~/Content/ProductImages/@product.ProductImage">
+                                <div class="card-footer text-center" style="border: none;">
+                                    <a href="#" class="text-dark">@product.ProductName</a>
+                                    <br />
+                                    <input type="hidden" class="oriPrice"  value="@product.ProductPrice">
+                                    <a href="#" class="currencyPrice text-dark">@product.ProductPrice</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <div class="card" style="border: none;">
-                        <img class="card-img-top" src="http://www.mihanmedia.ir/userfile/736708307-580x567.jpg">
-                        <div class="card-footer text-center" style="border: none;">
-                            <a href="#" class="text-dark">Product 1</a>
-                            <div class="badge badge-danger">30%</div>
-                            <a href="#" class="text-danger">RM 700</a>
-                            <br>
-                            <small class="text-muted"><del>RM 1000</del></small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <div class="card" style="border: none;">
-                        <img class="card-img-top" src="http://www.mihanmedia.ir/userfile/736708307-580x567.jpg">
-                        <div class="card-footer text-center" style="border: none;">
-                            <a href="#" class="text-dark">Product 1</a>
-                            <div class="badge badge-danger">30%</div>
-                            <a href="#" class="text-danger">RM 700</a>
-                            <br>
-                            <small class="text-muted"><del>RM 1000</del></small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <div class="card" style="border: none;">
-                        <img class="card-img-top" src="http://www.mihanmedia.ir/userfile/736708307-580x567.jpg">
-                        <div class="card-footer text-center" style="border: none;">
-                            <a href="#" class="text-dark">Product 1</a>
-                            <div class="badge badge-danger">30%</div>
-                            <a href="#" class="text-danger">RM 700</a>
-                            <br>
-                            <small class="text-muted"><del>RM 1000</del></small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <div class="card" style="border: none;">
-                        <img class="card-img-top" src="http://www.mihanmedia.ir/userfile/736708307-580x567.jpg">
-                        <div class="card-footer text-center" style="border: none;">
-                            <a href="#" class="text-dark">Product 1</a>
-                            <div class="badge badge-danger">30%</div>
-                            <a href="#" class="text-danger">RM 700</a>
-                            <br>
-                            <small class="text-muted"><del>RM 1000</del></small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <div class="card" style="border: none;">
-                        <img class="card-img-top" src="http://www.mihanmedia.ir/userfile/736708307-580x567.jpg">
-                        <div class="card-footer text-center" style="border: none;">
-                            <a href="#" class="text-dark">Product 1</a>
-                            <div class="badge badge-danger">30%</div>
-                            <a href="#" class="text-danger">RM 700</a>
-                            <br>
-                            <small class="text-muted"><del>RM 1000</del></small>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
+
+        <a href="@Url.Action("NewRelease", "Collections")">
+            <button type="button" class="btn btn-primary" id="viewAllLink">VIEW ALL</button>
+        </a>
+
+        <br /><br />
+
+        <div class="row justify-content-center pl-3 pr-3">
+            <a href="#" style="background-image: url('../../Content/HomePage/HomePage-2.PNG');height:400px;width:49.7%;margin-right:0.3%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/HomePage-3.PNG');height:400px;width:49.7%;margin-left:0.3%;"></a>
+        </div>
+
+        <br /><br />
+
+        <div class="container" style="text-align:center">
+            <h2>Join THE NEWSLETTER</h2>
+            <br>
+            Sign up for a newsletter actually worth subscribing to. No spam just exclusive discounts, product updates, and future events.
+            <br><br>
+            @using (Html.BeginForm())
+            {
+                @Html.EditorFor(model => model.email, new { htmlAttributes = new { id = "emailSubscriberTbx", style = "width: 500px;border: none; height:40px;", placeholder = "Enter your email" } })
+                @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                <input type="submit" value="Subscribe" class="btn btn-primary" id="emailSubscriberbtn" />
+            }
+        </div>
+
+        <br /><br />
+        <div class="row ">
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (1).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (2).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (3).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (4).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (5).PNG');height:280px;width:20%;"></a>
+        </div>
+        <div class="row ">
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (6).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (7).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (8).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (10).PNG');height:280px;width:20%;"></a>
+            <a href="#" style="background-image: url('../../Content/HomePage/Homepage-Bottom (9).PNG');height:280px;width:20%;"></a>
+        </div>
     </div>
 
-    <div class="row justify-content-center">
-        <a class="nav-link" href="#">ACCESSORIES</a>
-        <br>
-        <a class="nav-link" href="#">APPAREL</a>
-    </div>
-
-    <div class="row p-3 justify-content-center">
-        Join THE NEWSLETTER
-        <br>
-        Sign up for a newsletter actually worth subscribing to. No spam just exclusive discounts, product updates, and future events.
-    </div>
-
-    <div class="row d-md-flex">
-        <div class="p-2 flex-fill bg-info">Flex item 1</div>
-        <div class="p-2 flex-fill bg-warning">Flex item 2</div>
-        <div class="p-2 flex-fill bg-primary">Flex item 3</div>
-        <div class="p-2 flex-fill bg-info">Flex item 1</div>
-        <div class="p-2 flex-fill bg-warning">Flex item 2</div>
-    </div>
-    <div class="row d-md-flex">
-        <div class="p-2 flex-fill bg-primary">Flex item 3</div>
-        <div class="p-2 flex-fill bg-warning">Flex item 2</div>
-        <div class="p-2 flex-fill bg-info">Flex item 1</div>
-        <div class="p-2 flex-fill bg-warning">Flex item 2</div>
-        <div class="p-2 flex-fill bg-info">Flex item 1</div>
-    </div>
-</div>
+<script>
+    $(document).ready(function () {
+    });
+</script>

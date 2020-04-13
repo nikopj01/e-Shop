@@ -53,18 +53,29 @@ namespace eShop.UI.Controllers
         /// Method to display collection of product based on inputted product name
         /// </summary>
         /// <returns></returns>
-        public ActionResult Search(string productName)
+        public ActionResult Search(string searchQuery)
         {
-            if(productName != null)
+            if (searchQuery != null)
             {
                 IEnumerable<Product> model = _contextProduct.Collection()
-                    .Where(p => p.ProductName.Contains(productName) && p.IsActive == true).ToList();
+                    .Where(p => p.ProductName.Contains(searchQuery) && p.IsActive == true).ToList();
                 return View(model);
             }
             else
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        /// <summary>
+        /// Method to display collection of new release products for the last 30 days
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult NewRelease()
+        {
+            DateTime currentDate = DateTime.Now.AddDays(30);
+            IEnumerable<Product> model = _contextProduct.Collection().Where(p => p.CreatedAt <= currentDate && p.IsActive == true).ToList();
+            return View(model);
         }
     }
 }
